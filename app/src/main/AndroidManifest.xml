@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.otk.fts.myotk">
+
+    <supports-screens android:smallScreens="true"
+        android:normalScreens="true"
+        android:anyDensity="true"
+        android:resizeable="true"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/brainlock_app_icon"
+        android:label="BrainLock"
+        android:theme="@style/theme"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:excludeFromRecents="true"
+            android:label="BrainLock"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:directBootAware="true"
+            android:name=".activity.preLockScreenActivity"
+            android:excludeFromRecents="true"
+            android:label="BrainLock"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".activity.beforeSettingActivity"
+            android:excludeFromRecents="true"
+            android:label="BrainLock"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".activity.LockScreenActivity"
+            android:excludeFromRecents="true"
+            android:label="BrainLock"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="BrainLock" />
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity
+            android:name=".activity.GuideActivity"
+            android:label="BrainLock"
+            android:screenOrientation="portrait" />
+
+        <receiver
+            android:name=".receiver.OnLock_BroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="true"
+            android:label="OnLock_BroadcastReceiver">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+
+        <service android:name=".services.totalLockScreenService" />
+        <service android:name=".services.LockScreenService" android:directBootAware="true"/>
+    </application>
+
+    <uses-feature android:name="android.hardware.camera2" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+
+    <!-- camera, gallery -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"-->
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+</manifest>
