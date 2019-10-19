@@ -165,8 +165,9 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         }
     };
 
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
+        QLog.d("onKeyDown");
         switch(keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 // 여기에 뒤로가기 버튼을 눌렀을 때 행동 입력
@@ -174,6 +175,33 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
             case KeyEvent.KEYCODE_HOME:
                 // 여기에 홈 버튼을 눌렀을 때 행동 입력
+                QLog.d("KEYCODE_HOME");
+                btnShow();
+                return false;
+            case KeyEvent.KEYCODE_MENU:
+                return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onUserLeaveHint(){
+        super.onUserLeaveHint();
+        QLog.d("KEYCODE_HOME");
+        return;
+    }
+
+    /*public boolean onKeyDown(int keyCode, KeyEvent event) {
+        QLog.d("onKeyDown");
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                // 여기에 뒤로가기 버튼을 눌렀을 때 행동 입력
+                return false;
+
+            case KeyEvent.KEYCODE_HOME:
+                // 여기에 홈 버튼을 눌렀을 때 행동 입력
+                QLog.d("KEYCODE_HOME");
+                btnShow();
                 return false;
             case KeyEvent.KEYCODE_MENU:
                 return false;
@@ -181,7 +209,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
         return super.onKeyDown(keyCode, event);
 
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,11 +232,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
         if(!Utils.isServiceRunning(this)){
             Utils.startService(getApplicationContext());
-
         }
-//        else{
-//            QLog.d("service is run");
-//        }
 
         LayoutInflater inflate = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -241,7 +265,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
         params.gravity = Gravity.CENTER;
 
-        mView = inflate.inflate(R.layout.activity_main, null);
+        mView = inflate.inflate(R.layout.activity_lock, null);
         //iv = mView.findViewById(R.id.gifIv);
         //fr = mView.findViewById(R.id.fr);
         mView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
@@ -314,10 +338,8 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         String customBgImgPath = PreferenceUtil.getStringPref(this, PreferenceUtil.CUSTOM_BG_PATH);//sf.getString("pwImgPath","");
 
         if(customBgImg){
-
             BitmapFactory.Options options = new BitmapFactory.Options();
             Bitmap originalBm = BitmapFactory.decodeFile(customBgImgPath, options);
-
             Drawable drawable = new BitmapDrawable(originalBm);
             //drawable.setAlpha(30);
             bg_screen.setBackground(drawable);
@@ -329,7 +351,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
             //bg_screen.setBackgroundColor(res.getColor(android.R.color.black));
             bg_screen.setBackground(res.getDrawable(R.drawable.background_1));
         }
-
 
         // 비밀번호 배열 ( 임시비번 = 12 )
         pw = new ArrayList();
@@ -400,23 +421,26 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
             shuffleKeyPad(pos);
             isStart = false;
 
-            if(f_timer == 0){
-                btnUnshow();
-                bottomLl.setVisibility(View.VISIBLE);
-            }
-
-            else{
-                btnShow();
-                btnsEnable();
-
-                handler.postDelayed(() -> {
-                    btnUnshow();
-                    //btnsEnable();
-                    bottomLl.setVisibility(View.VISIBLE);
-                }, f_timer);    //2초 뒤에
-            }
-
+            run();
         } else finishAffinity();
+    }
+
+    private void run(){
+        if(f_timer == 0){
+            btnUnshow();
+            bottomLl.setVisibility(View.VISIBLE);
+        }
+
+        else{
+            btnShow();
+            btnsEnable();
+
+            handler.postDelayed(() -> {
+                btnUnshow();
+                //btnsEnable();
+                bottomLl.setVisibility(View.VISIBLE);
+            }, f_timer);    //2초 뒤에
+        }
     }
 
    private void btnsDisable(){
@@ -453,7 +477,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         mBtnDel.setEnabled(true);
     }
 
-    void CheckPW() {
+    private void CheckPW() {
         if(input.size()==pw.size()){
             int index = 0;
             int backupPinNum = Integer.parseInt(backupPin);
@@ -518,7 +542,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
     }
 
     private void Unlock(){
-
         //wm.removeViewImmediate(mView);
         finishAffinity();
     }
@@ -932,29 +955,5 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 .setSelectedDrawable(getDrawableImage(12))
                 .build();
     }
-
-    public static Bitmap setRoundCorner(Bitmap bitmap, int pixel) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
-                Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        int color = 0xff424242;
-        Paint paint = new Paint();
-        Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        RectF rectF = new RectF(rect);
-
-        paint.setAntiAlias(true);
-        paint.setColor(color);
-        canvas.drawARGB(0, 0, 0, 0);
-        canvas.drawRoundRect(rectF, pixel, pixel, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
-    }
-
-
-
 
 }

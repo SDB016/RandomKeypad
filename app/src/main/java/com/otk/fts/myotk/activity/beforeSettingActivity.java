@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -35,8 +36,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.DataBindingUtil;
 
 import com.otk.fts.myotk.R;
+import com.otk.fts.myotk.databinding.ActivityMainBinding;
 import com.otk.fts.myotk.utils.PreferenceUtil;
 import com.otk.fts.myotk.utils.QLog;
 import com.otk.fts.myotk.utils.StateDrawableBuilder;
@@ -47,24 +50,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class beforeSettingActivity extends Activity implements View.OnTouchListener, View.OnClickListener {
-
-    private boolean isActive;
-    private Context mContext;
-    private Button mBtnButton1;
-    private Button mBtnButton2;
-    private Button mBtnButton3;
-    private Button mBtnButton4;
-    private Button mBtnButton5;
-    private Button mBtnButton6;
-    private Button mBtnButton7;
-    private Button mBtnButton8;
-    private Button mBtnButton9;
-    private Button mBtnButton10;
-    private Button mBtnButton11;
-    private Button mBtnButton12;
+    private ActivityMainBinding binding;
     private ImageButton mBtnShow;
     private ImageButton mBtnDel;
-
     private ImageView img_Input;
 
     private Integer numType;
@@ -77,8 +65,6 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
     private boolean customBgImg;
     // Custom 버튼 이미지 경로
     private String customBgImgPath;
-    // Custom 버튼 Drawable
-    private Drawable custom_btn_drawable;
 
     // PassWord Size
     private int pwSize;
@@ -95,48 +81,22 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
 
     boolean isStart = false;
 
-    Vibrator vibrator;
-    private Integer wrongCount;
-    private Integer wrongTrigger;
-    private Integer wrong_lockTimer;
+    private Vibrator vibrator;
+    private Integer wrongCount, wrongTrigger, wrong_lockTimer;
 
-    WindowManager wm;
-    View mView;
+    private WindowManager wm;
+    private View mView;
     private String backupPin;
     private Handler handler;
-    private View decorView;
-
-    @Override
-    protected void onUserLeaveHint(){
-        super.onUserLeaveHint();
-        return;
-    }
-//
-//    @Override
-//    public void onWindowFocusChanged(boolean hasFocus) {
-//        super.onWindowFocusChanged(hasFocus);
-//        //isFocus = hasFocus;
-//        boolean hasMenuKey = ViewConfiguration.get(this).hasPermanentMenuKey();
-//        if (!hasMenuKey) {
-//            //if (isFocus) {
-//            decorView.setSystemUiVisibility(
-//                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-//                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-//                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-//            //}
-//        }
-//    }
-
+    private Resources res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler = new Handler(msg -> false);
+        res = getResources();
         LayoutInflater inflate = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        //wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
         getWindow().addFlags(
@@ -145,101 +105,62 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
                         // 기본 잠금화면 해제시키기
                         | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        //decorView = getWindow().getDecorView();
-
         if(!Utils.isServiceRunning(this)){
             Utils.startService(getApplicationContext());
 
         }else QLog.d("service is run");
 
-        WindowManager.LayoutParams params;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            params = new WindowManager.LayoutParams(
-                    WindowManager.LayoutParams.MATCH_PARENT,
-                    WindowManager.LayoutParams.MATCH_PARENT,
-                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-                    PixelFormat.TRANSLUCENT);
-        } else {
+//        WindowManager.LayoutParams params;
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+//            params = new WindowManager.LayoutParams(
+//                    WindowManager.LayoutParams.MATCH_PARENT,
+//                    WindowManager.LayoutParams.MATCH_PARENT,
+//                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+//                    WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+//                    PixelFormat.TRANSLUCENT);
+//        } else {
+//            params = new WindowManager.LayoutParams(
+//                    ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.MATCH_PARENT,
+//                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+//                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+//                            |WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+//                            |WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+//                            //|WindowManager.LayoutParams.FLAG_FULLSCREEN
+//                            |WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+//                            |WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON,
+//                    //| WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+//                    //| WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+//                    //| WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                    PixelFormat.TRANSLUCENT);
+//        }
+//        params.gravity = Gravity.CENTER;
+        //binding = DataBindingUtil.inflate(inflate, R.layout.activity_main, null, false);//DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mView = binding.getRoot();
+        //mView.setLayoutParams(params);
 
-            params = new WindowManager.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT,
+        //mView = inflate.inflate(R.layout.activity_main, null);
+//        mView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
+//                // Set the content to appear under the system bars so that the
+//                // content doesn't resize when the system bars hide and show.
+//                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                // Hide the nav bar and status bar
+//                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_FULLSCREEN);
 
-
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                            |WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                            |WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                            //|WindowManager.LayoutParams.FLAG_FULLSCREEN
-                            |WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                            |WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON,
-                    //| WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                    //| WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                    //| WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    PixelFormat.TRANSLUCENT);
-        }
-        params.gravity = Gravity.CENTER;
-        mView = inflate.inflate(R.layout.activity_main, null);
-        mView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
-                // Set the content to appear under the system bars so that the
-                // content doesn't resize when the system bars hide and show.
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                // Hide the nav bar and status bar
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN);
         bg_screen = mView.findViewById(R.id.Linear_bg);
         bottomLl = mView.findViewById((R.id.bottomLl));
-/*
-        int uiOption = bg_screen.getSystemUiVisibility();
-        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH )
-            uiOption |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN )
-            uiOption |= View.SYSTEM_UI_FLAG_FULLSCREEN;
-        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT )
-            uiOption |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-
-        bg_screen.setSystemUiVisibility( uiOption );
-*/
-
-        //mContext = getApplicationContext();
-        mBtnButton1 = (Button) mView.findViewById(R.id.button1);
-        mBtnButton1.setOnClickListener(this);
-        mBtnButton2 = (Button) mView.findViewById(R.id.button2);
-        mBtnButton2.setOnClickListener(this);
-        mBtnButton3 = (Button) mView.findViewById(R.id.button3);
-        mBtnButton3.setOnClickListener(this);
-        mBtnButton4 = (Button) mView.findViewById(R.id.button4);
-        mBtnButton4.setOnClickListener(this);
-        mBtnButton5 = (Button) mView.findViewById(R.id.button5);
-        mBtnButton5.setOnClickListener(this);
-        mBtnButton6 = (Button) mView.findViewById(R.id.button6);
-        mBtnButton6.setOnClickListener(this);
-        mBtnButton7 = (Button) mView.findViewById(R.id.button7);
-        mBtnButton7.setOnClickListener(this);
-        mBtnButton8 = (Button) mView.findViewById(R.id.button8);
-        mBtnButton8.setOnClickListener(this);
-        mBtnButton9 = (Button) mView.findViewById(R.id.button9);
-        mBtnButton9.setOnClickListener(this);
-        mBtnButton10 = (Button) mView.findViewById(R.id.button10);
-        mBtnButton10.setOnClickListener(this);
-        mBtnButton11 = (Button) mView.findViewById(R.id.button11);
-        mBtnButton11.setOnClickListener(this);
-        mBtnButton12 = (Button) mView.findViewById(R.id.button12);
-        mBtnButton12.setOnClickListener(this);
         mBtnShow = (ImageButton) mView.findViewById(R.id.btn_show);
         mBtnShow.setOnTouchListener(this);
-
         img_Input = (ImageView)mView.findViewById(R.id.input_img);
-
-
         mBtnDel = (ImageButton) mView.findViewById((R.id.btn_del));
         mBtnDel.setOnTouchListener(this);
 
         //저장된 값을 불러오기 위해 같은 네임파일을 찾음.
-        isActive = PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true);
+        //isActive = PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true);
         pwSize = PreferenceUtil.getIntPref(this, PreferenceUtil.PW_SIZE, 2);
         //int lpw = PreferenceUtil.getIntPref(this, PreferenceUtil.PW_LIST, 0);//sf.getInt("pwList", 0);
         String lpwStr = PreferenceUtil.getStringPref(this, PreferenceUtil.PW_LIST, "00");//sf.getInt("pwList", 0);
@@ -250,7 +171,8 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         btnType = PreferenceUtil.getIntPref(this, PreferenceUtil.BTN_TYPE, 0);//sf.getInt("btnType", 3);
         customBgImg = PreferenceUtil.getBooleanPref(this, PreferenceUtil.CUSTOM_BG,false);//sf.getBoolean("customBgImg", false);
         customBgImgPath = PreferenceUtil.getStringPref(this, PreferenceUtil.CUSTOM_BG_PATH);//sf.getString("pwImgPath","");
-        QLog.d(numType+"/"+btnType);
+        //QLog.d(numType+"/"+btnType);
+
         if(customBgImg){
             BitmapFactory.Options options = new BitmapFactory.Options();
             Bitmap originalBm = BitmapFactory.decodeFile(customBgImgPath, options);
@@ -261,8 +183,8 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
             //Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             //bg_screen.setimage(myBitmap);
         }else {
-            //bg_screen.setBackgroundColor(getResources().getColor(android.R.color.black));
-            bg_screen.setBackground(getResources().getDrawable(R.drawable.background_1));
+            //bg_screen.setBackgroundColor(res.getColor(android.R.color.black));
+            bg_screen.setBackground(res.getDrawable(R.drawable.background_1));
         }
 
         // 비밀번호 배열 ( 임시비번 = 12 )
@@ -313,8 +235,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
 
         wrongCount = 0;
         wrongTrigger = 0;
-
-        wm.addView(mView, params);
+        //wm.addView(mView, params);
     }
 
     @Override
@@ -332,7 +253,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
 
         else{
             btnShow();
-            btnsEnable();
+            btnEnable(true);
 
             handler.postDelayed(() -> {
                 btnUnshow();
@@ -342,6 +263,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
 
         // test버젼
         //wrong_lockTimer = 100;
+        
         // 실제버젼
         wrong_lockTimer = 10000;
     }
@@ -352,17 +274,16 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
             handler.removeCallbacksAndMessages(null);
             handler = null;
         }
-        btnsEnable();
+        btnEnable(true);
 
-        wm.removeViewImmediate(mView);
+        //wm.removeViewImmediate(mView);
         finishAffinity();
-
         super.onDestroy();
     }
 
     @Override
     protected void onPause() {
-        btnsEnable();
+        btnEnable(true);
         super.onPause();
     }
 
@@ -373,38 +294,21 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
 //        //finishAffinity();
 //    }
 
-    private void btnsDisable(){
-        mBtnButton1.setEnabled(false);
-        mBtnButton2.setEnabled(false);
-        mBtnButton3.setEnabled(false);
-        mBtnButton4.setEnabled(false);
-        mBtnButton5.setEnabled(false);
-        mBtnButton6.setEnabled(false);
-        mBtnButton7.setEnabled(false);
-        mBtnButton8.setEnabled(false);
-        mBtnButton9.setEnabled(false);
-        mBtnButton10.setEnabled(false);
-        mBtnButton11.setEnabled(false);
-        mBtnButton12.setEnabled(false);
-        mBtnShow.setEnabled(false);
-        mBtnDel.setEnabled(false);
-    }
-
-    private void btnsEnable(){
-        mBtnButton1.setEnabled(true);
-        mBtnButton2.setEnabled(true);
-        mBtnButton3.setEnabled(true);
-        mBtnButton4.setEnabled(true);
-        mBtnButton5.setEnabled(true);
-        mBtnButton6.setEnabled(true);
-        mBtnButton7.setEnabled(true);
-        mBtnButton8.setEnabled(true);
-        mBtnButton9.setEnabled(true);
-        mBtnButton10.setEnabled(true);
-        mBtnButton11.setEnabled(true);
-        mBtnButton12.setEnabled(true);
-        mBtnShow.setEnabled(true);
-        mBtnDel.setEnabled(true);
+    private void btnEnable(boolean enable){
+        binding.button1.setEnabled(enable);
+        binding.button2.setEnabled(enable);
+        binding.button3.setEnabled(enable);
+        binding.button4.setEnabled(enable);
+        binding.button5.setEnabled(enable);
+        binding.button6.setEnabled(enable);
+        binding.button7.setEnabled(enable);
+        binding.button8.setEnabled(enable);
+        binding.button9.setEnabled(enable);
+        binding.button10.setEnabled(enable);
+        binding.button11.setEnabled(enable);
+        binding.button12.setEnabled(enable);
+        mBtnShow.setEnabled(enable);
+        mBtnDel.setEnabled(enable);
     }
 
     @Override
@@ -508,18 +412,19 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
                         PreferenceUtil.savePref(this, PreferenceUtil.PW_SIZE, pwSize);
                         PreferenceUtil.savePref(this, PreferenceUtil.PW_LIST, backupPin);
 
-                        btnsDisable();
+                        btnEnable(false);
                         handler.postDelayed(() -> {
                             btnUnshow();
-                            btnsEnable();
+                            btnEnable(true);
                         }, wrong_lockTimer);    //10초 뒤에
                     } else if(wrongTrigger>=5){
                         // PhoneLockForSeconds();
-                        btnsDisable();
+                        
+                        btnEnable(false);
                         wrongTrigger=0;
                         handler.postDelayed(() -> {
                             btnUnshow();
-                            btnsEnable();
+                            btnEnable(true);
                         }, wrong_lockTimer);    //10초 뒤에
                     }
 
@@ -591,157 +496,157 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
             case 0:
                 switch (numType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.percent35_0);
+                        return res.getDrawable(R.drawable.percent35_0);
                     case 1:
-                        return getResources().getDrawable(R.drawable.percent100_0);
+                        return res.getDrawable(R.drawable.percent100_0);
                     case 2:
-                        return getResources().getDrawable(R.drawable.line_0);
+                        return res.getDrawable(R.drawable.line_0);
                     case 3:
-                        return getResources().getDrawable(R.drawable.percent0_0);
+                        return res.getDrawable(R.drawable.percent0_0);
                 }
                 break;
             case 1:
                 switch (numType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.percent35_1);
+                        return res.getDrawable(R.drawable.percent35_1);
                     case 1:
-                        return getResources().getDrawable(R.drawable.percent100_1);
+                        return res.getDrawable(R.drawable.percent100_1);
                     case 2:
-                        return getResources().getDrawable(R.drawable.line_1);
+                        return res.getDrawable(R.drawable.line_1);
                     case 3:
-                        return getResources().getDrawable(R.drawable.percent0_1);
+                        return res.getDrawable(R.drawable.percent0_1);
                 }
                 break;
             case 2:
                 switch (numType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.percent35_2);
+                        return res.getDrawable(R.drawable.percent35_2);
                     case 1:
-                        return getResources().getDrawable(R.drawable.percent100_2);
+                        return res.getDrawable(R.drawable.percent100_2);
                     case 2:
-                        return getResources().getDrawable(R.drawable.line_2);
+                        return res.getDrawable(R.drawable.line_2);
                     case 3:
-                        return getResources().getDrawable(R.drawable.percent0_2);
+                        return res.getDrawable(R.drawable.percent0_2);
                 }
                 break;
             case 3:
                 switch (numType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.percent35_3);
+                        return res.getDrawable(R.drawable.percent35_3);
                     case 1:
-                        return getResources().getDrawable(R.drawable.percent100_3);
+                        return res.getDrawable(R.drawable.percent100_3);
                     case 2:
-                        return getResources().getDrawable(R.drawable.line_3);
+                        return res.getDrawable(R.drawable.line_3);
                     case 3:
-                        return getResources().getDrawable(R.drawable.percent0_3);
+                        return res.getDrawable(R.drawable.percent0_3);
                 }
                 break;
             case 4:
                 switch (numType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.percent35_4);
+                        return res.getDrawable(R.drawable.percent35_4);
                     case 1:
-                        return getResources().getDrawable(R.drawable.percent100_4);
+                        return res.getDrawable(R.drawable.percent100_4);
                     case 2:
-                        return getResources().getDrawable(R.drawable.line_4);
+                        return res.getDrawable(R.drawable.line_4);
                     case 3:
-                        return getResources().getDrawable(R.drawable.percent0_4);
+                        return res.getDrawable(R.drawable.percent0_4);
                 }
                 break;
             case 5:
                 switch (numType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.percent35_5);
+                        return res.getDrawable(R.drawable.percent35_5);
                     case 1:
-                        return getResources().getDrawable(R.drawable.percent100_5);
+                        return res.getDrawable(R.drawable.percent100_5);
                     case 2:
-                        return getResources().getDrawable(R.drawable.line_5);
+                        return res.getDrawable(R.drawable.line_5);
                     case 3:
-                        return getResources().getDrawable(R.drawable.percent0_5);
+                        return res.getDrawable(R.drawable.percent0_5);
                 }
                 break;
             case 6:
                 switch (numType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.percent35_6);
+                        return res.getDrawable(R.drawable.percent35_6);
                     case 1:
-                        return getResources().getDrawable(R.drawable.percent100_6);
+                        return res.getDrawable(R.drawable.percent100_6);
                     case 2:
-                        return getResources().getDrawable(R.drawable.line_6);
+                        return res.getDrawable(R.drawable.line_6);
                     case 3:
-                        return getResources().getDrawable(R.drawable.percent0_6);
+                        return res.getDrawable(R.drawable.percent0_6);
                 }
                 break;
             case 7:
                 switch (numType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.percent35_7);
+                        return res.getDrawable(R.drawable.percent35_7);
                     case 1:
-                        return getResources().getDrawable(R.drawable.percent100_7);
+                        return res.getDrawable(R.drawable.percent100_7);
                     case 2:
-                        return getResources().getDrawable(R.drawable.line_7);
+                        return res.getDrawable(R.drawable.line_7);
                     case 3:
-                        return getResources().getDrawable(R.drawable.percent0_7);
+                        return res.getDrawable(R.drawable.percent0_7);
                 }
                 break;
             case 8:
                 switch (numType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.percent35_8);
+                        return res.getDrawable(R.drawable.percent35_8);
                     case 1:
-                        return getResources().getDrawable(R.drawable.percent100_8);
+                        return res.getDrawable(R.drawable.percent100_8);
                     case 2:
-                        return getResources().getDrawable(R.drawable.line_8);
+                        return res.getDrawable(R.drawable.line_8);
                     case 3:
-                        return getResources().getDrawable(R.drawable.percent0_8);
+                        return res.getDrawable(R.drawable.percent0_8);
                 }
                 break;
             case 9:
                 switch (numType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.percent35_9);
+                        return res.getDrawable(R.drawable.percent35_9);
                     case 1:
-                        return getResources().getDrawable(R.drawable.percent100_9);
+                        return res.getDrawable(R.drawable.percent100_9);
                     case 2:
-                        return getResources().getDrawable(R.drawable.line_9);
+                        return res.getDrawable(R.drawable.line_9);
                     case 3:
-                        return getResources().getDrawable(R.drawable.percent0_9);
+                        return res.getDrawable(R.drawable.percent0_9);
                 }
                 break;
             case 10:
                 switch (numType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.percent35_num);
+                        return res.getDrawable(R.drawable.percent35_num);
                     case 1:
-                        return getResources().getDrawable(R.drawable.percent100_num);
+                        return res.getDrawable(R.drawable.percent100_num);
                     case 2:
-                        return getResources().getDrawable(R.drawable.line_num);
+                        return res.getDrawable(R.drawable.line_num);
                     case 3:
-                        return getResources().getDrawable(R.drawable.percent0_num);
+                        return res.getDrawable(R.drawable.percent0_num);
                 }
                 break;
             case 11:
                 switch (numType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.percent35_as);
+                        return res.getDrawable(R.drawable.percent35_as);
                     case 1:
-                        return getResources().getDrawable(R.drawable.percent100_as);
+                        return res.getDrawable(R.drawable.percent100_as);
                     case 2:
-                        return getResources().getDrawable(R.drawable.line_as);
+                        return res.getDrawable(R.drawable.line_as);
                     case 3:
-                        return getResources().getDrawable(R.drawable.percent0_as);
+                        return res.getDrawable(R.drawable.percent0_as);
                 }
                 break;
             case 12:
                 switch (btnType) {
                     case 0:
-                        return getResources().getDrawable(R.drawable.btn_new_btn3);
+                        return res.getDrawable(R.drawable.btn_new_btn3);
                     case 1:
-                        return getResources().getDrawable(R.drawable.btn_new_btn);
+                        return res.getDrawable(R.drawable.btn_new_btn);
                     case 2:
-                        return getResources().getDrawable(R.drawable.btn_new_btn2);
+                        return res.getDrawable(R.drawable.btn_new_btn2);
                     case 3:
-                        return getResources().getDrawable(R.drawable.btn_new_btn4);
+                        return res.getDrawable(R.drawable.btn_new_btn4);
                 }
                 break;
         }
@@ -798,57 +703,57 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
     }
 
     private void btnShow(){
-        mBtnButton1.setBackground(getSelector(pos.get(0)));
-        mBtnButton1.setEnabled(false);
-        mBtnButton2.setBackground(getSelector(pos.get(1)));
-        mBtnButton2.setEnabled(false);
-        mBtnButton3.setBackground(getSelector(pos.get(2)));
-        mBtnButton3.setEnabled(false);
-        mBtnButton4.setBackground(getSelector(pos.get(3)));
-        mBtnButton4.setEnabled(false);
-        mBtnButton5.setBackground(getSelector(pos.get(4)));
-        mBtnButton5.setEnabled(false);
-        mBtnButton6.setBackground(getSelector(pos.get(5)));
-        mBtnButton6.setEnabled(false);
-        mBtnButton7.setBackground(getSelector(pos.get(6)));
-        mBtnButton7.setEnabled(false);
-        mBtnButton8.setBackground(getSelector(pos.get(7)));
-        mBtnButton8.setEnabled(false);
-        mBtnButton9.setBackground(getSelector(pos.get(8)));
-        mBtnButton9.setEnabled(false);
-        mBtnButton10.setBackground(getSelector(pos.get(9)));
-        mBtnButton10.setEnabled(false);
-        mBtnButton11.setBackground(getSelector(pos.get(10)));
-        mBtnButton11.setEnabled(false);
-        mBtnButton12.setBackground(getSelector(pos.get(11)));
-        mBtnButton12.setEnabled(false);
+        binding.button1.setBackground(getSelector(pos.get(0)));
+        binding.button1.setEnabled(false);
+        binding.button2.setBackground(getSelector(pos.get(1)));
+        binding.button2.setEnabled(false);
+        binding.button3.setBackground(getSelector(pos.get(2)));
+        binding.button3.setEnabled(false);
+        binding.button4.setBackground(getSelector(pos.get(3)));
+        binding.button4.setEnabled(false);
+        binding.button5.setBackground(getSelector(pos.get(4)));
+        binding.button5.setEnabled(false);
+        binding.button6.setBackground(getSelector(pos.get(5)));
+        binding.button6.setEnabled(false);
+        binding.button7.setBackground(getSelector(pos.get(6)));
+        binding.button7.setEnabled(false);
+        binding.button8.setBackground(getSelector(pos.get(7)));
+        binding.button8.setEnabled(false);
+        binding.button9.setBackground(getSelector(pos.get(8)));
+        binding.button9.setEnabled(false);
+        binding.button10.setBackground(getSelector(pos.get(9)));
+        binding.button10.setEnabled(false);
+        binding.button11.setBackground(getSelector(pos.get(10)));
+        binding.button11.setEnabled(false);
+        binding.button12.setBackground(getSelector(pos.get(11)));
+        binding.button12.setEnabled(false);
     }
 
     private void btnUnshow(){
-        mBtnButton1.setBackground(getDrawableImage(12));
-        mBtnButton1.setEnabled(true);
-        mBtnButton2.setBackground(getDrawableImage(12));
-        mBtnButton2.setEnabled(true);
-        mBtnButton3.setBackground(getDrawableImage(12));
-        mBtnButton3.setEnabled(true);
-        mBtnButton4.setBackground(getDrawableImage(12));
-        mBtnButton4.setEnabled(true);
-        mBtnButton5.setBackground(getDrawableImage(12));
-        mBtnButton5.setEnabled(true);
-        mBtnButton6.setBackground(getDrawableImage(12));
-        mBtnButton6.setEnabled(true);
-        mBtnButton7.setBackground(getDrawableImage(12));
-        mBtnButton7.setEnabled(true);
-        mBtnButton8.setBackground(getDrawableImage(12));
-        mBtnButton8.setEnabled(true);
-        mBtnButton9.setBackground(getDrawableImage(12));
-        mBtnButton9.setEnabled(true);
-        mBtnButton10.setBackground(getDrawableImage(12));
-        mBtnButton10.setEnabled(true);
-        mBtnButton11.setBackground(getDrawableImage(12));
-        mBtnButton11.setEnabled(true);
-        mBtnButton12.setBackground(getDrawableImage(12));
-        mBtnButton12.setEnabled(true);
+        binding.button1.setBackground(getDrawableImage(12));
+        binding.button1.setEnabled(true);
+        binding.button2.setBackground(getDrawableImage(12));
+        binding.button2.setEnabled(true);
+        binding.button3.setBackground(getDrawableImage(12));
+        binding.button3.setEnabled(true);
+        binding.button4.setBackground(getDrawableImage(12));
+        binding.button4.setEnabled(true);
+        binding.button5.setBackground(getDrawableImage(12));
+        binding.button5.setEnabled(true);
+        binding.button6.setBackground(getDrawableImage(12));
+        binding.button6.setEnabled(true);
+        binding.button7.setBackground(getDrawableImage(12));
+        binding.button7.setEnabled(true);
+        binding.button8.setBackground(getDrawableImage(12));
+        binding.button8.setEnabled(true);
+        binding.button9.setBackground(getDrawableImage(12));
+        binding.button9.setEnabled(true);
+        binding.button10.setBackground(getDrawableImage(12));
+        binding.button10.setEnabled(true);
+        binding.button11.setBackground(getDrawableImage(12));
+        binding.button11.setEnabled(true);
+        binding.button12.setBackground(getDrawableImage(12));
+        binding.button12.setEnabled(true);
     }
 
     public StateListDrawable getSelector(int number){
@@ -859,26 +764,5 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
                 .setPressedDrawable(getDrawableImage(12))
                 .setSelectedDrawable(getDrawableImage(12))
                 .build();
-    }
-
-    public static Bitmap setRoundCorner(Bitmap bitmap, int pixel) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
-                Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        int color = 0xff424242;
-        Paint paint = new Paint();
-        Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        RectF rectF = new RectF(rect);
-
-        paint.setAntiAlias(true);
-        paint.setColor(color);
-        canvas.drawARGB(0, 0, 0, 0);
-        canvas.drawRoundRect(rectF, pixel, pixel, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
     }
 }

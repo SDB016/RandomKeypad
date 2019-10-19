@@ -12,13 +12,9 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.otk.fts.myotk.activity.LockScreenActivity;
-import com.otk.fts.myotk.activity.preLockScreenActivity;
 import com.otk.fts.myotk.utils.PreferenceUtil;
 import com.otk.fts.myotk.utils.QLog;
 
-import java.util.List;
-
-import static android.content.Context.ACTIVITY_SERVICE;
 
 public class OnLock_BroadcastReceiver extends BroadcastReceiver {
 
