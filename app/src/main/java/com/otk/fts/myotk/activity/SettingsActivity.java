@@ -44,6 +44,7 @@ import java.util.ArrayList;
 public class SettingsActivity extends Activity{
     private boolean powerOn;
     private boolean boot_first;
+    private boolean isLeft;
 
     private Integer imgIndex;
     private CheckBox useLock;
@@ -107,8 +108,7 @@ public class SettingsActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Activity", "Setting Run!");
-        setContentView(R.layout.activity_setting2);
+        setContentView(R.layout.activity_setting);
 
         handler = new Handler(message -> false);
         //TedPermission 라이브러리 -> 카메라 권한 획득
@@ -199,6 +199,44 @@ public class SettingsActivity extends Activity{
             recheck.setHint("4자리 입력");
 
         }) ;
+
+
+
+
+       /* if(dontUse.isChecked()) {
+            useLock.setChecked(false);
+            dontUse.setChecked(true);
+            powerOn = false;
+        }else{
+            useLock.setChecked(true);
+            powerOn = true;
+        }*/
+
+        isLeft = PreferenceUtil.getBooleanPref(this, PreferenceUtil.SHOW_LEFT, true);
+        CheckBox show_bt_left = findViewById(R.id.show_bt_left);
+        CheckBox show_bt_right = findViewById(R.id.show_bt_right);
+        show_bt_left.setChecked(isLeft);
+        show_bt_left.setOnClickListener(view -> {
+            if(show_bt_left.isChecked()) {
+                show_bt_left.setChecked(true);
+                show_bt_right.setChecked(false);
+                isLeft = true;
+            }else{
+                show_bt_right.setChecked(false);
+                isLeft = false;
+            }
+        });
+        show_bt_right.setChecked(!isLeft);
+        show_bt_right.setOnClickListener(view -> {
+            if(show_bt_right.isChecked()) {
+                show_bt_right.setChecked(true);
+                show_bt_left.setChecked(false);
+                isLeft = false;
+            }else{
+                show_bt_right.setChecked(false);
+                isLeft = true;
+            }
+        });
 
         input = (EditText)findViewById(R.id.input_pw);
         recheck = (EditText)findViewById(R.id.re_pw);
@@ -539,6 +577,8 @@ public class SettingsActivity extends Activity{
             PreferenceUtil.savePref(this, PreferenceUtil.BACKUP_PIN, backupPin);
             PreferenceUtil.savePref(this, PreferenceUtil.NUM_TYPE, numType);
             PreferenceUtil.savePref(this, PreferenceUtil.BTN_TYPE, btnType);
+
+            PreferenceUtil.savePref(this, PreferenceUtil.SHOW_LEFT, isLeft);
 
             /*SharedPreferences sharedPreferences = getSharedPreferences("sFile", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();

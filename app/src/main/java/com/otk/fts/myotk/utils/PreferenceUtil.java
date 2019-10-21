@@ -20,8 +20,8 @@ public class PreferenceUtil {
     public final static String NUM_TYPE = "numType";
     public final static String BTN_TYPE = "btnType";
     public final static String FIRST_BOOT2 = "firstBoot2";
-
     public final static String LOCK_USING = "lockUsing";
+    public final static String SHOW_LEFT = "showLeft";
 
 
     private static SharedPreferences getPref(Context context){

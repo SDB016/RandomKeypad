@@ -30,9 +30,6 @@ import java.util.Calendar;
 public class LockScreenService extends Service {
     private BroadcastReceiver mReceiver;
 
-    private WindowManager wm;
-    private View mView;
-
     @Override
     public void onCreate() {
         super.onCreate();

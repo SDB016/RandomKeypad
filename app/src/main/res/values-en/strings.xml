@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BrainLock</string>
+    <string name="guide_go_yes">Change of settings</string>
+    <string name="guide_go_no">BrainLock activation</string>
+    <string name="install_complete">Thank you. BrainLock installation is completed.\n\nThe password and backup PIN are set to "00" and "0000" as default. Please go to the settings and  change the password and backup PIN that only you know.\n\nIf the password and backup PIN are not changed at the settings, the password and backup PIN will remain “00” and “0000”.\n\nThe password and backup PIN can be changed anytime at the settings. Move to the settings?</string>
+
+
+    <string name="setting_text1">The COMPLETE button must be pressed after changing the settings.\nOtherwise it will not be applied.</string>
+    <string name="setting_lock_option_title">Use of screenlock</string>
+    <string name="setting_lock_option_yes">Yes (default)</string>
+    <string name="setting_lock_option_no">No</string>
+
+    <string name="setting_pw_option_title">Digit of password</string>
+    <string name="setting_pw_option1">2 (default)</string>
+    <string name="setting_pw_option2">4</string>
+    <string name="setting_pw_enter">Enter password</string>
+    <string name="setting_pw_confirm">Confirm password</string>
+
+    <string name="setting_keypad_title">Type of keypad button</string>
+    <string name="setting_keypad_random">Randomized numbers</string>
+    <string name="setting_keypad_null">Null keypad</string>
+
+    <string name="setting_keypad_option1">Line</string>
+    <string name="setting_keypad_option2">0%</string>
+    <string name="setting_keypad_option3">35% (default)</string>
+    <string name="setting_keypad_option4">100%</string>
+
+    <string name="setting_show_bt_title">Location of SHOW button</string>
+    <string name="setting_show_bt_option1">Left (default)</string>
+    <string name="setting_show_bt_option2">Right</string>
+
+
+    <string name="setting_wallpaper_title">Wallpaper theme</string>
+    <string name="setting_wallpaper_option1">Jamino</string>
+    <string name="setting_wallpaper_option2">Select at album</string>
+
+    <string name="setting_keypad_time_title">Time of randomized numbers keypad (second)</string>
+    <string name="setting_keypad_time_option1">0</string>
+    <string name="setting_keypad_time_option2">2 (default)</string>
+    <string name="setting_keypad_time_option3">3</string>
+    <string name="setting_keypad_time_option4">4</string>
+
+    <string name="setting_backup_pin_title">Backup PIN (4 digit)</string>
+    <string name="setting_backup_pin_content">The backup PIN is for recovering a password when you forget a password. Backup PIN must be set to complete the settings.</string>
+    <string name="setting_backup_pin_enter">Enter backup PIN</string>
+    <string name="setting_backup_pin_confirm">Confirm backup PIN</string>
+
+    <string name="setting_info">Program version 0.0.1 (beta)</string>
+
+    <string name="complete">complete</string>
+    <string name="cancel">cancel</string>
+
+
+
+    <string name="setting_text3">Once you select \"No\", BrainLock will not be activated.</string>
+    <string name="setting_text4">Password can be set to 2 digit or 4 digit among \"0,1,3,4,5,6,7,8,9,*,#\".</string>
+
+</resources>

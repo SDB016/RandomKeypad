@@ -40,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.DataBindingUtil;
 
 import com.bumptech.glide.Glide;
 import com.otk.fts.myotk.services.LockScreenService;
@@ -56,8 +57,6 @@ import java.util.Random;
 public class LockScreenActivity extends Activity implements View.OnTouchListener, View.OnClickListener {
 
     private boolean isActive;
-
-    private Context mContext;
     private Button mBtnButton1;
     private Button mBtnButton2;
     private Button mBtnButton3;
@@ -71,21 +70,12 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
     private Button mBtnButton11;
     private Button mBtnButton12;
     private ImageButton mBtnShow;
-    private ImageButton mBtnDel;
-
-    //private Button txtInput0;
-    //private Button txtInput1;
-    //private Button txtInput2;
-    //private Button txtInput3;
-
+    private ImageButton mBtnCamera;
     private ImageView img_Input;
     private Integer numType;
     private Integer btnType;
 
     private LinearLayout bottomLl;
-
-    // Custom 버튼 Drawable
-    private Drawable custom_btn_drawable;
 
     // PassWord Size
     private int pwSize;
@@ -265,7 +255,11 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
         params.gravity = Gravity.CENTER;
 
-        mView = inflate.inflate(R.layout.activity_lock, null);
+        int layout = PreferenceUtil.getBooleanPref(this, PreferenceUtil.SHOW_LEFT, true) ?
+                R.layout.activity_main : R.layout.activity_main_right;
+        //binding = DataBindingUtil.setContentView(this, layout);
+        mView = inflate.inflate(layout, null);
+
         //iv = mView.findViewById(R.id.gifIv);
         //fr = mView.findViewById(R.id.fr);
         mView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
@@ -290,7 +284,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
         bg_screen.setSystemUiVisibility( uiOption );
 */
-        mContext = getApplicationContext();
         mBtnButton1 = (Button) mView.findViewById(R.id.button1);
         mBtnButton1.setOnClickListener(this);
         mBtnButton2 = (Button) mView.findViewById(R.id.button2);
@@ -317,10 +310,10 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         mBtnButton12.setOnClickListener(this);
         mBtnShow = (ImageButton) mView.findViewById(R.id.btn_show);
         mBtnShow.setOnTouchListener(this);
-
         img_Input = (ImageView)mView.findViewById(R.id.input_img);
-        mBtnDel = (ImageButton) mView.findViewById((R.id.btn_del));
-        mBtnDel.setOnTouchListener(this);
+        img_Input.setOnTouchListener(this);
+        mBtnCamera = (ImageButton) mView.findViewById((R.id.btn_camera));
+        mBtnCamera.setOnTouchListener(this);
 
         isActive = PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true);
         pwSize = PreferenceUtil.getIntPref(this, PreferenceUtil.PW_SIZE, 2);
@@ -457,7 +450,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         mBtnButton11.setEnabled(false);
         mBtnButton12.setEnabled(false);
         mBtnShow.setEnabled(false);
-        mBtnDel.setEnabled(false);
+        img_Input.setEnabled(false);
     }
 
     private void btnsEnable(){
@@ -474,7 +467,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         mBtnButton11.setEnabled(true);
         mBtnButton12.setEnabled(true);
         mBtnShow.setEnabled(true);
-        mBtnDel.setEnabled(true);
+        img_Input.setEnabled(true);
     }
 
     private void CheckPW() {
@@ -538,11 +531,14 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
             }
             handler.postDelayed(this::Unlock, 200);    //0.2초 뒤에
         }
-
     }
 
     private void Unlock(){
-        //wm.removeViewImmediate(mView);
+        if(isCameraClick){
+            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+            startActivity(intent);
+        }
+
         finishAffinity();
     }
 
@@ -860,6 +856,8 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         }
     }
 
+    boolean isCameraClick = false;
+
     @Override
     public boolean onTouch(View v, MotionEvent motionEvent) {
         switch(motionEvent.getAction()){
@@ -867,7 +865,8 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 //v.setPadding(10,10,10,10);
                 v.setAlpha(0.55f);
                 switch (v.getId()) {
-                    case R.id.btn_del:
+                    //case R.id.btn_del:
+                    case R.id.input_img:
                         if(input.size()!=0) {
                             input.remove(input.size() - 1);
                             enterInput();
@@ -875,6 +874,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                         break;
 
                     case R.id.btn_show:
+                    case R.id.btn_camera:
                         shuffleKeyPad(pos);
                         btnShow();
                         break;
@@ -885,8 +885,16 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
             case MotionEvent.ACTION_UP:
                 //v.setPadding(0,0,0,0);
                 v.setAlpha(1.0f);
-                if(v.getId()==R.id.btn_show)
+                if(v.getId()==R.id.btn_show){
                     btnUnshow();
+                    isCameraClick = false;
+                }
+
+                if(v.getId() == R.id.btn_camera){
+                    btnUnshow();
+                    isCameraClick = true;
+                }
+
                 break;
         }
         return true;

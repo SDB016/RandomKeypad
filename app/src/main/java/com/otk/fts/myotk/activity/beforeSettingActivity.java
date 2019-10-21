@@ -36,10 +36,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 
 import com.otk.fts.myotk.R;
-import com.otk.fts.myotk.databinding.ActivityMainBinding;
 import com.otk.fts.myotk.utils.PreferenceUtil;
 import com.otk.fts.myotk.utils.QLog;
 import com.otk.fts.myotk.utils.StateDrawableBuilder;
@@ -50,10 +51,23 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class beforeSettingActivity extends Activity implements View.OnTouchListener, View.OnClickListener {
-    private ActivityMainBinding binding;
+    private ViewDataBinding binding;
     private ImageButton mBtnShow;
-    private ImageButton mBtnDel;
+    private ImageButton mBtnCamera;
     private ImageView img_Input;
+
+    private Button button1;
+    private Button button2;
+    private Button button3;
+    private Button button4;
+    private Button button5;
+    private Button button6;
+    private Button button7;
+    private Button button8;
+    private Button button9;
+    private Button button10;
+    private Button button11;
+    private Button button12;
 
     private Integer numType;
     private Integer btnType;
@@ -89,6 +103,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
     private String backupPin;
     private Handler handler;
     private Resources res;
+    boolean isLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +151,9 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
 //        }
 //        params.gravity = Gravity.CENTER;
         //binding = DataBindingUtil.inflate(inflate, R.layout.activity_main, null, false);//DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        isLeft = PreferenceUtil.getBooleanPref(this, PreferenceUtil.SHOW_LEFT, true);
+        int layout = isLeft ? R.layout.activity_main : R.layout.activity_main_right;
+        binding = DataBindingUtil.setContentView(this, layout);
         mView = binding.getRoot();
         //mView.setLayoutParams(params);
 
@@ -153,11 +170,37 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
 
         bg_screen = mView.findViewById(R.id.Linear_bg);
         bottomLl = mView.findViewById((R.id.bottomLl));
+        button1 = (Button) mView.findViewById(R.id.button1);
+        button1.setOnClickListener(this);
+        button2 = (Button) mView.findViewById(R.id.button2);
+        button2.setOnClickListener(this);
+        button3 = (Button) mView.findViewById(R.id.button3);
+        button3.setOnClickListener(this);
+        button4 = (Button) mView.findViewById(R.id.button4);
+        button4.setOnClickListener(this);
+        button5 = (Button) mView.findViewById(R.id.button5);
+        button5.setOnClickListener(this);
+        button6 = (Button) mView.findViewById(R.id.button6);
+        button6.setOnClickListener(this);
+        button7 = (Button) mView.findViewById(R.id.button7);
+        button7.setOnClickListener(this);
+        button8 = (Button) mView.findViewById(R.id.button8);
+        button8.setOnClickListener(this);
+        button9 = (Button) mView.findViewById(R.id.button9);
+        button9.setOnClickListener(this);
+        button10 = (Button) mView.findViewById(R.id.button10);
+        button10.setOnClickListener(this);
+        button11 = (Button) mView.findViewById(R.id.button11);
+        button11.setOnClickListener(this);
+        button12 = (Button) mView.findViewById(R.id.button12);
+        button12.setOnClickListener(this);
+
         mBtnShow = (ImageButton) mView.findViewById(R.id.btn_show);
         mBtnShow.setOnTouchListener(this);
         img_Input = (ImageView)mView.findViewById(R.id.input_img);
-        mBtnDel = (ImageButton) mView.findViewById((R.id.btn_del));
-        mBtnDel.setOnTouchListener(this);
+        img_Input.setOnTouchListener(this);
+        mBtnCamera = (ImageButton) mView.findViewById((R.id.btn_camera));
+        mBtnCamera.setOnTouchListener(this);
 
         //저장된 값을 불러오기 위해 같은 네임파일을 찾음.
         //isActive = PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true);
@@ -295,35 +338,20 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
 //    }
 
     private void btnEnable(boolean enable){
-        binding.button1.setEnabled(enable);
-        binding.button2.setEnabled(enable);
-        binding.button3.setEnabled(enable);
-        binding.button4.setEnabled(enable);
-        binding.button5.setEnabled(enable);
-        binding.button6.setEnabled(enable);
-        binding.button7.setEnabled(enable);
-        binding.button8.setEnabled(enable);
-        binding.button9.setEnabled(enable);
-        binding.button10.setEnabled(enable);
-        binding.button11.setEnabled(enable);
-        binding.button12.setEnabled(enable);
+        button1.setEnabled(enable);
+        button2.setEnabled(enable);
+        button3.setEnabled(enable);
+        button4.setEnabled(enable);
+        button5.setEnabled(enable);
+        button6.setEnabled(enable);
+        button7.setEnabled(enable);
+        button8.setEnabled(enable);
+        button9.setEnabled(enable);
+        button10.setEnabled(enable);
+        button11.setEnabled(enable);
+        button12.setEnabled(enable);
         mBtnShow.setEnabled(enable);
-        mBtnDel.setEnabled(enable);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        img_Input.setEnabled(enable);
     }
 
     @Override
@@ -442,10 +470,17 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
     }
 
     private void Unlock(){
-        Intent intent = new Intent(this, SettingsActivity.class); // 이동할 컴포넌트
-        startActivity(intent);
-        //wm.removeViewImmediate(mView);
-        finish();
+        if(isCameraClick){
+            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+            startActivity(intent);
+            finish();
+        }
+
+        else{
+            Intent intent = new Intent(this, SettingsActivity.class); // 이동할 컴포넌트
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void Incorrect(){
@@ -669,6 +704,8 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         }
     }
 
+    boolean isCameraClick = false;
+
     @Override
     public boolean onTouch(View v, MotionEvent motionEvent) {
         switch(motionEvent.getAction()){
@@ -676,18 +713,18 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
                 //v.setPadding(10,10,10,10);
                 v.setAlpha(0.55f);
                 switch (v.getId()) {
-                    case R.id.btn_del:
+                    //case R.id.btn_del:
+                    case R.id.input_img:
                         if(input.size()!=0) {
                             input.remove(input.size() - 1);
                             enterInput();
                         }
                         break;
                     case R.id.btn_show:
+                    case R.id.btn_camera:
                         shuffleKeyPad(pos);
                         btnShow();
                         break;
-
-
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -697,63 +734,68 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
                 v.setAlpha(1.0f);
                 if(v.getId()==R.id.btn_show)
                     btnUnshow();
+                    isCameraClick = false;
+                if(v.getId() == R.id.btn_camera){
+                    btnUnshow();
+                    isCameraClick = true;
+                }
                 break;
         }
         return true;
     }
 
     private void btnShow(){
-        binding.button1.setBackground(getSelector(pos.get(0)));
-        binding.button1.setEnabled(false);
-        binding.button2.setBackground(getSelector(pos.get(1)));
-        binding.button2.setEnabled(false);
-        binding.button3.setBackground(getSelector(pos.get(2)));
-        binding.button3.setEnabled(false);
-        binding.button4.setBackground(getSelector(pos.get(3)));
-        binding.button4.setEnabled(false);
-        binding.button5.setBackground(getSelector(pos.get(4)));
-        binding.button5.setEnabled(false);
-        binding.button6.setBackground(getSelector(pos.get(5)));
-        binding.button6.setEnabled(false);
-        binding.button7.setBackground(getSelector(pos.get(6)));
-        binding.button7.setEnabled(false);
-        binding.button8.setBackground(getSelector(pos.get(7)));
-        binding.button8.setEnabled(false);
-        binding.button9.setBackground(getSelector(pos.get(8)));
-        binding.button9.setEnabled(false);
-        binding.button10.setBackground(getSelector(pos.get(9)));
-        binding.button10.setEnabled(false);
-        binding.button11.setBackground(getSelector(pos.get(10)));
-        binding.button11.setEnabled(false);
-        binding.button12.setBackground(getSelector(pos.get(11)));
-        binding.button12.setEnabled(false);
+        button1.setBackground(getSelector(pos.get(0)));
+        button1.setEnabled(false);
+        button2.setBackground(getSelector(pos.get(1)));
+        button2.setEnabled(false);
+        button3.setBackground(getSelector(pos.get(2)));
+        button3.setEnabled(false);
+        button4.setBackground(getSelector(pos.get(3)));
+        button4.setEnabled(false);
+        button5.setBackground(getSelector(pos.get(4)));
+        button5.setEnabled(false);
+        button6.setBackground(getSelector(pos.get(5)));
+        button6.setEnabled(false);
+        button7.setBackground(getSelector(pos.get(6)));
+        button7.setEnabled(false);
+        button8.setBackground(getSelector(pos.get(7)));
+        button8.setEnabled(false);
+        button9.setBackground(getSelector(pos.get(8)));
+        button9.setEnabled(false);
+        button10.setBackground(getSelector(pos.get(9)));
+        button10.setEnabled(false);
+        button11.setBackground(getSelector(pos.get(10)));
+        button11.setEnabled(false);
+        button12.setBackground(getSelector(pos.get(11)));
+        button12.setEnabled(false);
     }
 
     private void btnUnshow(){
-        binding.button1.setBackground(getDrawableImage(12));
-        binding.button1.setEnabled(true);
-        binding.button2.setBackground(getDrawableImage(12));
-        binding.button2.setEnabled(true);
-        binding.button3.setBackground(getDrawableImage(12));
-        binding.button3.setEnabled(true);
-        binding.button4.setBackground(getDrawableImage(12));
-        binding.button4.setEnabled(true);
-        binding.button5.setBackground(getDrawableImage(12));
-        binding.button5.setEnabled(true);
-        binding.button6.setBackground(getDrawableImage(12));
-        binding.button6.setEnabled(true);
-        binding.button7.setBackground(getDrawableImage(12));
-        binding.button7.setEnabled(true);
-        binding.button8.setBackground(getDrawableImage(12));
-        binding.button8.setEnabled(true);
-        binding.button9.setBackground(getDrawableImage(12));
-        binding.button9.setEnabled(true);
-        binding.button10.setBackground(getDrawableImage(12));
-        binding.button10.setEnabled(true);
-        binding.button11.setBackground(getDrawableImage(12));
-        binding.button11.setEnabled(true);
-        binding.button12.setBackground(getDrawableImage(12));
-        binding.button12.setEnabled(true);
+        button1.setBackground(getDrawableImage(12));
+        button1.setEnabled(true);
+        button2.setBackground(getDrawableImage(12));
+        button2.setEnabled(true);
+        button3.setBackground(getDrawableImage(12));
+        button3.setEnabled(true);
+        button4.setBackground(getDrawableImage(12));
+        button4.setEnabled(true);
+        button5.setBackground(getDrawableImage(12));
+        button5.setEnabled(true);
+        button6.setBackground(getDrawableImage(12));
+        button6.setEnabled(true);
+        button7.setBackground(getDrawableImage(12));
+        button7.setEnabled(true);
+        button8.setBackground(getDrawableImage(12));
+        button8.setEnabled(true);
+        button9.setBackground(getDrawableImage(12));
+        button9.setEnabled(true);
+        button10.setBackground(getDrawableImage(12));
+        button10.setEnabled(true);
+        button11.setBackground(getDrawableImage(12));
+        button11.setEnabled(true);
+        button12.setBackground(getDrawableImage(12));
+        button12.setEnabled(true);
     }
 
     public StateListDrawable getSelector(int number){

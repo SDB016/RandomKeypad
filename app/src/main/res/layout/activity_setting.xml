@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.SettingsActivity"
+    android:background="@color/colorWhite"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/sv"
+        app:layout_constraintBottom_toTopOf="@+id/bottomLl"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingBottom="40dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="#ffffff">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#9E9E9E"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Settings"
+                android:textColor="#ffffff"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="#940a37"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="@string/setting_text1"
+                android:layout_width="match_parent"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="123dp"
+                    android:layout_height="33dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:text="@string/setting_lock_option_title"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:id="@+id/check_use"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33dp"
+                    android:layout_marginTop="4dp"
+                    android:checked="true"
+                    android:text="@string/setting_lock_option_yes"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:id="@+id/check_dont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="42dp"
+                    android:text="@string/setting_lock_option_no"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:layout_marginLeft="16dp"
+                android:textSize="12sp"
+                android:text="@string/setting_text3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="123dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:text="@string/setting_pw_option_title"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:id="@+id/pwSize2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33dp"
+                    android:checked="true"
+                    android:text="@string/setting_pw_option1"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:id="@+id/pwSize4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="30dp"
+                    android:text="@string/setting_pw_option2"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="123dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:text="@string/setting_pw_enter"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/input_pw"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberPassword"
+                    android:text=""
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="123dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:text="@string/setting_pw_confirm"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/re_pw"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberPassword"
+                    android:text=""
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:gravity="center"
+                android:textSize="11sp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:text="@string/setting_text4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="#9E9E9E"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/setting_keypad_title"
+                android:textColor="#ffffff"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:id="@+id/pwLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:text="@string/setting_keypad_random"
+                        android:layout_height="wrap_content"/>
+
+                    <CheckBox
+                        android:id="@+id/check_num_2"
+                        android:layout_width="120dp"
+                        android:layout_height="33dp"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/setting_keypad_option1"
+                        android:textColor="#000000"
+                        android:textSize="13sp" />
+
+                        <CheckBox
+                            android:id="@+id/check_num_4"
+                            android:layout_width="80dp"
+                            android:layout_height="33dp"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/setting_keypad_option2"
+                            android:textColor="#000000"
+                            android:textSize="13sp" />
+
+                        <CheckBox
+                            android:id="@+id/check_num_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="33dp"
+                            android:layout_marginTop="4dp"
+                            android:checked="true"
+                            android:text="@string/setting_keypad_option3"
+                            android:textColor="#000000"
+                            android:textSize="13sp" />
+
+                        <CheckBox
+                            android:id="@+id/check_num_1"
+                            android:layout_width="111dp"
+                            android:layout_height="33dp"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/setting_keypad_option4"
+                            android:textColor="#000000"
+                            android:textSize="13sp" />
+                </LinearLayout>
+                    <ImageView
+                        android:id="@+id/numImg"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:text="@string/setting_keypad_null"
+                        android:layout_height="wrap_content"/>
+
+                    <CheckBox
+                        android:id="@+id/check_nullpad_blue"
+                        android:layout_width="120dp"
+                        android:layout_height="33dp"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/setting_keypad_option1"
+                        android:textColor="#000000"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/check_nullpad_green"
+                        android:layout_width="80dp"
+                        android:layout_height="33dp"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/setting_keypad_option2"
+                        android:textColor="#000000"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/check_nullpad_red"
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/setting_keypad_option3"
+                        android:checked="true"
+                        android:textColor="#000000"
+                        android:textSize="13sp" />
+
+                    <CheckBox
+                        android:id="@+id/check_nullpad_gray"
+                        android:layout_width="111dp"
+                        android:layout_height="33dp"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/setting_keypad_option4"
+                        android:textColor="#000000"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/testImg"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                  android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:scaleType="centerCrop" />
+
+            </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#9E9E9E"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/setting_show_bt_title"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:checked="true"
+                android:id="@+id/show_bt_left"
+                android:layout_width="149dp"
+                android:layout_height="33dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/setting_show_bt_option1"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <CheckBox
+                android:id="@+id/show_bt_right"
+                android:layout_width="wrap_content"
+                android:layout_height="33dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="20dp"
+                android:text="@string/setting_show_bt_option2"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#9E9E9E"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/setting_wallpaper_title"
+                android:textColor="#ffffff"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:id="@+id/bgLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/check_bg_default"
+                        android:layout_width="149dp"
+                        android:layout_height="33dp"
+                        android:layout_marginTop="4dp"
+                        android:checked="true"
+                        android:text="@string/setting_wallpaper_option1"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
+
+                    <CheckBox
+                        android:id="@+id/check_bg_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="33dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/setting_wallpaper_option2"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/testbg"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:background="@drawable/background_1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="4dp"
+                        android:scaleType="centerCrop" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#9E9E9E"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/setting_keypad_time_title"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:layout_weight="1"
+                    android:id="@+id/set_time_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="6dp"
+                    android:checked="false"
+                    android:text="@string/setting_keypad_time_option1"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:layout_weight="1"
+                    android:id="@+id/set_time_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="6dp"
+                    android:checked="true"
+                    android:text="@string/setting_keypad_time_option2"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:layout_weight="1"
+                    android:id="@+id/set_time_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/setting_keypad_time_option3"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <CheckBox
+                    android:layout_weight="1"
+                    android:id="@+id/set_time_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/setting_keypad_time_option4"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#9E9E9E"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/setting_backup_pin_title"
+                android:textColor="#ffffff"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="#940a37"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:id="@+id/des_backuppin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/setting_backup_pin_content"
+                android:gravity="center"
+                />
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:text="@string/setting_backup_pin_enter"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/input_pin"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberPassword"
+                    android:text=""
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="140dp"
+                    android:layout_height="33dp"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:text="@string/setting_backup_pin_confirm"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/check_pin"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberPassword"
+                    android:text=""
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/info1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/setting_info"
+                    android:textColor="#000000"
+                    android:textSize="17sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottomLl"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/colorWhite"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/confirm"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="@string/complete"
+            android:textSize="15sp" />
+
+        <Button
+            android:layout_marginLeft="16dp"
+            android:id="@+id/cancel"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textSize="15sp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
