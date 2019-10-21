@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
@@ -41,6 +42,7 @@ import android.widget.LinearLayout;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 
 import com.bumptech.glide.Glide;
 import com.otk.fts.myotk.services.LockScreenService;
@@ -55,7 +57,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class LockScreenActivity extends Activity implements View.OnTouchListener, View.OnClickListener {
-
     private boolean isActive;
     private Button mBtnButton1;
     private Button mBtnButton2;
@@ -166,12 +167,17 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
             case KeyEvent.KEYCODE_HOME:
                 // 여기에 홈 버튼을 눌렀을 때 행동 입력
                 QLog.d("KEYCODE_HOME");
-                btnShow();
+                //btnShow();
                 return false;
             case KeyEvent.KEYCODE_MENU:
                 return false;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 
     @Override
@@ -248,17 +254,21 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                             |WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                             |WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON,
                     //| WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                    //| WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                     //| WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
                     //| WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     PixelFormat.TRANSLUCENT);
         }
 
         params.gravity = Gravity.CENTER;
 
-        int layout = PreferenceUtil.getBooleanPref(this, PreferenceUtil.SHOW_LEFT, true) ?
-                R.layout.activity_main : R.layout.activity_main_right;
+
         //binding = DataBindingUtil.setContentView(this, layout);
-        mView = inflate.inflate(layout, null);
+        //mView = inflate.inflate(layout, null);
+        boolean isLeft = PreferenceUtil.getBooleanPref(this, PreferenceUtil.SHOW_LEFT, true);
+        int layout = isLeft?
+                R.layout.activity_main_lock : R.layout.activity_main_right_lock;
+        ViewDataBinding binding = DataBindingUtil.inflate(inflate, layout, null, false);//DataBindingUtil.setContentView(this, layout);
+        mView = binding.getRoot();
 
         //iv = mView.findViewById(R.id.gifIv);
         //fr = mView.findViewById(R.id.fr);
@@ -271,6 +281,8 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 // Hide the nav bar and status bar
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN);
+        wm.addView(mView, params);
+
         ConstraintLayout bg_screen = mView.findViewById(R.id.Linear_bg);
         bottomLl = mView.findViewById((R.id.bottomLl));
 /*
@@ -321,10 +333,9 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         int lpw = Integer.parseInt(lpwStr);
         backupPin = PreferenceUtil.getStringPref(this, PreferenceUtil.BACKUP_PIN, "0000");//sf.getInt("backupPin", 1234);
         f_timer = PreferenceUtil.getIntPref(this, PreferenceUtil.PW_TIMER, 2000);//sf.getInt("pwTimer", 2000);
-        numType = PreferenceUtil.getIntPref(this, PreferenceUtil.NUM_TYPE, 0);//sf.getInt("numType", 3);
-        btnType = PreferenceUtil.getIntPref(this, PreferenceUtil.BTN_TYPE, 0);//sf.getInt("btnType", 3);
+        numType = PreferenceUtil.getIntPref(this, PreferenceUtil.NUM_TYPE, 2);//sf.getInt("numType", 3);
+        btnType = PreferenceUtil.getIntPref(this, PreferenceUtil.BTN_TYPE, 2);//sf.getInt("btnType", 3);
 
-        QLog.d(numType+"/"+btnType);
         // Custom 버튼 이미지 여부
         boolean customBgImg = PreferenceUtil.getBooleanPref(this, PreferenceUtil.CUSTOM_BG, false);//sf.getBoolean("customBgImg", false);
         // Custom 버튼 이미지 경로
@@ -395,7 +406,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         wrongTrigger = 0;
 
         //lockHomeButton();
-        wm.addView(mView, params);
+
 
 
         // 테스트 버전
@@ -413,7 +424,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
             bottomLl.setVisibility(View.INVISIBLE);
             shuffleKeyPad(pos);
             isStart = false;
-
             run();
         } else finishAffinity();
     }
@@ -863,7 +873,8 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         switch(motionEvent.getAction()){
             case MotionEvent.ACTION_DOWN :
                 //v.setPadding(10,10,10,10);
-                v.setAlpha(0.55f);
+                //v.setAlpha(0.55f);
+                v.setBackground(res.getDrawable(R.drawable.press_blank));
                 switch (v.getId()) {
                     //case R.id.btn_del:
                     case R.id.input_img:
@@ -884,7 +895,8 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 break;
             case MotionEvent.ACTION_UP:
                 //v.setPadding(0,0,0,0);
-                v.setAlpha(1.0f);
+                //v.setAlpha(1.0f);
+                v.setBackgroundColor(Color.TRANSPARENT);
                 if(v.getId()==R.id.btn_show){
                     btnUnshow();
                     isCameraClick = false;
@@ -963,5 +975,4 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 .setSelectedDrawable(getDrawableImage(12))
                 .build();
     }
-
 }

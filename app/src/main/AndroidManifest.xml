@@ -23,7 +23,6 @@
 
         <activity
             android:name=".activity.beforeSettingActivity"
-            android:excludeFromRecents="true"
             android:label="BrainLock"
             android:screenOrientation="portrait">
 
@@ -31,6 +30,7 @@
         <activity
             android:name=".activity.LockScreenActivity"
             android:excludeFromRecents="true"
+            android:directBootAware="true"
             android:label="BrainLock"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -47,24 +47,27 @@
 
         <receiver
             android:name=".receiver.OnLock_BroadcastReceiver"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
-            android:directBootAware="true"
             android:label="OnLock_BroadcastReceiver">
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
 
         <receiver
             android:name=".receiver.AlarmReceiver"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false" />
 
-        <service android:name=".services.LockScreenService" android:directBootAware="true"/>
+        <service
+            android:name=".services.LockScreenService"
+            android:directBootAware="true" />
     </application>
 
     <uses-feature android:name="android.hardware.camera2" />

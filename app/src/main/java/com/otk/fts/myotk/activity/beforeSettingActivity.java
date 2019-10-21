@@ -7,17 +7,10 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -51,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class beforeSettingActivity extends Activity implements View.OnTouchListener, View.OnClickListener {
-    private ViewDataBinding binding;
     private ImageButton mBtnShow;
     private ImageButton mBtnCamera;
     private ImageView img_Input;
@@ -110,7 +102,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         super.onCreate(savedInstanceState);
         handler = new Handler(msg -> false);
         res = getResources();
-        LayoutInflater inflate = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //LayoutInflater inflate = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -151,9 +143,9 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
 //        }
 //        params.gravity = Gravity.CENTER;
         //binding = DataBindingUtil.inflate(inflate, R.layout.activity_main, null, false);//DataBindingUtil.setContentView(this, R.layout.activity_main);
-        isLeft = PreferenceUtil.getBooleanPref(this, PreferenceUtil.SHOW_LEFT, true);
+        boolean isLeft = PreferenceUtil.getBooleanPref(this, PreferenceUtil.SHOW_LEFT, true);
         int layout = isLeft ? R.layout.activity_main : R.layout.activity_main_right;
-        binding = DataBindingUtil.setContentView(this, layout);
+        ViewDataBinding binding = DataBindingUtil.setContentView(this, layout);
         mView = binding.getRoot();
         //mView.setLayoutParams(params);
 
@@ -210,11 +202,15 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         int lpw = Integer.parseInt(lpwStr);
         backupPin = PreferenceUtil.getStringPref(this, PreferenceUtil.BACKUP_PIN, "0000");//sf.getInt("backupPin", 1234);
         f_timer = PreferenceUtil.getIntPref(this, PreferenceUtil.PW_TIMER, 2000);//sf.getInt("pwTimer", 2000);
-        numType = PreferenceUtil.getIntPref(this, PreferenceUtil.NUM_TYPE, 0);//sf.getInt("numType", 3);
-        btnType = PreferenceUtil.getIntPref(this, PreferenceUtil.BTN_TYPE, 0);//sf.getInt("btnType", 3);
+        numType = PreferenceUtil.getIntPref(this, PreferenceUtil.NUM_TYPE, 2);//sf.getInt("numType", 3);
+        btnType = PreferenceUtil.getIntPref(this, PreferenceUtil.BTN_TYPE, 2);//sf.getInt("btnType", 3);
         customBgImg = PreferenceUtil.getBooleanPref(this, PreferenceUtil.CUSTOM_BG,false);//sf.getBoolean("customBgImg", false);
         customBgImgPath = PreferenceUtil.getStringPref(this, PreferenceUtil.CUSTOM_BG_PATH);//sf.getString("pwImgPath","");
         //QLog.d(numType+"/"+btnType);
+
+        //mBtnShow.setImageResource(R.drawable.btn_new_aaa);//bottomSelector(res.getDrawable(R.drawable.input_show)
+        //img_Input.setBackground(bottomSelector(res.getDrawable(R.drawable.input_2pw0)));
+        //mBtnCamera.setBackground(bottomSelector(res.getDrawable(R.drawable.camera)));
 
         if(customBgImg){
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -704,14 +700,15 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         }
     }
 
-    boolean isCameraClick = false;
+   private boolean isCameraClick = false;
 
     @Override
     public boolean onTouch(View v, MotionEvent motionEvent) {
         switch(motionEvent.getAction()){
             case MotionEvent.ACTION_DOWN :
                 //v.setPadding(10,10,10,10);
-                v.setAlpha(0.55f);
+                //v.setAlpha(0.55f);
+                v.setBackground(res.getDrawable(R.drawable.press_blank));
                 switch (v.getId()) {
                     //case R.id.btn_del:
                     case R.id.input_img:
@@ -731,7 +728,8 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
                 break;
             case MotionEvent.ACTION_UP:
                 //v.setPadding(0,0,0,0);
-                v.setAlpha(1.0f);
+                //v.setAlpha(1.0f);
+                v.setBackgroundColor(Color.TRANSPARENT);
                 if(v.getId()==R.id.btn_show)
                     btnUnshow();
                     isCameraClick = false;
@@ -798,7 +796,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         button12.setEnabled(true);
     }
 
-    public StateListDrawable getSelector(int number){
+    public StateListDrawable getSelector(int number) {
         Drawable drawable = getDrawableImage(number);
         return new StateDrawableBuilder()
                 //.setDisabledDrawable(drawable)

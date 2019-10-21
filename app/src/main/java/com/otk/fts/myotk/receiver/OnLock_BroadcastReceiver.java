@@ -64,14 +64,14 @@ public class OnLock_BroadcastReceiver extends BroadcastReceiver {
 
     private void show(Context context) {
         if(PreferenceUtil.getBooleanPref(context, PreferenceUtil.IS_LOCK, true)){
-            if (telephonyManager == null) {
+            if (telephonyManager == null)
                 telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+            if (telephonyManager != null) {
                 telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
             }
 
-            //Intent i = new Intent(context, preLockScreenActivity.class);
             Intent i = new Intent(context, LockScreenActivity.class);
-            //i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             context.startActivity(i);

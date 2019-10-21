@@ -17,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
         android:columnCount="3"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
@@ -120,38 +121,29 @@
 
         <ImageButton
             android:layout_weight="1"
-            android:id="@+id/btn_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/btn_show"
             android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            android:src="@drawable/camera"
-            android:textAppearance="@style/TextAppearance.AppCompat.Button"
-            android:textColor="@color/c_ffffff"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:src="@drawable/input_show"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
 
         <ImageView
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_weight="1"
             android:id="@+id/input_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@drawable/input_2pw0" />
 
         <ImageButton
             android:layout_weight="1"
-            android:id="@+id/btn_show"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/btn_camera"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/input_show"
-            android:textAppearance="@style/TextAppearance.AppCompat.Button"
-            android:textColor="@color/c_ffffff"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:scaleType="fitXY"
+            android:src="@drawable/camera" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

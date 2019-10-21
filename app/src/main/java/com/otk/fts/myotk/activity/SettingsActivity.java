@@ -120,6 +120,7 @@ public class SettingsActivity extends Activity{
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
                 //Toast.makeText(getApplicationContext(), "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                finishAffinity();
             }
         };
 
@@ -138,8 +139,8 @@ public class SettingsActivity extends Activity{
         String originPw = PreferenceUtil.getStringPref(this, PreferenceUtil.PW_LIST, "00");//Integer.toString(sf.getInt("pwList",00));
         String st_pin = PreferenceUtil.getStringPref(this, PreferenceUtil.BACKUP_PIN, "0000");//Integer.toString(sf.getInt("backupPin", 0));
         timer = PreferenceUtil.getIntPref(this, PreferenceUtil.PW_TIMER, 2000); //sf.getInt("pwSize",2);//sf.getInt("pwTimer", 2000);
-        numType = PreferenceUtil.getIntPref(this, PreferenceUtil.NUM_TYPE, 0); //sf.getInt("numType", 3);
-        btnType = PreferenceUtil.getIntPref(this, PreferenceUtil.BTN_TYPE, 0); //sf.getInt("btnType", 3);
+        numType = PreferenceUtil.getIntPref(this, PreferenceUtil.NUM_TYPE, 2); //sf.getInt("numType", 3);
+        btnType = PreferenceUtil.getIntPref(this, PreferenceUtil.BTN_TYPE, 2); //sf.getInt("btnType", 3);
 
         boot_first = false;
         boot_first = PreferenceUtil.getBooleanPref(this, PreferenceUtil.FIRST_BOOT2, false);
@@ -179,7 +180,6 @@ public class SettingsActivity extends Activity{
         img2 = findViewById(R.id.testbg);
 
         spw1.setOnClickListener(v -> {
-            // TODO : process the click event.
             Log.d("Activity", "CheckBox1 Clicked!");
             pwSize = 2;
             spw1.setChecked(true);
@@ -557,6 +557,7 @@ public class SettingsActivity extends Activity{
         || (pwSize==2 && text.length()!=2) || (pwSize==4 && text.length()!=4)
         ) {
             Toast.makeText(getApplicationContext(), "패스워드를 확인해주세요.", Toast.LENGTH_SHORT).show();
+
         } else if((!input_pin.equals(pinCheck) && input_pin.length()!=4) ){
             Toast.makeText(getApplicationContext(), "백업 핀을 확인해주세요.", Toast.LENGTH_SHORT).show();
         } else {
@@ -647,7 +648,7 @@ public class SettingsActivity extends Activity{
                             // 인텐트+뷰 넘기기
                         }).setNegativeButton("취소",
                 (dialog, id) -> {
-                    Log.v("알림", "다이얼로그 > 취소 선택");
+                    //Log.v("알림", "다이얼로그 > 취소 선택");
                     // 취소 클릭. dialog 닫기.
 
                     btn_bg1.performClick();
@@ -725,7 +726,7 @@ public class SettingsActivity extends Activity{
 
         Intent intent = getCropIntent(inputUri, outputUri);
         bgImgFilePath = tempFile.getAbsolutePath();
-        Log.d("PATH","경로 : " + bgImgFilePath.toString());
+        //Log.d("PATH","경로 : " + bgImgFilePath.toString());
         customBgImg = true;
         startActivityForResult(intent, CROP_FROM_ALBUM);
         //setImage();

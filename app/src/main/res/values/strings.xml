@@ -2,7 +2,8 @@
     <string name="app_name">BrainLock</string>
     <string name="guide_go_yes">설정화면으로 이동</string>
     <string name="guide_go_no">잠금실행 시작</string>
-    <string name="install_complete">브레인락 설치가 완료 되었습니다.\n\n초기에 설정된 패스워드는 \"00\" 이고\n백업PIN은 \"0000\"입니다. \n설정에 들어가 본인만 기억하는 패스워드로 변경 하여 주시기 바랍니다.\n\n변경하지 않을 경우에는 초기 패스워드가 \"00\" 및 백업PIN \"0000\"이 계속 유지 됩니다. 설정에 들어가면 언제든지 변경할 수 있습니다.\n\n설정화면으로 들어가시겠습니까?</string>
+    <string name="install_complete">감사합니다. BrainLock 설치가 완료되었습니다.\n\n비밀번호와 백업 PIN은 기본적으로 "00"과 "0000"으로 설정되어 있습니다. 설정으로 이동하여 본인 만 아는 비밀번호와 백업 PIN을 변경하십시오.\n\n설정에서 비밀번호와 백업 PIN을 변경하지 않으면 비밀번호와 백업 PIN은 "00 (기본값)"및 "0000 (기본값)"으로 유지됩니다.\n\n비밀번호와 백업 PIN은 설정에서 언제든지 변경할 수 있습니다. 설정으로 이동 하시겠습니까?
+</string>
 
     <string name="setting_text1">설정을 변경 한 후 COMPLETE 버튼을 눌러야합니다.\n그렇지 않으면 적용되지 않습니다.</string>
     <string name="setting_text4">비밀번호는 \"0,1,3,4,5,6,7,8,9, *, #\"중 2 자리 또는 4 자리로 설정할 수 있습니다.</string>

@@ -29,6 +29,7 @@ import java.util.Calendar;
 
 public class LockScreenService extends Service {
     private BroadcastReceiver mReceiver;
+    private NotificationManager mNM;
 
     @Override
     public void onCreate() {
@@ -81,9 +82,8 @@ public class LockScreenService extends Service {
         NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
         chan.setLightColor(Color.BLUE);
         chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        assert manager != null;
-        manager.createNotificationChannel(chan);
+        mNM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNM.createNotificationChannel(chan);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
@@ -110,6 +110,7 @@ public class LockScreenService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mReceiver);
+        mNM.cancel(2);
         QLog.d("service is dead");
 
         final Calendar calendar = Calendar.getInstance();
