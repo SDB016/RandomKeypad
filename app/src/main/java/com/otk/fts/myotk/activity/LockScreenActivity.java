@@ -1,5 +1,6 @@
 package com.otk.fts.myotk.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -73,8 +74,8 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
     private ImageButton mBtnShow;
     private ImageButton mBtnCamera;
     private ImageView img_Input;
-    private Integer numType;
-    private Integer btnType;
+    private int numType;
+    private int btnType;
 
     private LinearLayout bottomLl;
 
@@ -89,14 +90,12 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
     private ArrayList<Integer> pos;
 
     // 초기 비밀번호 보이는 시간
-    private Integer f_timer;
-
-    boolean isStart = false;
+    private int f_timer;
 
     Vibrator vibrator;
-    private Integer wrongCount;
-    private Integer wrongTrigger;
-    private Integer wrong_lockTimer;
+    private int wrongCount;
+    private int wrongTrigger;
+    private int wrong_lockTimer;
 
     private String backupPin;
 
@@ -127,8 +126,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 //    }
 
     private TelephonyManager telephonyManager = null;
-    private boolean isPhoneIdle = true;
-
     private PhoneStateListener phoneListener = new PhoneStateListener(){
         @Override
         public void onCallStateChanged(int state, String incomingNumber){
@@ -141,7 +138,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
                     //전화가 울릴때 화면 종료
                 case TelephonyManager.CALL_STATE_RINGING :
-                    isPhoneIdle = false;
+                    //isPhoneIdle = false;
                     QLog.d("CALL_STATE_RINGING");
                     PreferenceUtil.savePref(LockScreenActivity.this, PreferenceUtil.LOCK_USING, true);
                     Utils.stopService(LockScreenActivity.this);
@@ -265,8 +262,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         //binding = DataBindingUtil.setContentView(this, layout);
         //mView = inflate.inflate(layout, null);
         boolean isLeft = PreferenceUtil.getBooleanPref(this, PreferenceUtil.SHOW_LEFT, true);
-        int layout = isLeft?
-                R.layout.activity_main_lock : R.layout.activity_main_right_lock;
+        int layout = isLeft? R.layout.activity_main_lock : R.layout.activity_main_right_lock;
         ViewDataBinding binding = DataBindingUtil.inflate(inflate, layout, null, false);//DataBindingUtil.setContentView(this, layout);
         mView = binding.getRoot();
 
@@ -321,11 +317,8 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         mBtnButton12 = (Button) mView.findViewById(R.id.button12);
         mBtnButton12.setOnClickListener(this);
         mBtnShow = (ImageButton) mView.findViewById(R.id.btn_show);
-        mBtnShow.setOnTouchListener(this);
         img_Input = (ImageView)mView.findViewById(R.id.input_img);
-        img_Input.setOnTouchListener(this);
         mBtnCamera = (ImageButton) mView.findViewById((R.id.btn_camera));
-        mBtnCamera.setOnTouchListener(this);
 
         isActive = PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true);
         pwSize = PreferenceUtil.getIntPref(this, PreferenceUtil.PW_SIZE, 2);
@@ -335,6 +328,10 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         f_timer = PreferenceUtil.getIntPref(this, PreferenceUtil.PW_TIMER, 2000);//sf.getInt("pwTimer", 2000);
         numType = PreferenceUtil.getIntPref(this, PreferenceUtil.NUM_TYPE, 2);//sf.getInt("numType", 3);
         btnType = PreferenceUtil.getIntPref(this, PreferenceUtil.BTN_TYPE, 2);//sf.getInt("btnType", 3);
+
+        img_Input.setOnTouchListener(this);
+        mBtnShow.setOnTouchListener(this);
+        mBtnCamera.setOnTouchListener(this);
 
         // Custom 버튼 이미지 여부
         boolean customBgImg = PreferenceUtil.getBooleanPref(this, PreferenceUtil.CUSTOM_BG, false);//sf.getBoolean("customBgImg", false);
@@ -415,6 +412,8 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         wrong_lockTimer = 10000;
     }
 
+    private View.OnClickListener onClickListener = view -> run();
+
     @Override
     public void onResume(){
         super.onResume();
@@ -422,13 +421,12 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
             wrongCount = 0;
             wrongTrigger = 0;
             bottomLl.setVisibility(View.INVISIBLE);
-            shuffleKeyPad(pos);
-            isStart = false;
             run();
         } else finishAffinity();
     }
 
     private void run(){
+        shuffleKeyPad(pos);
         if(f_timer == 0){
             btnUnshow();
             bottomLl.setVisibility(View.VISIBLE);
@@ -437,6 +435,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         else{
             btnShow();
             btnsEnable();
+            handler.removeCallbacksAndMessages(null);
 
             handler.postDelayed(() -> {
                 btnUnshow();
@@ -867,46 +866,39 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
     }
 
     boolean isCameraClick = false;
-
     @Override
     public boolean onTouch(View v, MotionEvent motionEvent) {
-        switch(motionEvent.getAction()){
-            case MotionEvent.ACTION_DOWN :
-                //v.setPadding(10,10,10,10);
-                //v.setAlpha(0.55f);
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
                 v.setBackground(res.getDrawable(R.drawable.press_blank));
                 switch (v.getId()) {
                     //case R.id.btn_del:
                     case R.id.input_img:
-                        if(input.size()!=0) {
+                        if (input.size() != 0) {
                             input.remove(input.size() - 1);
                             enterInput();
                         }
                         break;
-
                     case R.id.btn_show:
                     case R.id.btn_camera:
-                        shuffleKeyPad(pos);
-                        btnShow();
+                        if (f_timer == 0) {
+                            shuffleKeyPad(pos);
+                            btnShow();
+                        } else run();
                         break;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
-                //v.setPadding(0,0,0,0);
-                //v.setAlpha(1.0f);
                 v.setBackgroundColor(Color.TRANSPARENT);
-                if(v.getId()==R.id.btn_show){
-                    btnUnshow();
+                if (v.getId() == R.id.btn_show) {
+                    if (f_timer == 0) btnUnshow();
                     isCameraClick = false;
-                }
-
-                if(v.getId() == R.id.btn_camera){
-                    btnUnshow();
+                } else if (v.getId() == R.id.btn_camera) {
+                    if (f_timer == 0) btnUnshow();
                     isCameraClick = true;
                 }
-
                 break;
         }
         return true;

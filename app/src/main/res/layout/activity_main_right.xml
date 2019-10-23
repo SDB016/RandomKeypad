@@ -121,11 +121,12 @@
 
         <ImageButton
             android:layout_weight="1"
-            android:id="@+id/btn_show"
-            android:background="@android:color/transparent"
-            android:src="@drawable/input_show"
+            android:id="@+id/btn_camera"
             android:layout_width="80dp"
-            android:layout_height="80dp" />
+            android:layout_height="80dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:src="@drawable/camera" />
 
         <ImageView
             android:layout_marginLeft="16dp"
@@ -138,12 +139,12 @@
 
         <ImageButton
             android:layout_weight="1"
-            android:id="@+id/btn_camera"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:id="@+id/btn_show"
             android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            android:src="@drawable/camera" />
+            android:src="@drawable/input_show"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

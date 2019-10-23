@@ -48,6 +48,8 @@
 
     <string name="setting_info">Program version 0.0.1 (beta)</string>
 
+
+
     <string name="complete">complete</string>
     <string name="cancel">cancel</string>
 
@@ -55,5 +57,14 @@
 
     <string name="setting_text3">Once you select \"No\", BrainLock will not be activated.</string>
     <string name="setting_text4">Password can be set to 2 digit or 4 digit among \"0,1,3,4,5,6,7,8,9,*,#\".</string>
+    <string name="setting_complete">Settings have changed.</string>
+    <string name="setting_cancel">Settings have canceled.</string>
+    <string name="setting_check_password">Enter your password</string>
+    <string name="setting_check_backup_pin">Enter your backup PIN</string>
+    <string name="setting_dialog_album_msg">Select the desired image from the album to change the wallpapers.</string>
+    <string name="setting_dialog_album_posi_bt">Photo album</string>
+    <string name="setting_dialog_album_title">Change of wallpapers</string>
+    <string name="setting_enter_2dit">Enter 2-digit password</string>
+    <string name="setting_enter_4dit">Enter 4-digit password</string>
 
 </resources>

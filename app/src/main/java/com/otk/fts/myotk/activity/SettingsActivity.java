@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -42,75 +44,45 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class SettingsActivity extends Activity{
-    private boolean powerOn;
-    private boolean boot_first;
-    private boolean isLeft;
+    private boolean powerOn, boot_first, isLeft;
+    private CheckBox useLock, dontUse;
+    private CheckBox spw1, spw2;
+    private EditText input, recheck;
 
-    private Integer imgIndex;
-    private CheckBox useLock;
-    private CheckBox dontUse;
-
-    private CheckBox spw1;
-    private CheckBox spw2;
-    private EditText input;
-    private EditText recheck;
-
-    private CheckBox timer0;
-    private CheckBox timer1;
-    private CheckBox timer2;
-    private CheckBox timer3;
-
-    private CheckBox num_img1;
-    private CheckBox num_img2;
-    private CheckBox num_img3;
-    private CheckBox num_img4;
-
-    private CheckBox btn_img1;
-    private CheckBox btn_img2;
-    private CheckBox btn_img3;
-    private CheckBox btn_img4;
+    private CheckBox timer0,timer1, timer2, timer3;
+    private CheckBox num_img1, num_img2, num_img3, num_img4;
+    private CheckBox btn_img1, btn_img2, btn_img3, btn_img4;
 
     private CheckBox btn_bg1;
     private CheckBox btn_bg2;
 
-    private TextView confirm;
-    private TextView cancel;
-
     private int pwSize;
-    private String pwList;
     private int timer;
 
-    private ImageView img0;
-    private ImageView img1;
-    private ImageView img2;
+    private ImageView img0, img1, img2;
     private File tempFile;
-    private String mCurrentBtnPhotoPath;
-    private String mCurrentBgPhotoPath;
 
     private boolean customBgImg;
     private String bgImgFilePath;
 
-    private Integer numType;
-    private Integer btnType;
+    private int numType;
+    private int btnType;
 
-    //private boolean customBgImg;
-    //private String bgImgFilePath;
-
-    private String backupPin;
-    private EditText input_pin;
-    private EditText check_pin;
+    private EditText input_pin, check_pin;
 
     private static final int PICK_FROM_ALBUM = 0;
     private static final int CROP_FROM_ALBUM = 1;
 
     private Handler handler;
+    private Resources res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-
+        res = getResources();
         handler = new Handler(message -> false);
+
         //TedPermission 라이브러리 -> 카메라 권한 획득
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
@@ -146,7 +118,7 @@ public class SettingsActivity extends Activity{
         boot_first = PreferenceUtil.getBooleanPref(this, PreferenceUtil.FIRST_BOOT2, false);
         //Log.d("setting", "firstBoot? = "+boot_first);
 
-        useLock = (CheckBox)findViewById(R.id.check_use);
+        useLock = findViewById(R.id.check_use);
         useLock.setChecked(powerOn);
         useLock.setOnClickListener(v -> {
             Log.d("power","power1 : " + powerOn);
@@ -159,7 +131,7 @@ public class SettingsActivity extends Activity{
                 powerOn = false;
             }
         }) ;
-        dontUse = (CheckBox)findViewById(R.id.check_dont);
+        dontUse = findViewById(R.id.check_dont);
         dontUse.setChecked(!powerOn);
         dontUse.setOnClickListener(v -> {
             Log.d("power","power2 : " + powerOn);
@@ -186,8 +158,8 @@ public class SettingsActivity extends Activity{
             spw2.setChecked(false);
             input.setText("");
             recheck.setText("");
-            input.setHint("2자리 입력");
-            recheck.setHint("2자리 입력");
+            input.setHint(R.string.setting_enter_2dit);
+            recheck.setHint(R.string.setting_enter_2dit);
         }) ;
         spw2.setOnClickListener(v -> {
             pwSize = 4;
@@ -195,22 +167,10 @@ public class SettingsActivity extends Activity{
             spw1.setChecked(false);
             input.setText("");
             recheck.setText("");
-            input.setHint("4자리 입력");
-            recheck.setHint("4자리 입력");
+            input.setHint(R.string.setting_enter_4dit);
+            recheck.setHint(R.string.setting_enter_4dit);
 
-        }) ;
-
-
-
-
-       /* if(dontUse.isChecked()) {
-            useLock.setChecked(false);
-            dontUse.setChecked(true);
-            powerOn = false;
-        }else{
-            useLock.setChecked(true);
-            powerOn = true;
-        }*/
+        });
 
         isLeft = PreferenceUtil.getBooleanPref(this, PreferenceUtil.SHOW_LEFT, true);
         CheckBox show_bt_left = findViewById(R.id.show_bt_left);
@@ -238,18 +198,18 @@ public class SettingsActivity extends Activity{
             }
         });
 
-        input = (EditText)findViewById(R.id.input_pw);
-        recheck = (EditText)findViewById(R.id.re_pw);
+        input = findViewById(R.id.input_pw);
+        recheck = findViewById(R.id.re_pw);
 
         // 백업 핀 설정
-        input_pin = (EditText)findViewById(R.id.input_pin);
-        check_pin = (EditText)findViewById(R.id.check_pin);
+        input_pin = findViewById(R.id.input_pin);
+        check_pin = findViewById(R.id.check_pin);
 
         if(!boot_first){
-            input.setText("");
-            recheck.setText("");
-            input_pin.setText("");
-            check_pin.setText("");
+            input.setText("00");
+            recheck.setText("00");
+            input_pin.setText("0000");
+            check_pin.setText("0000");
         }else{
             input.setText(originPw);
             recheck.setText(originPw);
@@ -262,19 +222,18 @@ public class SettingsActivity extends Activity{
             case 2:
                 spw1.setChecked(true);
                 spw2.setChecked(false);
-                input.setHint("2자리 입력");
-                recheck.setHint("2자리 입력");
+                input.setHint(R.string.setting_enter_2dit);
+                recheck.setHint(R.string.setting_enter_2dit);
                 break;
             case 4:
                 spw2.setChecked(true);
                 spw1.setChecked(false);
-                input.setHint("4자리 입력");
-                recheck.setHint("4자리 입력");
+                input.setHint(R.string.setting_enter_4dit);
+                recheck.setHint(R.string.setting_enter_4dit);
                 break;
         }
 
-
-        timer0 = (CheckBox)findViewById(R.id.set_time_0);
+        timer0 = findViewById(R.id.set_time_0);
         timer0.setOnClickListener(v -> {
             timer = 0;
             timer0.setChecked(true);
@@ -283,7 +242,7 @@ public class SettingsActivity extends Activity{
             timer3.setChecked(false);
         });
 
-        timer1 = (CheckBox)findViewById(R.id.set_time_1);
+        timer1 = findViewById(R.id.set_time_1);
         timer1.setOnClickListener(v -> {
             timer = 2000;
             timer0.setChecked(false);
@@ -291,7 +250,7 @@ public class SettingsActivity extends Activity{
             timer2.setChecked(false);
             timer3.setChecked(false);
         });
-        timer2 = (CheckBox)findViewById(R.id.set_time_2);
+        timer2 = findViewById(R.id.set_time_2);
         timer2.setOnClickListener(v -> {
             timer = 3000;
             timer0.setChecked(false);
@@ -299,7 +258,7 @@ public class SettingsActivity extends Activity{
             timer2.setChecked(true);
             timer3.setChecked(false);
         });
-        timer3 = (CheckBox)findViewById(R.id.set_time_3);
+        timer3 = findViewById(R.id.set_time_3);
         timer3.setOnClickListener(v -> {
             timer = 4000;
             timer0.setChecked(false);
@@ -335,67 +294,65 @@ public class SettingsActivity extends Activity{
                 break;
         }
 
-        num_img1 = (CheckBox)findViewById(R.id.check_num_1);
+        num_img1 = findViewById(R.id.check_num_1);
         num_img1.setOnClickListener(v -> {
             // 숫자버튼 - 투명도 0프로
             num_img1.setChecked(true);
             num_img2.setChecked(false);
             num_img3.setChecked(false);
             num_img4.setChecked(false);
-            img0.setBackground(getResources().getDrawable(R.drawable.percent100_num));
+            img0.setBackground(res.getDrawable(R.drawable.percent100_num));
             numType = 1;
         });
-        num_img2 = (CheckBox)findViewById(R.id.check_num_2);
+        num_img2 = findViewById(R.id.check_num_2);
         num_img2.setOnClickListener(v -> {
             // 숫자버튼 - 외곽선
             num_img1.setChecked(false);
             num_img2.setChecked(true);
             num_img3.setChecked(false);
             num_img4.setChecked(false);
-            img0.setBackground(getResources().getDrawable(R.drawable.line_num));
+            img0.setBackground(res.getDrawable(R.drawable.line_num));
             numType = 2;
         });
-        num_img3 = (CheckBox)findViewById(R.id.check_num_3);
+        num_img3 = findViewById(R.id.check_num_3);
         num_img3.setOnClickListener(v -> {
             // 숫자버튼 - 투명도 35프로
             num_img1.setChecked(false);
             num_img2.setChecked(false);
             num_img3.setChecked(true);
             num_img4.setChecked(false);
-            img0.setBackground(getResources().getDrawable(R.drawable.percent35_num));
+            img0.setBackground(res.getDrawable(R.drawable.percent35_num));
             numType = 0;
         });
-        num_img4 = (CheckBox)findViewById(R.id.check_num_4);
+        num_img4 = findViewById(R.id.check_num_4);
         num_img4.setOnClickListener(v -> {
             // 숫자버튼 - 투명도 100프로
             num_img1.setChecked(false);
             num_img2.setChecked(false);
             num_img3.setChecked(false);
             num_img4.setChecked(true);
-            img0.setBackground(getResources().getDrawable(R.drawable.percent0_num));
+            img0.setBackground(res.getDrawable(R.drawable.percent0_num));
             numType = 3;
         });
 
 
-
-
-        btn_img1 = (CheckBox)findViewById(R.id.check_nullpad_gray);
+        btn_img1 = findViewById(R.id.check_nullpad_gray);
         btn_img1.setOnClickListener(v -> {
             // 기존 버튼 이미지 사용
             btn_img1.setChecked(true);
             btn_img2.setChecked(false);
             btn_img3.setChecked(false);
             btn_img4.setChecked(false);
-            img1.setBackground(getResources().getDrawable(R.drawable.percent100_blank));
+            img1.setBackground(res.getDrawable(R.drawable.percent100_blank));
             btnType = 1;
             //customBtnImg = false;
         });
-        btn_img2 = (CheckBox)findViewById(R.id.check_nullpad_blue);
+        btn_img2 = findViewById(R.id.check_nullpad_blue);
         btn_img2.setOnClickListener(v -> {
             // 버튼 이미지2
 
             btnType = 2;
-            img1.setBackground(getResources().getDrawable(R.drawable.line_blank));
+            img1.setBackground(res.getDrawable(R.drawable.line_blank));
             btn_img1.setChecked(false);
             btn_img2.setChecked(true);
             btn_img3.setChecked(false);
@@ -403,24 +360,24 @@ public class SettingsActivity extends Activity{
             //makeDialog();
         });
 
-        btn_img3 = (CheckBox)findViewById(R.id.check_nullpad_red);
+        btn_img3 = findViewById(R.id.check_nullpad_red);
         btn_img3.setOnClickListener(v -> {
             // 버튼 이미지3
 
             btnType = 0;
-            img1.setBackground(getResources().getDrawable(R.drawable.percent35_blank));
+            img1.setBackground(res.getDrawable(R.drawable.percent35_blank));
             btn_img1.setChecked(false);
             btn_img2.setChecked(false);
             btn_img3.setChecked(true);
             btn_img4.setChecked(false);
         });
 
-        btn_img4 = (CheckBox)findViewById(R.id.check_nullpad_green);
+        btn_img4 = findViewById(R.id.check_nullpad_green);
         btn_img4.setOnClickListener(v -> {
             // 버튼 이미지3
 
             btnType = 3;
-            img1.setBackground(getResources().getDrawable(R.drawable.percent0_blank));
+            img1.setBackground(res.getDrawable(R.drawable.percent0_blank));
             btn_img1.setChecked(false);
             btn_img2.setChecked(false);
             btn_img3.setChecked(false);
@@ -434,22 +391,22 @@ public class SettingsActivity extends Activity{
             makeDialog();
         });
 
-        btn_bg1 = (CheckBox)findViewById(R.id.check_bg_default);
-        //img2.setBackground(getResources().getDrawable(R.drawable.sample_bg));
-        //img2.setBackgroundColor(getResources().getColor(android.R.color.black));
+        btn_bg1 = findViewById(R.id.check_bg_default);
+        //img2.setBackground(res.getDrawable(R.drawable.sample_bg));
+        //img2.setBackgroundColor(res.getColor(android.R.color.black));
         btn_bg1.setOnClickListener(v -> {
             // 디폴트 배경화면 사용
 
             btn_bg1.setChecked(true);
             btn_bg2.setChecked(false);
             customBgImg = false;
-            //img2.setBackgroundColor(getResources().getColor(android.R.color.black));
-            img2.setBackground(getResources().getDrawable(R.drawable.background_1));
+            //img2.setBackgroundColor(res.getColor(android.R.color.black));
+            img2.setBackground(res.getDrawable(R.drawable.background_1));
 
             //img2.setImageResource(R.drawable.sample_bg);
             //Log.d("bg", ""+customBgImg);
         });
-        btn_bg2 = (CheckBox)findViewById(R.id.check_bg_image);
+        btn_bg2 = findViewById(R.id.check_bg_image);
         btn_bg2.setOnClickListener(v -> {
             // 앨범에서 이미지 선택
 
@@ -458,9 +415,9 @@ public class SettingsActivity extends Activity{
             makeDialog();
         });
 
-        confirm = findViewById(R.id.confirm);
+        TextView confirm = findViewById(R.id.confirm);
         confirm.setOnClickListener(v -> ConfirmSettings());
-        cancel = findViewById(R.id.cancel);
+        TextView cancel = findViewById(R.id.cancel);
         cancel.setOnClickListener(v -> CancelSettings());
 
         if(customBgImg) {
@@ -472,32 +429,31 @@ public class SettingsActivity extends Activity{
             btn_bg2.setChecked(false);
 
         }
-        imgIndex = 0;
 
         if(numType==0){
             num_img1.setChecked(false);
             num_img2.setChecked(false);
             num_img3.setChecked(true);
             num_img4.setChecked(false);
-            img0.setBackground(getResources().getDrawable(R.drawable.percent35_num));
+            img0.setBackground(res.getDrawable(R.drawable.percent35_num));
         }else if(numType==1){
             num_img1.setChecked(true);
             num_img2.setChecked(false);
             num_img3.setChecked(false);
             num_img4.setChecked(false);
-            img0.setBackground(getResources().getDrawable(R.drawable.percent100_num));
+            img0.setBackground(res.getDrawable(R.drawable.percent100_num));
         }else if(numType==2){
             num_img1.setChecked(false);
             num_img2.setChecked(true);
             num_img3.setChecked(false);
             num_img4.setChecked(false);
-            img0.setBackground(getResources().getDrawable(R.drawable.line_num));
+            img0.setBackground(res.getDrawable(R.drawable.line_num));
         }else if(numType==3){
             num_img1.setChecked(false);
             num_img2.setChecked(false);
             num_img3.setChecked(false);
             num_img4.setChecked(true);
-            img0.setBackground(getResources().getDrawable(R.drawable.percent0_num));
+            img0.setBackground(res.getDrawable(R.drawable.percent0_num));
         }
 
         if(btnType==0){
@@ -505,25 +461,25 @@ public class SettingsActivity extends Activity{
             btn_img2.setChecked(false);
             btn_img3.setChecked(true);
             btn_img4.setChecked(false);
-            img1.setBackground(getResources().getDrawable(R.drawable.percent35_blank));
+            img1.setBackground(res.getDrawable(R.drawable.percent35_blank));
         }else if(btnType==1){
             btn_img1.setChecked(true);
             btn_img2.setChecked(false);
             btn_img3.setChecked(false);
             btn_img4.setChecked(false);
-            img1.setBackground(getResources().getDrawable(R.drawable.percent100_blank));
+            img1.setBackground(res.getDrawable(R.drawable.percent100_blank));
         }else if(btnType==2){
             btn_img1.setChecked(false);
             btn_img2.setChecked(true);
             btn_img3.setChecked(false);
             btn_img4.setChecked(false);
-            img1.setBackground(getResources().getDrawable(R.drawable.line_blank));
+            img1.setBackground(res.getDrawable(R.drawable.line_blank));
         }else if(btnType==3){
             btn_img1.setChecked(false);
             btn_img2.setChecked(false);
             btn_img3.setChecked(false);
             btn_img4.setChecked(true);
-            img1.setBackground(getResources().getDrawable(R.drawable.percent0_blank));
+            img1.setBackground(res.getDrawable(R.drawable.percent0_blank));
         }
 
         //다음 눌렀을때 포커스 이동안되게 처리
@@ -543,7 +499,7 @@ public class SettingsActivity extends Activity{
     protected void onStop(){
         // 일단 현재는 종료될 때 세팅 되는걸로 설정
         // 설정 완료 버튼으로 고쳐야됨;;
-        //img2.setBackground(getResources().getDrawable(R.drawable.sample_bg));
+        //img2.setBackground(res.getDrawable(R.drawable.sample_bg));
         super.onStop();
     }
 
@@ -553,29 +509,26 @@ public class SettingsActivity extends Activity{
         String txt_pin = input_pin.getText().toString();
         String pinCheck = check_pin.getText().toString();
 
-        if(!text.equals(pwCheck) || text == null || text.equals("") == true
+        if(!text.equals(pwCheck) || TextUtils.isEmpty(text)
         || (pwSize==2 && text.length()!=2) || (pwSize==4 && text.length()!=4)
         ) {
-            Toast.makeText(getApplicationContext(), "패스워드를 확인해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.setting_check_password, Toast.LENGTH_SHORT).show();
 
         } else if((!input_pin.equals(pinCheck) && input_pin.length()!=4) ){
-            Toast.makeText(getApplicationContext(), "백업 핀을 확인해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.setting_check_backup_pin, Toast.LENGTH_SHORT).show();
         } else {
-            pwList = text;//Integer.parseInt(text);
-            backupPin = txt_pin;
             boot_first = true;
-
             PreferenceUtil.savePref(this, PreferenceUtil.FIRST_BOOT2, boot_first);
             PreferenceUtil.savePref(this, PreferenceUtil.IS_LOCK, powerOn);
 
             PreferenceUtil.savePref(this, PreferenceUtil.PW_SIZE, pwSize);
-            PreferenceUtil.savePref(this, PreferenceUtil.PW_LIST, pwList);
+            PreferenceUtil.savePref(this, PreferenceUtil.PW_LIST, text);
             PreferenceUtil.savePref(this, PreferenceUtil.PW_TIMER, timer);
 
             PreferenceUtil.savePref(this, PreferenceUtil.CUSTOM_BG, customBgImg);
             PreferenceUtil.savePref(this, PreferenceUtil.CUSTOM_BG_PATH, bgImgFilePath);
 
-            PreferenceUtil.savePref(this, PreferenceUtil.BACKUP_PIN, backupPin);
+            PreferenceUtil.savePref(this, PreferenceUtil.BACKUP_PIN, txt_pin);
             PreferenceUtil.savePref(this, PreferenceUtil.NUM_TYPE, numType);
             PreferenceUtil.savePref(this, PreferenceUtil.BTN_TYPE, btnType);
 
@@ -601,7 +554,7 @@ public class SettingsActivity extends Activity{
             //editor.putString("userPhoto", img_str);
 
             editor.commit();*/
-            Toast.makeText(getApplicationContext(), "설정이 변경되었습니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.setting_complete, Toast.LENGTH_SHORT).show();
 
             handler.postDelayed(() -> {
                 if(PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true)) {
@@ -623,8 +576,8 @@ public class SettingsActivity extends Activity{
         }
     }
 
-    void CancelSettings(){
-        Toast.makeText(getApplicationContext(), "설정을 취소합니다.", Toast.LENGTH_SHORT).show();
+   private void CancelSettings(){
+        Toast.makeText(getApplicationContext(), R.string.setting_cancel, Toast.LENGTH_SHORT).show();
         handler.postDelayed(() -> {
             if(PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true)) {
                 ActivityUtil.move(SettingsActivity.this, LockScreenActivity.class);
@@ -636,17 +589,17 @@ public class SettingsActivity extends Activity{
 
     private void makeDialog(){
         AlertDialog.Builder alt_bld = new AlertDialog.Builder(this);
-        alt_bld.setTitle("배경 이미지 변경").setMessage("배경 이미지를 앨범에서\n사용자 지정 이미지로 변경합니다")
+        alt_bld.setTitle(R.string.setting_dialog_album_title).setMessage(R.string.setting_dialog_album_msg)
                 .setIcon(R.drawable.album64)
-                .setPositiveButton("앨범선택",
+                .setPositiveButton(R.string.setting_dialog_album_posi_bt,
                         (dialogInterface, id) -> {
-                            Log.v("알림", "다이얼로그 > 앨범선택 선택");
+                            //Log.v("알림", "다이얼로그 > 앨범선택 선택");
                             //앨범에서 선택
                             selectAlbum(1);
                             //Intent intent = new Intent("com.android.camera.action.CROP");
                             //startService(intent);
                             // 인텐트+뷰 넘기기
-                        }).setNegativeButton("취소",
+                        }).setNegativeButton(R.string.cancel,
                 (dialog, id) -> {
                     //Log.v("알림", "다이얼로그 > 취소 선택");
                     // 취소 클릭. dialog 닫기.
@@ -661,8 +614,6 @@ public class SettingsActivity extends Activity{
 
     //앨범 선택 클릭
     public void selectAlbum(int i){
-        imgIndex = i;
-        //앨범 열기
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         intent.setType("image/*");
@@ -682,7 +633,7 @@ public class SettingsActivity extends Activity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
-            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
             if(tempFile != null) {
                 if (tempFile.exists()) {
                     if (tempFile.delete()) {
@@ -690,35 +641,44 @@ public class SettingsActivity extends Activity{
                     }
                 }
             }
-            return;
-        }
-        switch (requestCode) {
-            case PICK_FROM_ALBUM: {
-                if (data.getData() != null) {
-                    Uri photoUri = data.getData();
 
-                    if(photoUri!=null){
-                        cropImageFromAlbum(photoUri);
+            switch (requestCode) {
+                case PICK_FROM_ALBUM: {
+                    if (data!=null && data.getData() != null) {
+                        Uri photoUri = data.getData();
+
+                        if(photoUri!=null){
+                            cropImageFromAlbum(photoUri);
+                        }
                     }
+                    else{
+                        btn_bg1.setChecked(true);
+                        btn_bg2.setChecked(false);
+                    }
+                    break;
                 }
-                break;
-            }
-            case Crop.REQUEST_CROP: {
-                //setImage();
-                Toast.makeText(this, "크롭 리퀘스트", Toast.LENGTH_SHORT).show();
-            }
-            case CROP_FROM_ALBUM:{
-                setImage();
+                case Crop.REQUEST_CROP: {
+                    //setImage();
+                    //Toast.makeText(this, "크롭 리퀘스트", Toast.LENGTH_SHORT).show();
+                }
+                case CROP_FROM_ALBUM:{
+                    setImage();
+                }
             }
         }
+
+        else{
+            btn_bg1.setChecked(true);
+            btn_bg2.setChecked(false);
+        }
+
     }
 
     private void cropImageFromAlbum(Uri inputUri){
-
         try {
             tempFile = createImageFile();
         } catch (IOException e) {
-            Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
             finish();
             e.printStackTrace();
         }
@@ -849,7 +809,8 @@ public class SettingsActivity extends Activity{
 
         Log.v("알림","storageDir 존재함 " + storageDir.toString());
         imageFile = new File(storageDir,imgFileName);
-        mCurrentBtnPhotoPath = imageFile.getAbsolutePath();
+
+        //mCurrentBtnPhotoPath = imageFile.getAbsolutePath();
         return imageFile;
     }
 

@@ -41,4 +41,15 @@
     <string name="setting_wallpaper_option2">사진앨범에서 선택</string>
     <string name="setting_wallpaper_title">배경화면 테마</string>
     <string name="setting_wallpaper_option1">재미노 (기본)</string>
+
+    <string name="setting_enter_2dit">2자리 입력</string>
+    <string name="setting_enter_4dit">4자리 입력</string>
+    <string name="setting_check_password">패스워드를 확인해주세요.</string>
+    <string name="setting_check_backup_pin">백업핀을 확인해주세요.</string>
+    <string name="setting_complete">설정이 변경되었습니다.</string>
+    <string name="setting_cancel">설정 변경이 취소되었습니다.</string>
+
+    <string name="setting_dialog_album_title">배경이미지 변경</string>
+    <string name="setting_dialog_album_msg">배경 이미지를 앨범에서\n사용자 지정 이미지로 변경합니다</string>
+    <string name="setting_dialog_album_posi_bt">앨범선택</string>
 </resources>

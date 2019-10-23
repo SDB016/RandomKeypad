@@ -1,5 +1,6 @@
 package com.otk.fts.myotk.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -61,31 +62,23 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
     private Button button11;
     private Button button12;
 
-    private Integer numType;
-    private Integer btnType;
+    private int numType;
+    private int btnType;
 
     private LinearLayout bottomLl;
-    private ConstraintLayout bg_screen;
-
-    // Custom 버튼 이미지 여부
-    private boolean customBgImg;
-    // Custom 버튼 이미지 경로
-    private String customBgImgPath;
 
     // PassWord Size
     private int pwSize;
 
     // PassWord List
-    private ArrayList pw;
+    private ArrayList<Integer> pw;
     // 입력 번호 List
     public ArrayList<Integer> input;
     // 키패드 순서 List
     private ArrayList<Integer> pos;
 
     // 초기 비밀번호 보이는 시간
-    private Integer f_timer;
-
-    boolean isStart = false;
+    private int f_timer;
 
     private Vibrator vibrator;
     private Integer wrongCount, wrongTrigger, wrong_lockTimer;
@@ -95,7 +88,6 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
     private String backupPin;
     private Handler handler;
     private Resources res;
-    boolean isLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +96,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         res = getResources();
         //LayoutInflater inflate = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         getWindow().addFlags(
                 // 기본 잠금화면보다 우선출력
@@ -112,10 +104,10 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
                         // 기본 잠금화면 해제시키기
                         | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        if(!Utils.isServiceRunning(this)){
+        if (!Utils.isServiceRunning(this)) {
             Utils.startService(getApplicationContext());
 
-        }else QLog.d("service is run");
+        } else QLog.d("service is run");
 
 //        WindowManager.LayoutParams params;
 //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -160,39 +152,36 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
 //                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 //                | View.SYSTEM_UI_FLAG_FULLSCREEN);
 
-        bg_screen = mView.findViewById(R.id.Linear_bg);
+        ConstraintLayout bg_screen = mView.findViewById(R.id.Linear_bg);
         bottomLl = mView.findViewById((R.id.bottomLl));
-        button1 = (Button) mView.findViewById(R.id.button1);
+        button1 = mView.findViewById(R.id.button1);
         button1.setOnClickListener(this);
-        button2 = (Button) mView.findViewById(R.id.button2);
+        button2 = mView.findViewById(R.id.button2);
         button2.setOnClickListener(this);
-        button3 = (Button) mView.findViewById(R.id.button3);
+        button3 = mView.findViewById(R.id.button3);
         button3.setOnClickListener(this);
-        button4 = (Button) mView.findViewById(R.id.button4);
+        button4 = mView.findViewById(R.id.button4);
         button4.setOnClickListener(this);
-        button5 = (Button) mView.findViewById(R.id.button5);
+        button5 = mView.findViewById(R.id.button5);
         button5.setOnClickListener(this);
-        button6 = (Button) mView.findViewById(R.id.button6);
+        button6 = mView.findViewById(R.id.button6);
         button6.setOnClickListener(this);
-        button7 = (Button) mView.findViewById(R.id.button7);
+        button7 = mView.findViewById(R.id.button7);
         button7.setOnClickListener(this);
-        button8 = (Button) mView.findViewById(R.id.button8);
+        button8 = mView.findViewById(R.id.button8);
         button8.setOnClickListener(this);
-        button9 = (Button) mView.findViewById(R.id.button9);
+        button9 = mView.findViewById(R.id.button9);
         button9.setOnClickListener(this);
-        button10 = (Button) mView.findViewById(R.id.button10);
+        button10 = mView.findViewById(R.id.button10);
         button10.setOnClickListener(this);
-        button11 = (Button) mView.findViewById(R.id.button11);
+        button11 = mView.findViewById(R.id.button11);
         button11.setOnClickListener(this);
-        button12 = (Button) mView.findViewById(R.id.button12);
+        button12 = mView.findViewById(R.id.button12);
         button12.setOnClickListener(this);
 
-        mBtnShow = (ImageButton) mView.findViewById(R.id.btn_show);
-        mBtnShow.setOnTouchListener(this);
-        img_Input = (ImageView)mView.findViewById(R.id.input_img);
-        img_Input.setOnTouchListener(this);
-        mBtnCamera = (ImageButton) mView.findViewById((R.id.btn_camera));
-        mBtnCamera.setOnTouchListener(this);
+        mBtnShow = mView.findViewById(R.id.btn_show);
+        img_Input = mView.findViewById(R.id.input_img);
+        mBtnCamera = mView.findViewById((R.id.btn_camera));
 
         //저장된 값을 불러오기 위해 같은 네임파일을 찾음.
         //isActive = PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true);
@@ -204,15 +193,32 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         f_timer = PreferenceUtil.getIntPref(this, PreferenceUtil.PW_TIMER, 2000);//sf.getInt("pwTimer", 2000);
         numType = PreferenceUtil.getIntPref(this, PreferenceUtil.NUM_TYPE, 2);//sf.getInt("numType", 3);
         btnType = PreferenceUtil.getIntPref(this, PreferenceUtil.BTN_TYPE, 2);//sf.getInt("btnType", 3);
-        customBgImg = PreferenceUtil.getBooleanPref(this, PreferenceUtil.CUSTOM_BG,false);//sf.getBoolean("customBgImg", false);
-        customBgImgPath = PreferenceUtil.getStringPref(this, PreferenceUtil.CUSTOM_BG_PATH);//sf.getString("pwImgPath","");
+        // Custom 버튼 이미지 여부
+        boolean customBgImg = PreferenceUtil.getBooleanPref(this, PreferenceUtil.CUSTOM_BG, false);//sf.getBoolean("customBgImg", false);
+        // Custom 버튼 이미지 경로
+        String customBgImgPath = PreferenceUtil.getStringPref(this, PreferenceUtil.CUSTOM_BG_PATH);//sf.getString("pwImgPath","");
         //QLog.d(numType+"/"+btnType);
 
         //mBtnShow.setImageResource(R.drawable.btn_new_aaa);//bottomSelector(res.getDrawable(R.drawable.input_show)
         //img_Input.setBackground(bottomSelector(res.getDrawable(R.drawable.input_2pw0)));
         //mBtnCamera.setBackground(bottomSelector(res.getDrawable(R.drawable.camera)));
 
-        if(customBgImg){
+        img_Input.setOnTouchListener(this);
+        mBtnShow.setOnTouchListener(this);
+        mBtnCamera.setOnTouchListener(this);
+        /*if (f_timer == 0) {
+            mBtnShow.setOnTouchListener(this);
+            mBtnCamera.setOnTouchListener(this);
+            mBtnShow.setOnClickListener(null);
+            mBtnCamera.setOnClickListener(null);
+        } else {
+            mBtnShow.setOnTouchListener(null);
+            mBtnCamera.setOnTouchListener(null);
+            mBtnShow.setOnClickListener(onClickListener);
+            mBtnCamera.setOnClickListener(onClickListener);
+        }*/
+
+        if (customBgImg) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             Bitmap originalBm = BitmapFactory.decodeFile(customBgImgPath, options);
             Drawable drawable = new BitmapDrawable(originalBm);
@@ -221,31 +227,31 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
             //File imgFile = new  File(customBgImgPath);
             //Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             //bg_screen.setimage(myBitmap);
-        }else {
+        } else {
             //bg_screen.setBackgroundColor(res.getColor(android.R.color.black));
             bg_screen.setBackground(res.getDrawable(R.drawable.background_1));
         }
 
         // 비밀번호 배열 ( 임시비번 = 12 )
-        pw = new ArrayList();
-        if(lpwStr.equals("00")) {
+        pw = new ArrayList<>();
+        if (lpwStr.equals("00")) {
             pw.add(0);
             pw.add(0);
             img_Input.setImageResource(R.drawable.input_2pw0);
-        }else{
-            if(pwSize==2){
+        } else {
+            if (pwSize == 2) {
                 // 비밀번호 사이즈 2
-                int a = lpw/10;
-                int b = lpw%10;
+                int a = lpw / 10;
+                int b = lpw % 10;
                 pw.add(a);
                 pw.add(b);
                 img_Input.setImageResource(R.drawable.input_2pw0);
-            }else{
+            } else {
                 // 비밀번호 사이즈 4
-                int a = lpw/1000;
-                int b = (lpw%1000)/100;
-                int c = (lpw%100)/10;
-                int d = lpw%10;
+                int a = lpw / 1000;
+                int b = (lpw % 1000) / 100;
+                int c = (lpw % 100) / 10;
+                int d = lpw % 10;
                 pw.add(a);
                 pw.add(b);
                 pw.add(c);
@@ -277,39 +283,51 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         //wm.addView(mView, params);
     }
 
+    private View.OnClickListener onClickListener = view -> run();
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         wrongCount = 0;
         wrongTrigger = 0;
-        shuffleKeyPad(pos);
-        isStart = false;
+        run();
 
-        if(f_timer == 0){
-            btnUnshow();
-            bottomLl.setVisibility(View.VISIBLE);
-        }
-
-        else{
-            btnShow();
-            btnEnable(true);
-
-            handler.postDelayed(() -> {
-                btnUnshow();
-                bottomLl.setVisibility(View.VISIBLE);
-            }, f_timer);    //2초 뒤에
-        }
 
         // test버젼
         //wrong_lockTimer = 100;
-        
+
         // 실제버젼
         wrong_lockTimer = 10000;
     }
 
+    private void run() {
+        shuffleKeyPad(pos);
+        //bottomLl.setVisibility(View.VISIBLE);
+
+        /*switch (v.getId()){
+            case R.id.btn_show:
+                mBtnShow.setBackground(res.getDrawable(R.drawable.press_blank));
+                break;
+            case R.id.btn_camera:
+                mBtnCamera.setBackground(res.getDrawable(R.drawable.press_blank));
+                break;
+        }
+
+        mBtnShow.setBackgroundColor(Color.TRANSPARENT);*/
+
+        if (f_timer == 0) btnUnshow();
+        else {
+            btnShow();
+            btnEnable(true);
+            handler.removeCallbacksAndMessages(null);
+            //bottomLl.setVisibility(View.VISIBLE);
+            handler.postDelayed(this::btnUnshow, f_timer);    //2초 뒤에
+        }
+    }
+
     @Override
-    public void onDestroy(){
-        if(handler!=null){
+    public void onDestroy() {
+        if (handler != null) {
             handler.removeCallbacksAndMessages(null);
             handler = null;
         }
@@ -333,7 +351,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
 //        //finishAffinity();
 //    }
 
-    private void btnEnable(boolean enable){
+    private void btnEnable(boolean enable) {
         button1.setEnabled(enable);
         button2.setEnabled(enable);
         button3.setEnabled(enable);
@@ -354,51 +372,51 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button1:
-                if(input.size()<pw.size())
+                if (input.size() < pw.size())
                     input.add(pos.get(0));
                 break;
             case R.id.button2:
-                if(input.size()<pw.size())
+                if (input.size() < pw.size())
                     input.add(pos.get(1));
                 break;
             case R.id.button3:
-                if(input.size()<pw.size())
+                if (input.size() < pw.size())
                     input.add(pos.get(2));
                 break;
             case R.id.button4:
-                if(input.size()<pw.size())
+                if (input.size() < pw.size())
                     input.add(pos.get(3));
                 break;
             case R.id.button5:
-                if(input.size()<pw.size())
+                if (input.size() < pw.size())
                     input.add(pos.get(4));
                 break;
             case R.id.button6:
-                if(input.size()<pw.size())
+                if (input.size() < pw.size())
                     input.add(pos.get(5));
                 break;
             case R.id.button7:
-                if(input.size()<pw.size())
+                if (input.size() < pw.size())
                     input.add(pos.get(6));
                 break;
             case R.id.button8:
-                if(input.size()<pw.size())
+                if (input.size() < pw.size())
                     input.add(pos.get(7));
                 break;
             case R.id.button9:
-                if(input.size()<pw.size())
+                if (input.size() < pw.size())
                     input.add(pos.get(8));
                 break;
             case R.id.button10:
-                if(input.size()<pw.size())
+                if (input.size() < pw.size())
                     input.add(pos.get(9));
                 break;
             case R.id.button11:
-                if(input.size()<pw.size())
+                if (input.size() < pw.size())
                     input.add(pos.get(10));
                 break;
             case R.id.button12:
-                if(input.size()<pw.size())
+                if (input.size() < pw.size())
                     input.add(pos.get(11));
                 break;
         }
@@ -407,25 +425,25 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
     }
 
     private void CheckPW() {
-        if(input.size()==pw.size()){
+        if (input.size() == pw.size()) {
             int index = 0;
             int backupPinNum = Integer.parseInt(backupPin);
 
-            while(index<input.size()){
-                if(input.get(index)!=pw.get(index)) {
+            while (index < input.size()) {
+                if (!input.get(index).equals(pw.get(index))) {
                     vibrator.vibrate(100);
                     wrongCount += 1;
                     wrongTrigger += 1;
-                    if(wrongTrigger>=5&&wrongCount>=55) {
+                    if (wrongTrigger >= 5 && wrongCount >= 55) {
                         // PhoneLockForSeconds();
-                    }else if(wrongTrigger>=5&&wrongCount>=50){
+                    } else if (wrongTrigger >= 5 && wrongCount >= 50) {
                         // PhoneLockForSeconds();
-                        wrongTrigger=0;
+                        wrongTrigger = 0;
                         pw.clear();
-                        int a = backupPinNum/1000;
-                        int b = (backupPinNum%1000)/100;
-                        int c = (backupPinNum%100)/10;
-                        int d = backupPinNum%10;
+                        int a = backupPinNum / 1000;
+                        int b = (backupPinNum % 1000) / 100;
+                        int c = (backupPinNum % 100) / 10;
+                        int d = backupPinNum % 10;
                         pw.add(a);
                         pw.add(b);
                         pw.add(c);
@@ -441,11 +459,11 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
                             btnUnshow();
                             btnEnable(true);
                         }, wrong_lockTimer);    //10초 뒤에
-                    } else if(wrongTrigger>=5){
+                    } else if (wrongTrigger >= 5) {
                         // PhoneLockForSeconds();
-                        
+
                         btnEnable(false);
-                        wrongTrigger=0;
+                        wrongTrigger = 0;
                         handler.postDelayed(() -> {
                             btnUnshow();
                             btnEnable(true);
@@ -465,24 +483,22 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         }
     }
 
-    private void Unlock(){
-        if(isCameraClick){
+    private void Unlock() {
+        if (isCameraClick) {
             Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
             startActivity(intent);
             finish();
-        }
-
-        else{
+        } else {
             Intent intent = new Intent(this, SettingsActivity.class); // 이동할 컴포넌트
             startActivity(intent);
             finish();
         }
     }
 
-    private void Incorrect(){
-        if(pwSize==2) {
+    private void Incorrect() {
+        if (pwSize == 2) {
             img_Input.setImageResource(R.drawable.input_2pw0);
-        }else if(pwSize==4){
+        } else if (pwSize == 4) {
             img_Input.setImageResource(R.drawable.input_4pw0);
         }
 
@@ -490,7 +506,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
     }
 
     private void enterInput() {
-        if(pwSize==2) {
+        if (pwSize == 2) {
             if (input.size() == 1) {
                 img_Input.setImageResource(R.drawable.input_2pw1);
             } else if (input.size() == 2) {
@@ -498,7 +514,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
             } else {
                 img_Input.setImageResource(R.drawable.input_2pw0);
             }
-        }else {
+        } else {
             switch (input.size()) {
                 case 0:
                     img_Input.setImageResource(R.drawable.input_4pw0);
@@ -518,7 +534,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
             }
         }
 
-        if(input.size()==pw.size())
+        if (input.size() == pw.size())
             CheckPW();
     }
 
@@ -684,57 +700,55 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         return null;
     }
 
-    public void shuffleKeyPad(ArrayList posArr) {
+    public void shuffleKeyPad(ArrayList<Integer> posArr) {
         int index = 0;
         Random random = new Random();
         boolean[] isCheck = new boolean[12];
-        while(index < posArr.size()){
+        while (index < posArr.size()) {
             int rand_num = random.nextInt(12);
-            if(!isCheck[rand_num]){
+            if (!isCheck[rand_num]) {
                 posArr.set(index, rand_num);
                 isCheck[rand_num] = true;
                 index++;
             }
-            if(index==posArr.size())
+            if (index == posArr.size())
                 break;
         }
     }
 
-   private boolean isCameraClick = false;
+    private boolean isCameraClick = false;
 
     @Override
     public boolean onTouch(View v, MotionEvent motionEvent) {
-        switch(motionEvent.getAction()){
-            case MotionEvent.ACTION_DOWN :
-                //v.setPadding(10,10,10,10);
-                //v.setAlpha(0.55f);
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
                 v.setBackground(res.getDrawable(R.drawable.press_blank));
                 switch (v.getId()) {
                     //case R.id.btn_del:
                     case R.id.input_img:
-                        if(input.size()!=0) {
+                        if (input.size() != 0) {
                             input.remove(input.size() - 1);
                             enterInput();
                         }
                         break;
                     case R.id.btn_show:
                     case R.id.btn_camera:
-                        shuffleKeyPad(pos);
-                        btnShow();
+                        if (f_timer == 0) {
+                            shuffleKeyPad(pos);
+                            btnShow();
+                        } else run();
                         break;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
-                //v.setPadding(0,0,0,0);
-                //v.setAlpha(1.0f);
                 v.setBackgroundColor(Color.TRANSPARENT);
-                if(v.getId()==R.id.btn_show)
-                    btnUnshow();
+                if (v.getId() == R.id.btn_show) {
+                    if (f_timer == 0) btnUnshow();
                     isCameraClick = false;
-                if(v.getId() == R.id.btn_camera){
-                    btnUnshow();
+                } else if (v.getId() == R.id.btn_camera) {
+                    if (f_timer == 0) btnUnshow();
                     isCameraClick = true;
                 }
                 break;
@@ -742,7 +756,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         return true;
     }
 
-    private void btnShow(){
+    private void btnShow() {
         button1.setBackground(getSelector(pos.get(0)));
         button1.setEnabled(false);
         button2.setBackground(getSelector(pos.get(1)));
@@ -769,7 +783,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         button12.setEnabled(false);
     }
 
-    private void btnUnshow(){
+    private void btnUnshow() {
         button1.setBackground(getDrawableImage(12));
         button1.setEnabled(true);
         button2.setBackground(getDrawableImage(12));
