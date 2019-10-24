@@ -15,5 +15,8 @@
     <dimen name="btn_otk_bottom">10dp</dimen>
     <dimen name="body_margin_width">20dp</dimen>
     <dimen name="body_margin_height">20dp</dimen>
+    <dimen name="setting_margin">8dp</dimen>
+
+
 
 </resources>

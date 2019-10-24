@@ -12,15 +12,15 @@
     <ScrollView
         android:id="@+id/sv"
         android:background="@color/colorWhite"
-        app:layout_constraintBottom_toTopOf="@+id/bottomLl"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:paddingBottom="40dp"
+        android:fitsSystemWindows="true"
         android:layout_width="0dp"
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:paddingBottom="50dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -33,7 +33,7 @@
                 android:background="#9E9E9E"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="Settings"
+                android:text="@string/setting"
                 android:textColor="#ffffff"
                 android:textSize="18sp" />
 
@@ -49,139 +49,175 @@
                 android:textSize="12sp"
                 android:layout_height="wrap_content"/>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd1"
+                    app:layout_constraintGuide_percent="0.4"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_width="wrap_content"
-                    android:layout_height="33dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_height="wrap_content"
                     android:gravity="left"
+                    android:layout_marginLeft="@dimen/setting_margin"
                     android:text="@string/setting_lock_option_title"
                     android:textColor="#000000"
                     android:textSize="14sp" />
 
                 <CheckBox
+                    app:layout_constraintLeft_toRightOf="@+id/gd1"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/check_use"
-                    android:layout_width="wrap_content"
-                    android:layout_height="33dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
                     android:checked="true"
-                    android:layout_weight="1"
                     android:text="@string/setting_lock_option_yes"
                     android:textColor="#000000"
                     android:textSize="14sp" />
 
                 <CheckBox
-                    android:layout_weight="1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/check_use"
                     android:id="@+id/check_dont"
                     android:layout_width="wrap_content"
-                    android:layout_height="33dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content"
                     android:text="@string/setting_lock_option_no"
                     android:textColor="#000000"
                     android:textSize="14sp" />
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 android:layout_marginLeft="16dp"
+                android:textColor="#940a37"
                 android:textSize="12sp"
                 android:gravity="center"
                 android:text="@string/setting_text3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <LinearLayout
-                android:layout_margin="5dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd2"
+                    app:layout_constraintGuide_percent="0.4"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="33dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_marginLeft="@dimen/setting_margin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="left"
                     android:text="@string/setting_pw_option_title"
                     android:textColor="#000000"
                     android:textSize="14sp" />
 
                 <CheckBox
-                    android:layout_weight="0.8"
+                    app:layout_constraintLeft_toRightOf="@+id/gd2"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/pwSize2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="33dp"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="@string/setting_pw_option1"
                     android:textColor="#000000"
                     android:textSize="14sp" />
 
                 <CheckBox
-                    android:layout_weight="1"
+                    app:layout_constraintLeft_toRightOf="@+id/pwSize2"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/pwSize4"
                     android:layout_width="wrap_content"
-                    android:layout_height="33dp"
+                    android:layout_height="wrap_content"
                     android:text="@string/setting_pw_option2"
                     android:textColor="#000000"
                     android:textSize="14sp" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
-                android:layout_margin="5dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd3"
+                    app:layout_constraintGuide_percent="0.4"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:layout_marginLeft="@dimen/setting_margin"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_width="wrap_content"
-                    android:layout_height="33dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_height="wrap_content"
                     android:gravity="left"
                     android:text="@string/setting_pw_enter"
                     android:textColor="#000000"
                     android:textSize="14sp" />
 
                 <EditText
-                    android:layout_marginLeft="16dp"
+                    app:layout_constraintLeft_toRightOf="@+id/gd3"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/input_pw"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:inputType="numberPassword"
                     android:text=""
                     android:textSize="14sp" />
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
-                android:layout_margin="5dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd4"
+                    app:layout_constraintGuide_percent="0.4"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:layout_marginLeft="@dimen/setting_margin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_width="wrap_content"
-                    android:layout_height="33dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_height="wrap_content"
                     android:gravity="left"
                     android:text="@string/setting_pw_confirm"
                     android:textColor="#000000"
                     android:textSize="14sp" />
 
                 <EditText
-                    android:layout_marginLeft="16dp"
+                    app:layout_constraintLeft_toRightOf="@+id/gd4"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:id="@+id/re_pw"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:inputType="numberPassword"
                     android:text=""
                     android:textSize="14sp" />
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:gravity="center"
@@ -203,37 +239,52 @@
                 android:textColor="#ffffff"
                 android:textSize="18sp" />
 
-            <LinearLayout
-                android:orientation="vertical"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:id="@+id/pwLinearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:orientation="horizontal">
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd5"
+                    app:layout_constraintGuide_percent="0.5"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_marginLeft="8dp"
+                        android:id="@+id/keypadTitleTv"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textSize="14sp"
+                        android:lines="2"
+                        android:gravity="left|center"
+                        android:layout_width="wrap_content"
+                        android:text="@string/setting_keypad_random"
+                        android:layout_height="wrap_content"/>
+
+                     <ImageView
+                         app:layout_constraintTop_toBottomOf="@+id/keypadTitleTv"
+                         app:layout_constraintLeft_toLeftOf="@+id/keypadTitleTv"
+                         app:layout_constraintBottom_toBottomOf="@+id/keypadLl"
+                        android:id="@+id/numImg"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop" />
 
                     <LinearLayout
-                        android:layout_weight="0.2"
+                        android:layout_marginLeft="@dimen/setting_margin"
+                        android:id="@+id/keypadLl"
+                        app:layout_constraintTop_toBottomOf="@+id/keypadTitleTv"
+                        app:layout_constraintLeft_toRightOf="@+id/numImg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:textSize="14sp"
-                            android:lines="2"
-                            android:gravity="left|center"
-                            android:layout_width="wrap_content"
-                            android:text="@string/setting_keypad_random"
-                            android:layout_height="wrap_content"/>
-
                         <CheckBox
                             android:id="@+id/check_num_2"
                             android:layout_width="wrap_content"
-                            android:layout_height="33dp"
-                            android:layout_marginTop="4dp"
+                            android:layout_height="wrap_content"
                             android:text="@string/setting_keypad_option1"
                             android:textColor="#000000"
                             android:textSize="13sp" />
@@ -241,8 +292,7 @@
                         <CheckBox
                             android:id="@+id/check_num_4"
                             android:layout_width="wrap_content"
-                            android:layout_height="33dp"
-                            android:layout_marginTop="4dp"
+                            android:layout_height="wrap_content"
                             android:text="@string/setting_keypad_option2"
                             android:textColor="#000000"
                             android:textSize="13sp" />
@@ -250,8 +300,7 @@
                         <CheckBox
                             android:id="@+id/check_num_3"
                             android:layout_width="wrap_content"
-                            android:layout_height="33dp"
-                            android:layout_marginTop="4dp"
+                            android:layout_height="wrap_content"
                             android:checked="true"
                             android:text="@string/setting_keypad_option3"
                             android:textColor="#000000"
@@ -259,47 +308,49 @@
 
                         <CheckBox
                             android:id="@+id/check_num_1"
-                            android:layout_width="111dp"
-                            android:layout_height="33dp"
-                            android:layout_marginTop="4dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/setting_keypad_option4"
                             android:textColor="#000000"
                             android:textSize="13sp" />
                     </LinearLayout>
 
-                    <RelativeLayout
-                        android:layout_weight="0.2"
+                    <TextView
+                        android:layout_marginLeft="2dp"
+                        android:id="@+id/nullTitleTv"
+                        app:layout_constraintLeft_toRightOf="@+id/gd5"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textSize="14sp"
+                        android:lines="2"
+                        android:gravity="left|center"
                         android:layout_width="wrap_content"
-                        android:gravity="left"
+                        android:text="@string/setting_keypad_null"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        app:layout_constraintTop_toBottomOf="@+id/nullTitleTv"
+                        app:layout_constraintLeft_toLeftOf="@+id/nullTitleTv"
+                        app:layout_constraintBottom_toBottomOf="@+id/nullLl"
+                        android:id="@+id/testImg"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
                         android:layout_gravity="center"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:id="@+id/numImg"
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
-                            android:layout_gravity="center"
-                            android:scaleType="centerCrop" />
-                    </RelativeLayout>
+                        android:scaleType="centerCrop" />
 
                     <LinearLayout
-                        android:layout_weight="0.2"
+                        android:layout_marginLeft="@dimen/setting_margin"
+                        android:id="@+id/nullLl"
+                        app:layout_constraintTop_toBottomOf="@+id/nullTitleTv"
+                        app:layout_constraintLeft_toRightOf="@+id/testImg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:lines="2"
-                            android:gravity="left|center"
-                            android:textSize="14sp"
-                            android:layout_width="wrap_content"
-                            android:text="@string/setting_keypad_null"
-                            android:layout_height="wrap_content"/>
 
                         <CheckBox
                             android:id="@+id/check_nullpad_blue"
                             android:layout_width="wrap_content"
-                            android:layout_height="33dp"
-                            android:layout_marginTop="4dp"
+                            android:layout_height="wrap_content"
                             android:text="@string/setting_keypad_option1"
                             android:textColor="#000000"
                             android:textSize="13sp" />
@@ -307,8 +358,7 @@
                         <CheckBox
                             android:id="@+id/check_nullpad_green"
                             android:layout_width="wrap_content"
-                            android:layout_height="33dp"
-                            android:layout_marginTop="4dp"
+                            android:layout_height="wrap_content"
                             android:text="@string/setting_keypad_option2"
                             android:textColor="#000000"
                             android:textSize="13sp" />
@@ -316,8 +366,7 @@
                         <CheckBox
                             android:id="@+id/check_nullpad_red"
                             android:layout_width="wrap_content"
-                            android:layout_height="33dp"
-                            android:layout_marginTop="4dp"
+                            android:layout_height="wrap_content"
                             android:text="@string/setting_keypad_option3"
                             android:checked="true"
                             android:textColor="#000000"
@@ -326,32 +375,12 @@
                         <CheckBox
                             android:id="@+id/check_nullpad_gray"
                             android:layout_width="wrap_content"
-                            android:layout_height="33dp"
-                            android:layout_marginTop="4dp"
+                            android:layout_height="wrap_content"
                             android:text="@string/setting_keypad_option4"
                             android:textColor="#000000"
                             android:textSize="13sp" />
-
                     </LinearLayout>
-
-
-                    <RelativeLayout
-                        android:layout_weight="0.2"
-                        android:gravity="left"
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_weight="0.1"
-                            android:id="@+id/testImg"
-                            android:layout_width="65dp"
-                            android:layout_height="65dp"
-                            android:layout_gravity="center"
-                            android:scaleType="centerCrop" />
-                    </RelativeLayout>
-
-                </LinearLayout>
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -535,25 +564,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/setting_backup_pin_content"
-                android:gravity="center"
-                />
+                android:gravity="center" />
 
-            <LinearLayout
-                android:layout_margin="5dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd6"
+                    app:layout_constraintGuide_percent="0.4"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:layout_width="140dp"
-                    android:layout_height="33dp"
-                    android:layout_marginLeft="5dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="@dimen/setting_margin"
+                    app:layout_constraintBottom_toBottomOf="@+id/input_pin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/setting_backup_pin_enter"
                     android:textColor="#000000"
                     android:textSize="14sp" />
 
                 <EditText
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/gd6"
                     android:id="@+id/input_pin"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
@@ -561,24 +599,34 @@
                     android:text=""
                     android:textSize="14sp" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd7"
+                    app:layout_constraintGuide_percent="0.4"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:layout_width="140dp"
-                    android:layout_height="33dp"
-                    android:layout_marginLeft="5dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/check_pin"
+                    android:layout_marginLeft="@dimen/setting_margin"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/setting_backup_pin_confirm"
                     android:textColor="#000000"
                     android:textSize="14sp" />
 
                 <EditText
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/gd7"
                     android:id="@+id/check_pin"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
@@ -586,7 +634,7 @@
                     android:text=""
                     android:textSize="14sp" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -609,7 +657,6 @@
 
     <LinearLayout
         android:id="@+id/bottomLl"
-        android:layout_marginBottom="10dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

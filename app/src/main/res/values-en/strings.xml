@@ -3,9 +3,9 @@
     <string name="app_name">BrainLock</string>
     <string name="guide_go_yes">Change of settings</string>
     <string name="guide_go_no">BrainLock activation</string>
-    <string name="install_complete">Thank you. BrainLock installation is completed.\n\nThe password and backup PIN are set to "00" and "0000" as default. Please go to the settings and  change the password and backup PIN that only you know.\n\nIf the password and backup PIN are not changed at the settings, the password and backup PIN will remain “00” and “0000”.\n\nThe password and backup PIN can be changed anytime at the settings. Move to the settings?</string>
+    <string name="install_complete">Thank you. BrainLock installation is completed.\n\nThe password and backup PIN are set to \"00\" and \"0000\" as default. Please go to the settings and  change the password and backup PIN that only you know.\n\nIf the password and backup PIN are not changed at the settings, the password and backup PIN will remain “00” and “0000”.\n\nThe password and backup PIN can be changed anytime at the settings. Move to the settings?</string>
 
-
+    <string name="setting">Settings</string>
     <string name="setting_text1">The COMPLETE button must be pressed after changing the settings.\nOtherwise it will not be applied.</string>
     <string name="setting_lock_option_title">Use of screenlock</string>
     <string name="setting_lock_option_yes">Yes (default)</string>
@@ -32,7 +32,7 @@
 
 
     <string name="setting_wallpaper_title">Wallpaper theme</string>
-    <string name="setting_wallpaper_option1">Jamino</string>
+    <string name="setting_wallpaper_option1">Jamino (default)</string>
     <string name="setting_wallpaper_option2">Select at album</string>
 
     <string name="setting_keypad_time_title">Time of randomized numbers keypad (second)</string>

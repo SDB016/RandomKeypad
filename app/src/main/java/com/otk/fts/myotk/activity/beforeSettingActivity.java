@@ -1,5 +1,6 @@
 package com.otk.fts.myotk.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -34,6 +35,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.otk.fts.myotk.R;
 import com.otk.fts.myotk.utils.PreferenceUtil;
 import com.otk.fts.myotk.utils.QLog;
@@ -98,16 +101,34 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         //wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+        //TedPermission 라이브러리 -> 카메라 권한 획득
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                //Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                QLog.d("beforeSettingActivity onPermissionGranted");
+                if (!Utils.isServiceRunning(beforeSettingActivity.this)) {
+                    Utils.startService(getApplicationContext());
+                } else QLog.d("service is run");
+            }
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                //Toast.makeText(getApplicationContext(), "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                finishAffinity();
+            }
+        };
+
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission] ")
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .check();
+
         getWindow().addFlags(
                 // 기본 잠금화면보다 우선출력
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                         // 기본 잠금화면 해제시키기
                         | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-
-        if (!Utils.isServiceRunning(this)) {
-            Utils.startService(getApplicationContext());
-
-        } else QLog.d("service is run");
 
 //        WindowManager.LayoutParams params;
 //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
