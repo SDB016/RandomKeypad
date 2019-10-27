@@ -9,6 +9,21 @@
         android:orientation="vertical"
         tools:context="com.otk.fts.myotk.activity.MainActivity">
 
+        <TextView
+            android:id="@+id/stopTv"
+            android:gravity="center"
+            android:padding="8dp"
+            android:visibility="gone"
+            android:background="@drawable/black_round"
+            app:layout_constraintBottom_toTopOf="@+id/keypadGrid"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="@color/colorWhite"
+            android:text="@string/lock_stop_msg"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_height="wrap_content"/>
+
         <GridLayout
             app:layout_constraintBottom_toTopOf="@+id/bottomLl"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -143,7 +158,7 @@
                 android:layout_height="80dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitXY"
-                android:src="@drawable/camera" />
+                android:src="@drawable/stop" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

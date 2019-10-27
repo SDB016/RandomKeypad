@@ -13,9 +13,12 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,9 +32,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
@@ -64,6 +69,8 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
     private Button button10;
     private Button button11;
     private Button button12;
+
+    private TextView stopTv;
 
     private int numType;
     private int btnType;
@@ -101,34 +108,9 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         //wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        //TedPermission 라이브러리 -> 카메라 권한 획득
-        PermissionListener permissionlistener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                //Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
-                QLog.d("beforeSettingActivity onPermissionGranted");
-                if (!Utils.isServiceRunning(beforeSettingActivity.this)) {
-                    Utils.startService(getApplicationContext());
-                } else QLog.d("service is run");
-            }
-            @Override
-            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                //Toast.makeText(getApplicationContext(), "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-                finishAffinity();
-            }
-        };
-
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission] ")
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                .check();
-
-        getWindow().addFlags(
-                // 기본 잠금화면보다 우선출력
-                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                        // 기본 잠금화면 해제시키기
-                        | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        if (!Utils.isServiceRunning(beforeSettingActivity.this)) {
+            Utils.startService(getApplicationContext());
+        } else QLog.d("service is run");
 
 //        WindowManager.LayoutParams params;
 //        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -199,6 +181,8 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         button11.setOnClickListener(this);
         button12 = mView.findViewById(R.id.button12);
         button12.setOnClickListener(this);
+
+        stopTv = mView.findViewById(R.id.stopTv);
 
         mBtnShow = mView.findViewById(R.id.btn_show);
         img_Input = mView.findViewById(R.id.input_img);
@@ -303,8 +287,6 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         wrongTrigger = 0;
         //wm.addView(mView, params);
     }
-
-    private View.OnClickListener onClickListener = view -> run();
 
     @Override
     public void onResume() {
@@ -506,9 +488,19 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
 
     private void Unlock() {
         if (isCameraClick) {
-            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-            startActivity(intent);
+            /*File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"/example.jpg");
+            Uri uri = FileProvider.getUriForFile(this, "com.otk.fts.myotk.fileprovider", file);
+
+            //Uri outputFileUri = Uri.fromFile( file );
+            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE );
+            intent.putExtra( MediaStore.EXTRA_OUTPUT, uri );
+            startActivity( intent);//CAPTURE_IMAGE
+            finish();*/
+
+            Utils.stopService(getApplicationContext());
+            PreferenceUtil.savePref(this, PreferenceUtil.IS_LOCK, false);
             finish();
+
         } else {
             Intent intent = new Intent(this, SettingsActivity.class); // 이동할 컴포넌트
             startActivity(intent);
@@ -768,9 +760,11 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
                 if (v.getId() == R.id.btn_show) {
                     if (f_timer == 0) btnUnshow();
                     isCameraClick = false;
+                    stopTv.setVisibility(View.GONE);
                 } else if (v.getId() == R.id.btn_camera) {
                     if (f_timer == 0) btnUnshow();
                     isCameraClick = true;
+                    stopTv.setVisibility(View.VISIBLE);
                 }
                 break;
         }

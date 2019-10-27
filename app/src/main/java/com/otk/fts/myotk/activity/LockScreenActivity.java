@@ -40,6 +40,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
@@ -74,6 +75,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
     private ImageButton mBtnShow;
     private ImageButton mBtnCamera;
     private ImageView img_Input;
+    private TextView stopTv;
     private int numType;
     private int btnType;
 
@@ -320,6 +322,8 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         img_Input = (ImageView)mView.findViewById(R.id.input_img);
         mBtnCamera = (ImageButton) mView.findViewById((R.id.btn_camera));
 
+        stopTv = mView.findViewById(R.id.stopTv);
+
         isActive = PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true);
         pwSize = PreferenceUtil.getIntPref(this, PreferenceUtil.PW_SIZE, 2);
         String lpwStr = PreferenceUtil.getStringPref(this, PreferenceUtil.PW_LIST, "00");//sf.getInt("pwList", 0);
@@ -544,8 +548,11 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
     private void Unlock(){
         if(isCameraClick){
-            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-            startActivity(intent);
+            //Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+            //startActivity(intent);
+
+            Utils.stopService(getApplicationContext());
+            PreferenceUtil.savePref(this, PreferenceUtil.IS_LOCK, false);
         }
 
         finishAffinity();
@@ -895,9 +902,11 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 if (v.getId() == R.id.btn_show) {
                     if (f_timer == 0) btnUnshow();
                     isCameraClick = false;
+                    stopTv.setVisibility(View.GONE);
                 } else if (v.getId() == R.id.btn_camera) {
                     if (f_timer == 0) btnUnshow();
                     isCameraClick = true;
+                    stopTv.setVisibility(View.VISIBLE);
                 }
                 break;
         }

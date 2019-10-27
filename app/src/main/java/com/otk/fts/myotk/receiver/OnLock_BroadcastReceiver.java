@@ -88,7 +88,7 @@ public class OnLock_BroadcastReceiver extends BroadcastReceiver {
             switch (state) {
                 case TelephonyManager.CALL_STATE_IDLE:
 
-                    //잠금화면이 실행중이였던 상태체
+                    //잠금화면이 실행중이였던 상태체크
                     if(isFirst && PreferenceUtil.getBooleanPref(mContext,PreferenceUtil.LOCK_USING,false)){
                         PreferenceUtil.savePref(mContext, PreferenceUtil.LOCK_USING, false);
                         show(mContext);

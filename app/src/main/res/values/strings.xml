@@ -4,6 +4,7 @@
     <string name="guide_go_no">잠금실행 시작</string>
     <string name="install_complete">감사합니다. BrainLock 설치가 완료되었습니다.\n\n비밀번호와 백업 PIN은 기본적으로 \"00\"과 \"0000\"으로 설정되어 있습니다. 설정으로 이동하여 본인 만 아는 비밀번호와 백업 PIN을 변경하십시오.\n\n설정에서 비밀번호와 백업 PIN을 변경하지 않으면 비밀번호와 백업 PIN은 "00 (기본값)"및 "0000 (기본값)"으로 유지됩니다.\n\n비밀번호와 백업 PIN은 설정에서 언제든지 변경할 수 있습니다. 설정으로 이동 하시겠습니까?
 </string>
+    <string name="lock_stop_msg">비밀번호를 입력하면 BrainLock\n화면 잠금이 실행되지 않습니다.</string>
 
     <string name="setting">설정</string>
     <string name="setting_text1">설정을 변경 한 후 COMPLETE 버튼을 눌러야합니다.\n그렇지 않으면 적용되지 않습니다.</string>
@@ -21,12 +22,12 @@
     <string name="setting_backup_pin_enter">백업 PIN 입력</string>
     <string name="setting_backup_pin_content">백업 PIN은 비밀번호를 잊었을 때 비밀번호를 복구하기위한 것입니다.  설정을 완료하려면 백업 PIN을 설정해야합니다.</string>
     <string name="setting_backup_pin_title">백업 PIN (4 자릿수)</string>
-    <string name="setting_info">프로그램 정보 Version 0.0.1 (beta)</string>
+    <string name="setting_info">프로그램 정보 Version 0.0.2 (beta)</string>
     <string name="setting_keypad_null">널키패드</string>
-    <string name="setting_keypad_option1">Line</string>
+    <string name="setting_keypad_option1">Line (기본)</string>
     <string name="setting_keypad_option2">0%</string>
     <string name="setting_keypad_option4">100%</string>
-    <string name="setting_keypad_option3">35% (기본)</string>
+    <string name="setting_keypad_option3">35%</string>
     <string name="setting_keypad_random">랜덤숫자</string>
     <string name="setting_keypad_time_option1">0</string>
     <string name="setting_keypad_time_option2">2 (기본)</string>

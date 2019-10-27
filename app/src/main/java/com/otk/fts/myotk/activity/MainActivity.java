@@ -48,15 +48,19 @@ public class MainActivity extends Activity{
         boolean isRun = PreferenceUtil.getBooleanPref(this, PreferenceUtil.FIRST_BOOT);
         if(!isRun) {
             //QLog.d("First Boot!");
-            ActivityUtil.move(this, GuideActivity.class, true);
             PreferenceUtil.savePref(this, PreferenceUtil.FIRST_BOOT, true);
-
-
+            ActivityUtil.move(this, GuideActivity.class, true);
             //checkPermission();
         }else{
             //QLog.d("Not First Boot!");
             //checkPermission();
-            ActivityUtil.moveTop(this, beforeSettingActivity.class, true);
+
+            if(PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true)){
+                //잠금화면을 사용함
+                ActivityUtil.moveTop(this, beforeSettingActivity.class, true);
+            }
+
+            else ActivityUtil.moveTop(this, SettingsActivity.class, true);
         }
     }
 

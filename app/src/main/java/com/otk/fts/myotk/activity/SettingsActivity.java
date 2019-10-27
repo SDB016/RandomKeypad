@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -27,6 +28,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.FileProvider;
+import androidx.core.util.AtomicFile;
 import androidx.databinding.DataBindingUtil;
 
 import com.bumptech.glide.util.Util;
@@ -36,11 +39,15 @@ import com.otk.fts.myotk.services.LockScreenService;
 import com.otk.fts.myotk.R;
 import com.otk.fts.myotk.utils.ActivityUtil;
 import com.otk.fts.myotk.utils.PreferenceUtil;
+import com.otk.fts.myotk.utils.QLog;
 import com.otk.fts.myotk.utils.Utils;
 import com.soundcloud.android.crop.Crop;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class SettingsActivity extends Activity{
@@ -427,7 +434,6 @@ public class SettingsActivity extends Activity{
         } else{
             btn_bg1.setChecked(true);
             btn_bg2.setChecked(false);
-
         }
 
         if(numType==0){
@@ -520,42 +526,17 @@ public class SettingsActivity extends Activity{
             boot_first = true;
             PreferenceUtil.savePref(this, PreferenceUtil.FIRST_BOOT2, boot_first);
             PreferenceUtil.savePref(this, PreferenceUtil.IS_LOCK, powerOn);
-
             PreferenceUtil.savePref(this, PreferenceUtil.PW_SIZE, pwSize);
             PreferenceUtil.savePref(this, PreferenceUtil.PW_LIST, text);
             PreferenceUtil.savePref(this, PreferenceUtil.PW_TIMER, timer);
-
             PreferenceUtil.savePref(this, PreferenceUtil.CUSTOM_BG, customBgImg);
             PreferenceUtil.savePref(this, PreferenceUtil.CUSTOM_BG_PATH, bgImgFilePath);
-
             PreferenceUtil.savePref(this, PreferenceUtil.BACKUP_PIN, txt_pin);
             PreferenceUtil.savePref(this, PreferenceUtil.NUM_TYPE, numType);
             PreferenceUtil.savePref(this, PreferenceUtil.BTN_TYPE, btnType);
-
             PreferenceUtil.savePref(this, PreferenceUtil.SHOW_LEFT, isLeft);
 
-            /*SharedPreferences sharedPreferences = getSharedPreferences("sFile", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            //Log.d("setting", "firstBoot? = "+boot_first);
-
-            editor.putBoolean("firstBoot2", boot_first);
-            editor.putBoolean("isLock", powerOn);
-            editor.putInt("pwSize", pwSize);
-            editor.putInt("pwList", pwList);
-            editor.putInt("pwTimer", timer);
-            editor.putString("pwImgPath", bgImgFilePath);
-            editor.putBoolean("customBgImg", customBgImg);
-            //editor.putString("bgImgPath", bgImgFilePath);
-            //editor.putBoolean("customBgImg", customBgImg);
-            editor.putInt("backupPin", backupPin);
-            editor.putInt("numType", numType);
-            editor.putInt("btnType", btnType);
-            //Log.d("PATH","Confirm path : " + btnImgFilePath.toString());
-            //editor.putString("userPhoto", img_str);
-
-            editor.commit();*/
             Toast.makeText(getApplicationContext(), R.string.setting_complete, Toast.LENGTH_SHORT).show();
-
             handler.postDelayed(() -> {
                 if(PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true)) {
                     Utils.startService(getApplicationContext());
@@ -567,12 +548,6 @@ public class SettingsActivity extends Activity{
                 //ActivityUtil.move(SettingsActivity.this, preLockScreenActivity.class);
                 finishAffinity();
             }, 200);    //0.5초 뒤에
-            /*
-            Intent intent = new Intent(
-                    getApplicationContext(),//현재제어권자
-                    LockScreenService.class); // 이동할 컴포넌트
-            startService(intent);
-            */
         }
     }
 
@@ -632,16 +607,8 @@ public class SettingsActivity extends Activity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             //Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
-            if(tempFile != null) {
-                if (tempFile.exists()) {
-                    if (tempFile.delete()) {
-                        tempFile = null;
-                    }
-                }
-            }
-
             switch (requestCode) {
                 case PICK_FROM_ALBUM: {
                     if (data!=null && data.getData() != null) {
@@ -668,6 +635,14 @@ public class SettingsActivity extends Activity{
         }
 
         else{
+            if(tempFile != null) {
+                if (tempFile.exists()) {
+                    if (tempFile.delete()) {
+                        tempFile = null;
+                    }
+                }
+            }
+
             btn_bg1.setChecked(true);
             btn_bg2.setChecked(false);
         }
@@ -675,14 +650,28 @@ public class SettingsActivity extends Activity{
     }
 
     private void cropImageFromAlbum(Uri inputUri){
+
+        Uri outputUri = null;
+        // File 객체의 URI 를 얻는다.
         try {
             tempFile = createImageFile();
+
+            /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            {// API 24 이상 일경우..
+                String strpa = getApplicationContext().getPackageName();
+                outputUri = FileProvider.getUriForFile(this, strpa + ".fileprovider", tempFile);
+            }
+            else
+            {// API 24 미만 일경우..
+                outputUri = Uri.fromFile(tempFile);
+            }*/
+
         } catch (IOException e) {
             //Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
             finish();
             e.printStackTrace();
         }
-        Uri outputUri = Uri.fromFile(tempFile);
+        outputUri = Uri.fromFile(tempFile);
 
         Intent intent = getCropIntent(inputUri, outputUri);
         bgImgFilePath = tempFile.getAbsolutePath();
@@ -747,7 +736,37 @@ public class SettingsActivity extends Activity{
 
         //Log.d("bg","setImg");
 
+        //Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
+        //File storageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)+"/example.jpg");
+        //Uri uri = FileProvider.getUriForFile(this, "com.otk.fts.myotk.fileprovider", file);
+        //Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        //File storageDir = new File(getFilesDir(), "ireh");
+
         Bitmap originalBm = BitmapFactory.decodeFile(bgImgFilePath, options);
+
+        //String imgPath = rep.getImgList().get(0);
+        /*File file = new File(bgImgFilePath);
+        AtomicFile atomicFile =  new AtomicFile(file);
+        FileOutputStream fos = null;
+        Bitmap bitmap = null;
+        try {
+            // read the current image
+            bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            // open the stream (backup the current content)
+            // from now on (and until finishWrite/failWrite) we cannot read the file directly
+            fos = atomicFile.startWrite();
+            //Log.d("showmethebitmap", bitmap.toString()); //Error: bitmap is null !
+            OutputStream oos = new BufferedOutputStream(fos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,0, oos);
+            // flush but do not close the stream (@see AtomicFile doc)
+            oos.flush();
+            // close the stream, remove the backup
+            atomicFile.finishWrite(fos);
+        } catch (IOException e) {
+            // recover the content from the backup
+            atomicFile.failWrite(fos);
+            //throw e;
+        }*/
 
         /*
         if(customBgImg)
@@ -766,17 +785,21 @@ public class SettingsActivity extends Activity{
         btn_bg2.setChecked(true);
     }
 
-    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize,
+    public Bitmap scaleDown(Bitmap realImage, float maxImageSize,
                                    boolean filter) {
-        float ratio = Math.min(
-                (float) maxImageSize / realImage.getWidth(),
-                (float) maxImageSize / realImage.getHeight());
-        int width = Math.round((float) ratio * realImage.getWidth());
-        int height = Math.round((float) ratio * realImage.getHeight());
+       try{
+           float ratio = Math.min(
+                   (float) maxImageSize / realImage.getWidth(),
+                   (float) maxImageSize / realImage.getHeight());
+           int width = Math.round((float) ratio * realImage.getWidth());
+           int height = Math.round((float) ratio * realImage.getHeight());
+        return Bitmap.createScaledBitmap(realImage, width, height, filter);
 
-        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
-                height, filter);
-        return newBitmap;
+       }catch (Exception e){
+           QLog.e(e.toString());
+       }
+
+       return null;
     }
 
     private void cropImage(Uri photoUri) {
@@ -800,8 +823,14 @@ public class SettingsActivity extends Activity{
     public File createImageFile() throws IOException{
         String imgFileName = System.currentTimeMillis() + ".jpg";
         File imageFile= null;
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/Pictures", "ireh");
 
+        //Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
+          //File storageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)+"/example.jpg");
+            //Uri uri = FileProvider.getUriForFile(this, "com.otk.fts.myotk.fileprovider", file);
+        //Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        //File storageDir = new File(getFilesDir(), "ireh");
+
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/Pictures", "ireh");
         if(!storageDir.exists()){
             Log.v("알림","storageDir 존재 x " + storageDir.toString());
             storageDir.mkdirs();

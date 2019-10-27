@@ -91,8 +91,9 @@ public class LockScreenService extends Service {
                 .setContentTitle("BrainLock is Running")
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
+                .setAutoCancel(true)
                 .build();
-        startForeground(2, notification);
+        startForeground(3, notification);
     }
 
     @Override
@@ -110,7 +111,9 @@ public class LockScreenService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mReceiver);
-        mNM.cancel(2);
+        mNM.cancelAll();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            stopForeground(false);
         QLog.d("service is dead");
 
         final Calendar calendar = Calendar.getInstance();

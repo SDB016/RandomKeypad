@@ -32,16 +32,18 @@ public class GuideActivity extends AppCompatActivity {
                 break;
 
             case R.id.noBt:
+                if (!Utils.isServiceRunning(GuideActivity.this)) {
+                    Utils.startService(getApplicationContext());
+                } else QLog.d("service is run");
+                ActivityUtil.move(GuideActivity.this, LockScreenActivity.class, true);
+
                 //TedPermission 라이브러리 -> 카메라 권한 획득
-                PermissionListener permissionlistener = new PermissionListener() {
+                /*PermissionListener permissionlistener = new PermissionListener() {
                     @Override
                     public void onPermissionGranted() {
                         //Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
                         //ActivityUtil.move(this, preLockScreenActivity.class, true);
-                        if (!Utils.isServiceRunning(GuideActivity.this)) {
-                            Utils.startService(getApplicationContext());
-                        } else QLog.d("service is run");
-                        ActivityUtil.move(GuideActivity.this, LockScreenActivity.class, true);
+
                     }
                     @Override
                     public void onPermissionDenied(ArrayList<String> deniedPermissions) {
@@ -54,7 +56,7 @@ public class GuideActivity extends AppCompatActivity {
                         .setPermissionListener(permissionlistener)
                         .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission] ")
                         .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                        .check();
+                        .check();*/
                 break;
         }
     }
