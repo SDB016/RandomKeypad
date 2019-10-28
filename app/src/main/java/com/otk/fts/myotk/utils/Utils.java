@@ -18,6 +18,7 @@ import com.otk.fts.myotk.services.LockScreenService;
 
 public class Utils {
     public static void startService(Context context){
+        QLog.d("start service");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(new Intent(context, LockScreenService.class));
         } else {

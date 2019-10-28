@@ -48,7 +48,7 @@
     <string name="setting_backup_pin_enter">Enter backup PIN</string>
     <string name="setting_backup_pin_confirm">Confirm backup PIN</string>
 
-    <string name="setting_info">Program version 0.0.2 (beta)</string>
+    <string name="setting_info">Program version %s (beta)</string>
 
 
 

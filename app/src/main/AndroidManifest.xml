@@ -44,6 +44,7 @@
             android:excludeFromRecents="true"
             android:directBootAware="true"
             android:label="BrainLock"
+            android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
 
@@ -63,13 +64,12 @@
             android:enabled="true"
             android:exported="true"
             android:label="OnLock_BroadcastReceiver">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
-
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+            </intent-filter>-->
         </receiver>
 
         <receiver

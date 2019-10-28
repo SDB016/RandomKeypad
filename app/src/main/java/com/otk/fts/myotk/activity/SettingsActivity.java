@@ -35,6 +35,7 @@ import androidx.databinding.DataBindingUtil;
 import com.bumptech.glide.util.Util;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.otk.fts.myotk.BuildConfig;
 import com.otk.fts.myotk.services.LockScreenService;
 import com.otk.fts.myotk.R;
 import com.otk.fts.myotk.utils.ActivityUtil;
@@ -124,6 +125,9 @@ public class SettingsActivity extends Activity{
         boot_first = false;
         boot_first = PreferenceUtil.getBooleanPref(this, PreferenceUtil.FIRST_BOOT2, false);
         //Log.d("setting", "firstBoot? = "+boot_first);
+
+        TextView infoTv = findViewById(R.id.info1);
+        infoTv.setText(getString(R.string.setting_info, BuildConfig.VERSION_NAME));
 
         useLock = findViewById(R.id.check_use);
         useLock.setChecked(powerOn);

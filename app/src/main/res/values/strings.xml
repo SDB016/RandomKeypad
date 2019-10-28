@@ -22,7 +22,7 @@
     <string name="setting_backup_pin_enter">백업 PIN 입력</string>
     <string name="setting_backup_pin_content">백업 PIN은 비밀번호를 잊었을 때 비밀번호를 복구하기위한 것입니다.  설정을 완료하려면 백업 PIN을 설정해야합니다.</string>
     <string name="setting_backup_pin_title">백업 PIN (4 자릿수)</string>
-    <string name="setting_info">프로그램 정보 Version 0.0.2 (beta)</string>
+    <string name="setting_info">프로그램 정보 Version %s (beta)</string>
     <string name="setting_keypad_null">널키패드</string>
     <string name="setting_keypad_option1">Line (기본)</string>
     <string name="setting_keypad_option2">0%</string>

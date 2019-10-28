@@ -34,8 +34,10 @@ public class LockScreenService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        QLog.d("LockScreenService Create");
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_BOOT_COMPLETED);
         mReceiver = new OnLock_BroadcastReceiver();
         registerReceiver(mReceiver, filter);
 

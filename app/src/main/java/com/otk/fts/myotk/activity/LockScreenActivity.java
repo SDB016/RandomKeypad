@@ -135,7 +135,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
             switch(state){
                 case TelephonyManager.CALL_STATE_IDLE :
                     //isPhoneIdle = true;
-                    //QLog.d("CALL_STATE_IDLE");
+                    QLog.d("LOCK CALL_STATE_IDLE");
                     break;
 
                     //전화가 울릴때 화면 종료
@@ -143,7 +143,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                     //isPhoneIdle = false;
                     QLog.d("CALL_STATE_RINGING");
                     PreferenceUtil.savePref(LockScreenActivity.this, PreferenceUtil.LOCK_USING, true);
-                    Utils.stopService(LockScreenActivity.this);
+                    //Utils.stopService(getApplicationContext());
                     finishAffinity();
                     break;
 
@@ -209,6 +209,11 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         handler = new Handler(msg -> false);
         res = getResources();
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
@@ -222,7 +227,9 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
         if (telephonyManager == null) {
             telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+            if(telephonyManager!=null)
+                telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
         }
 
         if(!Utils.isServiceRunning(this)){
@@ -416,8 +423,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         wrong_lockTimer = 10000;
     }
 
-    private View.OnClickListener onClickListener = view -> run();
-
     @Override
     public void onResume(){
         super.onResume();
@@ -610,21 +615,27 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
     @Override
     public void onDestroy(){
-        if(wm!=null)
-            if(mView!=null)
-                wm.removeViewImmediate(mView);
+        QLog.d("onDestroy");
+        try{
+            if(wm!=null)
+                if(mView!=null && isFinishing())
+                    wm.removeViewImmediate(mView);
 
-        if(handler!=null){
-            handler.removeCallbacksAndMessages(null);
-            handler = null;
+            if(handler!=null){
+                handler.removeCallbacksAndMessages(null);
+                handler = null;
+            }
+
+            if (telephonyManager != null) {
+                telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_NONE);
+            }
+
+            //btnsEnable();
+            finishAffinity();
+        }catch (Exception e){
+            QLog.e(e.toString());
         }
 
-        if (telephonyManager != null) {
-            telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_NONE);
-        }
-
-        btnsEnable();
-        finishAffinity();
         super.onDestroy();
     }
 

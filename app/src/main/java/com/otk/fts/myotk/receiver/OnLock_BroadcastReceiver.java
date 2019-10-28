@@ -17,8 +17,6 @@ import com.otk.fts.myotk.utils.QLog;
 
 
 public class OnLock_BroadcastReceiver extends BroadcastReceiver {
-
-
     private Context mContext;
 
     @Override
@@ -27,12 +25,12 @@ public class OnLock_BroadcastReceiver extends BroadcastReceiver {
         switch (intent.getAction()) {
             case Intent.ACTION_SCREEN_ON:
                 Log.d("aaa", "ACTION_SCREEN_ON");
-                show(context);
+                show(context, true);
                 break;
 
             case Intent.ACTION_BOOT_COMPLETED: {
                 Log.d("aaa", "ACTION_SCREEN_OFF");
-                show(context);
+                show(context, true);
                 break;
             }
             case Intent.ACTION_SCREEN_OFF:
@@ -62,13 +60,15 @@ public class OnLock_BroadcastReceiver extends BroadcastReceiver {
         }
     }
 
-    private void show(Context context) {
+    private void show(Context context, boolean screenOnOff) {
         if(PreferenceUtil.getBooleanPref(context, PreferenceUtil.IS_LOCK, true)){
-            if (telephonyManager == null)
-                telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-
-            if (telephonyManager != null) {
-                telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+            if(screenOnOff){
+                if (telephonyManager == null){
+                    telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+                    if (telephonyManager != null) {
+                        telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+                    }
+                }
             }
 
             Intent i = new Intent(context, LockScreenActivity.class);
@@ -87,14 +87,17 @@ public class OnLock_BroadcastReceiver extends BroadcastReceiver {
 
             switch (state) {
                 case TelephonyManager.CALL_STATE_IDLE:
+                    QLog.d("CALL_STATE_IDLE");
 
-                    //잠금화면이 실행중이였던 상태체크
-                    if(isFirst && PreferenceUtil.getBooleanPref(mContext,PreferenceUtil.LOCK_USING,false)){
+                    //잠금화면이 실행중이였던 상태체
+                    boolean isLock = PreferenceUtil.getBooleanPref(mContext, PreferenceUtil.LOCK_USING,false);
+                    QLog.d("isFirst : " + isFirst);
+                    QLog.d("isLock : " + isLock);
+                    if(isFirst && isLock){
                         PreferenceUtil.savePref(mContext, PreferenceUtil.LOCK_USING, false);
-                        show(mContext);
+                        show(mContext, false);
                     }
                     isFirst = true;
-                    QLog.d("CALL_STATE_IDLE");
                     break;
 
                 case TelephonyManager.CALL_STATE_RINGING:
@@ -104,9 +107,7 @@ public class OnLock_BroadcastReceiver extends BroadcastReceiver {
 
                     //전화를 걸거나 받았을때
                 case TelephonyManager.CALL_STATE_OFFHOOK:
-                    //isPhoneIdle = false;
                     QLog.d("CALL_STATE_OFFHOOK");
-                    //show(mContext);
                     break;
             }
         }
