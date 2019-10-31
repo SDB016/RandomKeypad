@@ -24,17 +24,19 @@ public class OnLock_BroadcastReceiver extends BroadcastReceiver {
         mContext = context;
         switch (intent.getAction()) {
             case Intent.ACTION_SCREEN_ON:
-                Log.d("aaa", "ACTION_SCREEN_ON");
-                show(context, true);
+                //boolean isLock = PreferenceUtil.getBooleanPref(mContext, PreferenceUtil.LOCK_USING,false);
+                Log.d("myotk", "ACTION_SCREEN_ON " + isPhoneIdle);
+                if(!isPhoneIdle)
+                    show(context, true);
                 break;
 
             case Intent.ACTION_BOOT_COMPLETED: {
-                Log.d("aaa", "ACTION_SCREEN_OFF");
+                Log.d("myotk", "ACTION_BOOT_COMPLETED");
                 show(context, true);
                 break;
             }
             case Intent.ACTION_SCREEN_OFF:
-                Log.d("aaa", "ACTION_SCREEN_OFF");
+                Log.d("myotk", "ACTION_SCREEN_OFF");
                 //show(context);
                 //Intent i = new Intent(context, LockScreenService.class);
                 //context.startService(i);
@@ -80,6 +82,7 @@ public class OnLock_BroadcastReceiver extends BroadcastReceiver {
 
     private TelephonyManager telephonyManager = null;
     private boolean isFirst = false;
+    boolean isPhoneIdle;
 
     private PhoneStateListener phoneListener = new PhoneStateListener() {
         @Override
@@ -89,7 +92,7 @@ public class OnLock_BroadcastReceiver extends BroadcastReceiver {
                 case TelephonyManager.CALL_STATE_IDLE:
                     QLog.d("CALL_STATE_IDLE");
 
-                    //잠금화면이 실행중이였던 상태체
+                    //잠금화면이 실행중이였던 상태체크
                     boolean isLock = PreferenceUtil.getBooleanPref(mContext, PreferenceUtil.LOCK_USING,false);
                     QLog.d("isFirst : " + isFirst);
                     QLog.d("isLock : " + isLock);
@@ -97,16 +100,18 @@ public class OnLock_BroadcastReceiver extends BroadcastReceiver {
                         PreferenceUtil.savePref(mContext, PreferenceUtil.LOCK_USING, false);
                         show(mContext, false);
                     }
+                    isPhoneIdle = false;
                     isFirst = true;
                     break;
 
                 case TelephonyManager.CALL_STATE_RINGING:
-                    //isPhoneIdle = false;
+                    isPhoneIdle = true;
                     //QLog.d("CALL_STATE_RINGING");
                     break;
 
                     //전화를 걸거나 받았을때
                 case TelephonyManager.CALL_STATE_OFFHOOK:
+                    isPhoneIdle = true;
                     QLog.d("CALL_STATE_OFFHOOK");
                     break;
             }

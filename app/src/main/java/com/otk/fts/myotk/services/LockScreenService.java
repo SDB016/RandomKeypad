@@ -35,9 +35,15 @@ public class LockScreenService extends Service {
     public void onCreate() {
         super.onCreate();
         QLog.d("LockScreenService Create");
+
+//        <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+//                <action android:name="android.intent.action.BOOT_COMPLETED" />
+//                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
+        filter.addAction(Intent.ACTION_LOCKED_BOOT_COMPLETED);
         mReceiver = new OnLock_BroadcastReceiver();
         registerReceiver(mReceiver, filter);
 
