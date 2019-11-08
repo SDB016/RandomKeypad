@@ -17,10 +17,12 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.otk.fts.myotk.R;
 import com.otk.fts.myotk.utils.ActivityUtil;
 import com.otk.fts.myotk.utils.PreferenceUtil;
 import com.otk.fts.myotk.utils.QLog;
+import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends Activity{
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 1;

@@ -548,7 +548,6 @@ public class SettingsActivity extends Activity{
                 }else{
                     Utils.stopService(getApplicationContext());
                 }
-
                 //ActivityUtil.move(SettingsActivity.this, preLockScreenActivity.class);
                 finishAffinity();
             }, 200);    //0.5초 뒤에

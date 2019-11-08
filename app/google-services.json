@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "442151291898",
+    "firebase_url": "https://brainlock-b4fc3.firebaseio.com",
+    "project_id": "brainlock-b4fc3",
+    "storage_bucket": "brainlock-b4fc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442151291898:android:f09da46c6d518f4f5a7243",
+        "android_client_info": {
+          "package_name": "com.otk.fts.myotk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442151291898-8ukln18ths2fg78858v5ngas4optq5qa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.otk.fts.myotk",
+            "certificate_hash": "6c805e32678fbdcf68d1425a68e90052775fc1ae"
+          }
+        },
+        {
+          "client_id": "442151291898-1lsl1jdd3s5fqm4o9tfunlgls8bk88l2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcKdQzxqyOlqg1bJfxgW_oeRM__C3yjgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "442151291898-1lsl1jdd3s5fqm4o9tfunlgls8bk88l2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -80,9 +80,10 @@
         <service
             android:name=".services.LockScreenService"
             android:directBootAware="true" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c0cb25ea90fd80325387de1986a2bd0e791e65a6" />
     </application>
-
-    <uses-feature android:name="android.hardware.camera2" android:required="false"/>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
