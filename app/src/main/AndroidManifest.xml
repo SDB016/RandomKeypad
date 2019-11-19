@@ -23,6 +23,7 @@
 <!--        </provider>-->
 
         <activity
+            android:launchMode="singleTask"
             android:name=".activity.MainActivity"
             android:excludeFromRecents="true"
             android:label="BrainLock"
