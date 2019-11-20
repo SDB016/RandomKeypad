@@ -65,6 +65,7 @@ public class MainActivity extends Activity{
             else ActivityUtil.moveTop(this, SettingsActivity.class, true);*/
 
             ActivityUtil.moveTop(this, beforeSettingActivity.class, true);
+            finishAffinity();
         }
     }
 
