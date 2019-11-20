@@ -57,12 +57,14 @@ public class MainActivity extends Activity{
             //QLog.d("Not First Boot!");
             //checkPermission();
 
-            if(PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true)){
+            /*if(PreferenceUtil.getBooleanPref(this, PreferenceUtil.IS_LOCK, true)){
                 //잠금화면을 사용함
                 ActivityUtil.moveTop(this, beforeSettingActivity.class, true);
             }
 
-            else ActivityUtil.moveTop(this, SettingsActivity.class, true);
+            else ActivityUtil.moveTop(this, SettingsActivity.class, true);*/
+
+            ActivityUtil.moveTop(this, beforeSettingActivity.class, true);
         }
     }
 
