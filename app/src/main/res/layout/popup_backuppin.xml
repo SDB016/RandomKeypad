@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content">
+
+    <!-- 타이틀바 -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="53dp">
+
+        <Button
+            android:id="@+id/btn_backup_close"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:background="@drawable/close" />
+        <TextView
+            android:text="백업 PIN 변경"
+            android:textSize="18dp"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@color/colorWhite"
+            android:layout_width="0dp"
+            android:layout_height="53dp"
+            android:layout_weight="5"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/colorBlack"/>
+    <!-- //end 타이틀바 -->
+
+    <!-- Notice -->
+
+    <LinearLayout
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_weight="20"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="입력:"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                ></TextView>
+
+            <EditText
+                android:id="@+id/edit_input_pin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:hint="비밀번호를 입력해주세요"
+                android:textSize="16dp"
+                android:textColor="@color/colorBlack"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:inputType="numberPassword"
+                ></EditText>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="확인:"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                ></TextView>
+            <EditText
+                android:id="@+id/edit_input_pin_chk"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:hint="비밀번호를 입력해주세요"
+                android:textSize="16dp"
+                android:textColor="@color/colorBlack"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:inputType="numberPassword"
+                ></EditText>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+    <!-- Notice -->
+
+    <!-- 닫기 버튼 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/colorBlack"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_pin_ok"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/colorWhite"
+            android:gravity="center"
+            android:padding="18dp"
+            android:text="OK"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp" />
+    </LinearLayout>
+    <!--// 닫기 버튼 -->
+</LinearLayout>

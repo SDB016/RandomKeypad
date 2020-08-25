@@ -13,12 +13,14 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
+import android.util.Log;
 
 import com.otk.fts.myotk.services.LockScreenService;
 
 public class Utils {
     public static void startService(Context context){
         QLog.d("start service");
+        Log.d("Inhyo Test ", "startService ");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(new Intent(context, LockScreenService.class));
         } else {

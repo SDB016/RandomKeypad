@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
 //import android.util.Log;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -35,7 +36,7 @@ public class LockScreenService extends Service {
     public void onCreate() {
         super.onCreate();
         QLog.d("LockScreenService Create");
-
+        Log.d("Inhyo Test ", "LockScreenService - onCreate ");
 //        <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
 //                <action android:name="android.intent.action.BOOT_COMPLETED" />
 //                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
@@ -44,43 +45,18 @@ public class LockScreenService extends Service {
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
         filter.addAction(Intent.ACTION_LOCKED_BOOT_COMPLETED);
+        filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+        filter.addAction(Intent.ACTION_SHUTDOWN);
+        filter.addAction(Intent.ACTION_DREAMING_STARTED);
+        filter.addAction(Intent.ACTION_DREAMING_STOPPED);
+        filter.addAction(Intent.ACTION_ALL_APPS);
         mReceiver = new OnLock_BroadcastReceiver();
         registerReceiver(mReceiver, filter);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         startMyOwnForeground();
 
-        /*
-        LayoutInflater inflate = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        wm = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        |WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        |WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
-                PixelFormat.TRANSLUCENT);
-
-        params.gravity = Gravity.CENTER;
-        mView = inflate.inflate(R.layout.prelockscreen, null);
-        final ImageButton bt =  (ImageButton) mView.findViewById(R.id.btn_show);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(wm!=null) {
-                    if(mView!=null) {
-                        wm.removeViewImmediate(mView);
-                        mView = null;
-                    }
-                    wm=null;
-                }
-            }
-        });
-        wm.addView(mView, params);
-        */
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -111,6 +87,7 @@ public class LockScreenService extends Service {
             filter.addAction(Intent.ACTION_SCREEN_OFF);
             mReceiver = new OnLock_BroadcastReceiver();
             registerReceiver(mReceiver, filter);
+
         }
         return START_STICKY;
     }
@@ -145,18 +122,6 @@ public class LockScreenService extends Service {
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
     }
 
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        unregisterReceiver(mReceiver);
-////        if(wm != null) {
-////            if(mView != null) {
-////                wm.removeView(mView);
-////                mView = null;
-////            }
-////            wm = null;
-////        }
-//    }
 
     @Override
     public IBinder onBind(Intent intent) {

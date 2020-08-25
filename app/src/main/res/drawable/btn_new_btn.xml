@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- default -->
-    <item android:state_focused="false" android:state_pressed="false"
-        android:drawable="@drawable/blank_zero"
-        >
-    </item>
+<!-- default -->
+<item android:state_focused="false" android:state_pressed="false"
+    android:drawable="@drawable/img_trans"
+    >
+</item>
 
-    <!-- click -->
-    <item android:state_focused="false" android:state_pressed="true"
-        android:drawable="@drawable/press_blank"
-        >
-    </item>
-    <!-- click -->
+<!-- click -->
+<item android:state_focused="false" android:state_pressed="true"
+    android:drawable="@drawable/press_blank"
+    >
+</item>
+<!-- click -->
 
 </selector>

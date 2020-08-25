@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="10">
+    <LinearLayout
+        android:id="@+id/set_detail_contents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        >
+
+        <ImageView
+            android:id="@+id/set_detail_icon"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:layout_weight="1.5"
+            android:scaleType="fitCenter"
+            android:src="@drawable/sys_security">
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/set_detail_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:text="Test Test"
+                android:textSize="18dp"
+                android:textColor="@android:color/black"
+                android:gravity="center_vertical"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="right"
+            android:gravity="center_vertical|right">
+
+
+            <ImageView
+                android:id="@+id/set_detail_onoff"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/onoff_on"
+                android:gravity="center_vertical|right"
+                android:visibility="visible"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/set_detail_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/txt_set_detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="텍스트"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:background="@color/gray"
+            />
+    </LinearLayout>
+
+</LinearLayout>

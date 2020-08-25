@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="50"
+        android:id="@+id/linear_title_randkeytimer"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal"
+        >
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+        <Button
+            android:id="@+id/btn_back_rdkey_time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="12"
+            android:textAllCaps="false"
+            android:text="@string/rdkeytimer_back"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:gravity="center_vertical"
+            android:background="@color/colorTransparent"
+            />
+
+        <TextView
+            android:id="@+id/txt_title_randomtimer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="30"
+            android:gravity="center"
+            android:text="@string/rdkeytimer_title"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:textSize="18dp" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="13"
+            >
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="650"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="125"
+            android:background="@color/gray"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                >
+            </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:gravity="center_vertical"
+                android:text="@string/rdkeytimer_script1"
+                android:textColor="@color/colorBlack"
+                android:textSize="16dp"
+
+                />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                >
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:orientation="horizontal"
+            android:background="@color/colorWhite"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                >
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_rdkey_time0"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="42"
+                android:gravity="center_vertical"
+                android:text="@string/rdkeytimer_time_0"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+
+            <ImageButton
+                android:id="@+id/btn_rdkey_time0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="8"
+                android:background="@drawable/onoff_on"
+
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:orientation="horizontal"
+            android:background="@color/colorWhite"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                >
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_rdkey_time2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="42"
+                android:gravity="center_vertical"
+                android:text="@string/rdkeytimer_time_2"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+
+            <ImageButton
+                android:id="@+id/btn_rdkey_time2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="8"
+                android:background="@drawable/onoff_on"
+
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"></LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:orientation="horizontal"
+            android:background="@color/colorWhite"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                >
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_rdkey_time3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="42"
+                android:gravity="center_vertical"
+                android:text="@string/rdkeytimer_time_3"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+
+            <ImageButton
+                android:id="@+id/btn_rdkey_time3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="8"
+                android:background="@drawable/onoff_on"
+
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"></LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:orientation="horizontal"
+            android:background="@color/colorWhite"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                >
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_rdkey_time4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="42"
+                android:gravity="center_vertical"
+                android:text="@string/rdkeytimer_time_4"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+
+            <ImageButton
+                android:id="@+id/btn_rdkey_time4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="8"
+                android:background="@drawable/onoff_on"
+
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"></LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:orientation="horizontal"
+            android:background="@color/colorWhite"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                >
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/txt_rdkey_time5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="42"
+                android:gravity="center_vertical"
+                android:text="@string/rdkeytimer_time_5"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+
+            <ImageButton
+                android:id="@+id/btn_rdkey_time5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="8"
+                android:background="@drawable/onoff_on"
+
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"></LinearLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:orientation="horizontal"
+            android:background="@color/colorWhite"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                >
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/txt_rdkey_time10"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="42"
+                android:gravity="center_vertical"
+                android:text="@string/rdkeytimer_time_10"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+            <ImageButton
+                android:id="@+id/btn_rdkey_time10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="8"
+                android:background="@drawable/onoff_on"
+
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"></LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="225"
+            android:orientation="horizontal"
+            android:background="@color/colorWhite"
+            >
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

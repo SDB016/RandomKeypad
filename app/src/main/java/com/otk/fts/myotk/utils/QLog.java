@@ -2,13 +2,13 @@ package com.otk.fts.myotk.utils;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.otk.fts.myotk.BuildConfig;
+
+import androidx.annotation.NonNull;
 
 
 public class QLog {
-    static final String TAG = "myotk";
+    static final String TAG = "Inhyo Test";
 
     /** Log Level Error **/
     public static final void e(@NonNull String message) {

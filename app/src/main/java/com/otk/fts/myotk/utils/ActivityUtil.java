@@ -2,11 +2,6 @@ package com.otk.fts.myotk.utils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-
-import com.bumptech.glide.util.Util;
-import com.otk.fts.myotk.activity.MainActivity;
 
 public class ActivityUtil{
 

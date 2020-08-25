@@ -34,7 +34,7 @@
                 android:padding="8dp"
                 android:text="@string/setting"
                 android:textColor="#ffffff"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_marginTop="4dp"
@@ -54,10 +54,10 @@
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/gd1"
-                    app:layout_constraintGuide_percent="0.4"
-                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="165dp" />
 
                 <TextView
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -110,10 +110,10 @@
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/gd2"
-                    app:layout_constraintGuide_percent="0.4"
-                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="165dp" />
 
                 <TextView
                     android:layout_marginLeft="@dimen/setting_margin"
@@ -156,10 +156,10 @@
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/gd3"
-                    app:layout_constraintGuide_percent="0.4"
-                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="165dp" />
 
                 <TextView
                     android:layout_marginLeft="@dimen/setting_margin"
@@ -236,7 +236,7 @@
                 android:padding="8dp"
                 android:text="@string/setting_keypad_title"
                 android:textColor="#ffffff"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -389,7 +389,7 @@
                 android:padding="8dp"
                 android:text="@string/setting_show_bt_title"
                 android:textColor="#ffffff"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -427,7 +427,7 @@
                 android:padding="8dp"
                 android:text="@string/setting_wallpaper_title"
                 android:textColor="#ffffff"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:id="@+id/bgLinearLayout"
@@ -473,7 +473,6 @@
                         android:id="@+id/testbg"
                         android:layout_width="65dp"
                         android:layout_height="65dp"
-                        android:background="@drawable/background_1"
                         android:layout_centerHorizontal="true"
                         android:layout_marginLeft="12dp"
                         android:layout_marginTop="4dp"
@@ -550,7 +549,7 @@
                 android:padding="8dp"
                 android:text="@string/setting_backup_pin_title"
                 android:textColor="#ffffff"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_marginLeft="16dp"
@@ -640,16 +639,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="12dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/info1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="#000000"
-                    android:textSize="17sp" />
-            </LinearLayout>
+                android:orientation="vertical"/>
         </LinearLayout>
     </ScrollView>
 
@@ -662,21 +652,5 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/confirm"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:text="@string/complete"
-            android:textSize="15sp" />
-
-        <Button
-            android:layout_marginLeft="16dp"
-            android:id="@+id/cancel"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:textSize="15sp" />
-    </LinearLayout>
+        android:orientation="horizontal"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

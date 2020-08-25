@@ -1,11 +1,195 @@
 <resources>
-    <string name="app_name">BrainLock</string>
-    <string name="guide_go_yes">설정화면으로 이동</string>
-    <string name="guide_go_no">잠금실행 시작</string>
-    <string name="install_complete">감사합니다. BrainLock 설치가 완료되었습니다.\n\n비밀번호와 백업 PIN은 기본적으로 \"00\"과 \"0000\"으로 설정되어 있습니다. 설정으로 이동하여 본인 만 아는 비밀번호와 백업 PIN을 변경하십시오.\n\n설정에서 비밀번호와 백업 PIN을 변경하지 않으면 비밀번호와 백업 PIN은 "00 (기본값)"및 "0000 (기본값)"으로 유지됩니다.\n\n비밀번호와 백업 PIN은 설정에서 언제든지 변경할 수 있습니다. 설정으로 이동 하시겠습니까?
-</string>
-    <string name="lock_stop_msg">비밀번호를 입력하면 BrainLock\n화면 잠금이 실행되지 않습니다.</string>
+    <string name="app_name">Random Keypad</string>
 
+
+    <!-- Guide  -->
+    <string name="install_complete">감사합니다. 랜덤키패드 화면잠금 설치가
+        \n완료되었습니다. 초기 패스워드와 백업 PIN
+        \n4자리는 아래와 같이 설정되어 있습니다.
+        \n1자리 : 0
+        \n2자리 : 00
+        \n3자리 : 000
+        \n4자리 : 0000
+        \n백업 PIN 4자리 : 1234
+        \n
+        \n개인정보보호를 위해 본인만 아는
+        \n패스워드와 백업 PIN으로 변경하기를
+        \n권장합니다. 설정으로 이동하시겠습니까?
+    </string>
+    <string name="guide_go_yes">설정화면으로 이동</string>
+    <string name="guide_go_no">화면잠금 시작</string>
+
+    <!-- Setting   -->
+    <string name="setting_title">랜덤키패드 화면잠금 설정</string>
+    <string name="setting_back" >&lt; 설정</string>
+    <string name="setting_use_lock">화면잠금 사용</string>
+    <string name="setting_pwbackup">패스워드, 백업 PIN</string>
+
+    <string name="setting_pwbackup_1">1 자리</string>
+    <string name="setting_pwbackup_2">2 자리</string>
+    <string name="setting_pwbackup_3">3 자리</string>
+    <string name="setting_pwbackup_4">4 자리</string>
+
+    <string name="setting_pwinput">패스워드 입력시도 제한</string>
+    <string name="setting_rdkeytime">키패드 동작시간</string>
+    <string name="setting_r2nposition">랜덤키패드 아이콘 위치</string>
+    <string name="setting_shortcut">바로가기</string>
+    <string name="setting_image_title">이미지 변경</string>
+    <string name="setting_background">화면잠금 배경화면</string>
+    <string name="setting_randomkey">숫자 키패드 배경</string>
+    <string name="setting_nullkey">이미지 키패드 변경</string>
+    <string name="setting_normal_title">일반</string>
+    <string name="setting_screenlock_help">사용 방법</string>
+    <string name="setting_software_info">소프트웨어 정보</string>
+
+    <!-- PwNBackup   -->
+    <string name="pwbackup_title">패스워드, 백업 PIN</string>
+    <string name="pwbackup_back" >&lt; 설정</string>
+    <string name="pwbackup_script1" >초기 패스워드는 1자리: 0, 2자리: 00, 3자리: 000, 4자리: 0000으로 설정되어 있습니다. 개인정보보호를 위해 본인만 아는 패스워드로 변경하기 바랍니다.</string>
+    <string name="pwbackup_script2" >초기 백업 PIN(4자리, 패스워드 복구용)은 1234로 설정되어 있습니다. 개인정보보호를 위해 본인만 아는 백업 PIN으로 변경하기 바랍니다.</string>
+    <string name="pwbackup_1pw_switch" >1자리 패스워드</string>
+    <string name="pwbackup_1pw_change" >1자리 패스워드 변경하기 ></string>
+    <string name="pwbackup_2pw_switch" >2자리 패스워드</string>
+    <string name="pwbackup_2pw_change" >2자리 패스워드 변경하기 ></string>
+    <string name="pwbackup_3pw_switch" >3자리 패스워드</string>
+    <string name="pwbackup_3pw_change" >3자리 패스워드 변경하기 ></string>
+    <string name="pwbackup_4pw_switch" >4자리 패스워드</string>
+    <string name="pwbackup_4pw_change" >4자리 패스워드 변경하기 ></string>
+    <string name="pwbackup_pin_switch" >백업 PIN 4자리</string>
+    <string name="pwbackup_pin_change" >4자리 백업 PIN 변경하기 ></string>
+    <string name="pwbackup_1digit" >1 자리</string>
+    <string name="pwbackup_2digit" >2 자리</string>
+    <string name="pwbackup_3digit" >3 자리</string>
+    <string name="pwbackup_4digit" >4 자리</string>
+
+
+    <!-- PWInput -->
+    <string name="pwinput_title">패스워드 입력시도 제한</string>
+    <string name="pwinput_back" >&lt; 설정</string>
+    <string name="pwinput_script1" >패스워드 입력시도를 제한하여 개인정보를 보호하십시오. </string>
+    <string name="pwinput_script2" >비밀번호 입력이 총 10회를 초과하면 4자리 백업 PIN 패스워드가 활성화됩니다. 패스워드 및 백업 PIN은 언제든지 설정에서 변경이 가능합니다.</string>
+    <string name="pwinput_chance_0" >제한없음</string>
+    <string name="pwinput_chance_3" >3회</string>
+    <string name="pwinput_chance_5" >5회</string>
+    <string name="pwinput_chance_10" >10회</string>
+
+
+    <!-- RandomKey Timer   -->
+    <string name="rdkeytimer_title">키패드 동작시간</string>
+    <string name="rdkeytimer_back" >&lt; 설정</string>
+    <string name="rdkeytimer_script1" >숫자 키패드와 이미지 키패드의 동작시간을 설정합니다. 제한없음을 선택하면 랜덤키패드 아이콘을 터치할 때마다 키패드가 변경됩니다.</string>
+    <string name="rdkeytimer_time_0" >제한없음</string>
+    <string name="rdkeytimer_time_2" >2초</string>
+    <string name="rdkeytimer_time_3" >3초</string>
+    <string name="rdkeytimer_time_4" >4초</string>
+    <string name="rdkeytimer_time_5" >5초</string>
+    <string name="rdkeytimer_time_10" >10초</string>
+
+    <!-- R2NIcon Position  -->
+    <string name="r2nposition_title">랜덤키패드 아이콘 위치</string>
+    <string name="r2nposition_back" >&lt; 설정</string>
+    <string name="r2nposition_script1" >화면잠금 상태에서 키패드에 표시될 랜덤키패드 아이콘의 위치를 선택합니다.</string>
+    <string name="r2nposition_left" >왼쪽</string>
+    <string name="r2nposition_right" >오른쪽</string>
+
+    <!-- Shortcut  -->
+    <string name="shortcuts_title">바로가기</string>
+    <string name="shortcuts_back" >&lt; 설정</string>
+    <string name="shortcuts_script1" >스마트 폰의 화면잠금 키패드에서 바로 실행할 앱을 선택하십시오.</string>
+    <string name="shortcuts_camera" >카메라</string>
+    <string name="shortcuts_calendar" >캘린더</string>
+    <string name="shortcuts_navi" >네비게이션</string>
+    <string name="shortcuts_subtitle" >화면잠금에서 바로 실행</string>
+
+    <!-- Background -->
+    <string name="background_title">화면잠금 배경화면</string>
+    <string name="background_back" >&lt; 설정</string>
+    <string name="background_script1" >화면잠금 배경화면을 선택하십시오.</string>
+    <string name="background_switch1" >기본 (아래에서 선택)</string>
+    <string name="background_switch1_txt" >기본</string>
+    <string name="background_switch2" >사진 (앨범에서 선택)</string>
+    <string name="background_switch2_txt" >사진</string>
+
+    <!-- RandomKey Full -->
+    <string name="randomkey_title">숫자 키패드 배경</string>
+    <string name="randomkey_back" >&lt; 설정</string>
+    <string name="randomkey_script1" >숫자 키패드의 배경을 선택합니다.</string>
+    <string name="randomkey_line" >선</string>
+    <string name="randomkey_trans" >없음</string>
+    <string name="randomkey_album" >사진</string>
+
+    <!-- NullKey Full -->
+    <string name="nullkey_title">이미지 키패드 배경</string>
+    <string name="nullkey_back" >&lt; 설정</string>
+    <string name="nullkey_script1" >이미지 키패드의  배경을 선택합니다.</string>
+    <string name="nullkey_line" >선</string>
+    <string name="nullkey_trans" >없음</string>
+    <string name="nullkey_album" >사진</string>
+
+    <!-- ScreenLock Help -->
+    <string name="screenlock_title">사용 방법</string>
+    <string name="screenlock_back" >&lt; 설정</string>
+    <string name="screenlock_script1" >패스워드가 0000 일 때 화면잠금 해제 방법:</string>
+    <string name="screenlock_help1" >방법 (1) \n숫자 키패드에서 패스워드 0000 입력</string>
+    <string name="screenlock_help2" >방법 (2) \n숫자 키패드에서 패스워드 00을, \n이미지 키패드에서 패스워드 00를 입력</string>
+    <string name="screenlock_help3" >방법 (3) \n이미지 키패드에서 패스워드 0000 입력</string>
+    <string name="screenlock_script2" >상세설명은 아래 링크를 클릭하면 확인 할 수 있습니다.</string>
+
+    <!-- Software Info -->
+    <string name="sw_info_title">소프트웨어 정보</string>
+    <string name="sw_info_back" >&lt; 설정</string>
+    <string name="sw_info_script1" >최근 업데이트 일자 및 버전</string>
+    <string name="sw_info_txt1" >2020.06.05</string>
+    <string name="sw_info_txt2" >Version 0.1.1</string>
+    <string name="sw_info_script2" >연락처</string>
+    <string name="sw_info_txt_email_title" >이메일 : </string>
+    <string name="sw_info_txt_email" >onetimekeypad@gmail.com</string>
+    <string name="sw_info_txt_website_title" >웹사이트 : </string>
+    <string name="sw_info_txt_website" >www.buttonstory.com</string>
+    <!-- Popup password -->
+    <string name="popup_pw_title">비밀번호 변경</string>
+
+    <!-- Popup Default password -->
+    <string name="default_pw_title">기본 비밀번호는 0000입니다. 0000 또는 새로운 비밀번호 4자리를 입력해주세요.</string>
+    <string name="default_pw_enter" >입력</string>
+    <string name="default_pw_enter_hint" >비밀번호를 입력해주세요</string>
+    <string name="default_pw_confirm" >확인</string>
+    <string name="default_pw_confirm_hint" >비밀번호를 입력해주세요</string>
+
+    <!-- Popup New password -->
+    <string name="new_pw_title">새로운 4자리 비밀번호를 입력해주세요</string>
+    <string name="new_pw_enter" >입력</string>
+    <string name="new_pw_enter_hint" >비밀번호를 입력해주세요</string>
+    <string name="new_pw_confirm" >확인</string>
+    <string name="new_pw_confirm_hint" >비밀번호를 입력해주세요</string>
+
+    <!-- Popup Default Backup Pin  -->
+    <string name="default_bkpin_title">기본 백업 PIN은 1234입니다. 1234 또는 새로운 백업 PIN 4자리를 입력해주세요.</string>
+    <string name="default_bkpin_enter" >입력</string>
+    <string name="default_bkpin_enter_hint" >백업 PIN을 입력해주세요</string>
+    <string name="default_bkpin_confirm" >확인</string>
+    <string name="default_bkpin_confirm_hint" >백업 PIN을 입력해주세요</string>
+
+    <!-- Popup New Backup Pin  -->
+    <string name="new_bkpin_title">새로운 4자리 백업 PIN을 입력해주세요</string>
+    <string name="new_bkpin_enter" >입력</string>
+    <string name="new_bkpin_enter_hint" >백업 PIN을 입력해주세요</string>
+    <string name="new_bkpin_confirm" >확인</string>
+    <string name="new_bkpin_confirm_hint" >백업 PIN을 입력해주세요</string>
+
+    <!-- Popup Show on Screen Lock  -->
+    <string name="xiaomi_title">Show on Screen Lock</string>
+    <string name="xiaomi_text" >Autostart on> \nOther permission > Show \non Screen Lock</string>
+    <string name="xiaomi_btn_allow" >허용</string>
+    <string name="xiaomi_btn_deny" >거부</string>
+
+    <!-- Edit of Image -->
+    <string name="subtitle_1" >이미지 변경</string>
+
+    <!-- General -->
+    <string name="subtitle_2" >일반</string>
+
+    <string name="lock_stop_msg">비밀번호를 입력하면 BrainLock\n화면 잠금이 실행되지 않습니다.</string>
     <string name="setting">설정</string>
     <string name="setting_text1">설정을 변경 한 후 COMPLETE 버튼을 눌러야합니다.\n그렇지 않으면 적용되지 않습니다.</string>
     <string name="setting_text4">비밀번호는 \"0,1,3,4,5,6,7,8,9, *, #\"중 2 자리 또는 4 자리로 설정할 수 있습니다.</string>

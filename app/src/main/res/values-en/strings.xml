@@ -1,9 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">BrainLock</string>
-    <string name="guide_go_yes">Change of settings</string>
-    <string name="guide_go_no">BrainLock activation</string>
-    <string name="install_complete">Thank you. BrainLock installation is completed.\n\nThe password and backup PIN are set to \"00\" and \"0000\" as default. Please go to the settings and  change the password and backup PIN that only you know.\n\nIf the password and backup PIN are not changed at the settings, the password and backup PIN will remain “00” and “0000”.\n\nThe password and backup PIN can be changed anytime at the settings. Move to the settings?</string>
+    <string name="app_name">Random Keypad</string>
+
+    <!-- Guide  -->
+    <string name="install_complete">Thank you. Random Keypad Screen Lock has been installed. The initial default password and backup PIN have been set as below.
+\n
+\n1 digit password: 0
+\n2 digit password: 00
+\n3 digit password: 000
+\n4 digit password: 0000
+\nBackup PIN 4 digit: 1234
+\n
+\nPlease change your own password and backup PIN to protect your privacy. Do you change the Setting now?
+</string>
+    <string name="guide_go_yes">Move to Setting</string>
+    <string name="guide_go_no">Run Screen Lock</string>
+
+    <!-- Setting   -->
+    <string name="setting_title">Setting of Random Keypad Screen Lock</string>
+    <string name="setting_back" >&lt; Setting</string>
+    <string name="setting_use_lock">Use of screen Lock</string>
+    <string name="setting_pwbackup">Password, backup PIN</string>
+
+    <string name="setting_pwbackup_1">1 digit</string>
+    <string name="setting_pwbackup_2">2 digit</string>
+    <string name="setting_pwbackup_3">3 digit</string>
+    <string name="setting_pwbackup_4">4 digit</string>
+
+    <string name="setting_pwinput">Limit of password input</string>
+    <string name="setting_rdkeytime">Time of keypad change</string>
+    <string name="setting_r2nposition">Random keypad icon location</string>
+    <string name="setting_shortcut">Shortcuts</string>
+    <string name="setting_image_title">Edit of Image</string>
+    <string name="setting_background">Wallpapers of screen lock</string>
+    <string name="setting_randomkey">Number keypad</string>
+    <string name="setting_nullkey">Image keypad</string>
+    <string name="setting_normal_title">General</string>
+    <string name="setting_screenlock_help">How to use</string>
+    <string name="setting_software_info">About the software</string>
+
+    <!-- PwNBackup   -->
+    <string name="pwbackup_title">Password, Backup PIN</string>
+    <string name="pwbackup_back" >&lt; Setting</string>
+    <string name="pwbackup_script1" >The intial default password has been set to 0 for 1 digit, 0 for 2 digit, 000 for 3 digit, and 0000 for 4 digit. Please change the password to protect privcacy.</string>
+    <string name="pwbackup_script2" >The intial default backup PIN has been set to 1234. Please change the password to protect privcacy.</string>
+    <string name="pwbackup_1pw_switch" >1 digit password</string>
+    <string name="pwbackup_1pw_change" >Change 1 digit pasword ></string>
+    <string name="pwbackup_2pw_switch" >2 digit password</string>
+    <string name="pwbackup_2pw_change" >Change 2 digit pasword ></string>
+    <string name="pwbackup_3pw_switch" >3 digit password</string>
+    <string name="pwbackup_3pw_change" >Change 3 digit pasword ></string>
+    <string name="pwbackup_4pw_switch" >4 digit password</string>
+    <string name="pwbackup_4pw_change" >Change 4 digit pasword ></string>
+    <string name="pwbackup_pin_switch" >4 digit backup PIN</string>
+    <string name="pwbackup_pin_change" >Change 4 digit backup PIN ></string>
+    <string name="pwbackup_1digit" >1 digit</string>
+    <string name="pwbackup_2digit" >2 digit</string>
+    <string name="pwbackup_3digit" >3 digit</string>
+    <string name="pwbackup_4digit" >4 digit</string>
+
+
+    <!-- PWInput -->
+    <string name="pwinput_title">Limit of password input</string>
+    <string name="pwinput_back" >&lt; Setting</string>
+    <string name="pwinput_script1" >Protect your privacy by limiting your password input attempts.</string>
+    <string name="pwinput_script2" >The 4 digit backup PIN password is activated when the password input exceeds 10 times. The password and backup PIN can be changed at the setting.</string>
+
+    <string name="pwinput_chance_0" >No-limitation</string>
+    <string name="pwinput_chance_3" >3 times</string>
+    <string name="pwinput_chance_5" >5 times</string>
+    <string name="pwinput_chance_10" >10 times</string>
+
+
+    <!-- RandomKey Timer   -->
+    <string name="rdkeytimer_title">Time of keypad change</string>
+    <string name="rdkeytimer_back" >&lt; Setting</string>
+    <string name="rdkeytimer_script1" >Set the  time of number keypad and image keypad change. If no-limitation is selected, the keypad changes every time the random keypad icon is touched.</string>
+    <string name="rdkeytimer_time_0" >Touch</string>
+    <string name="rdkeytimer_time_2" >2 sec</string>
+    <string name="rdkeytimer_time_3" >3 sec</string>
+    <string name="rdkeytimer_time_4" >4 sec</string>
+    <string name="rdkeytimer_time_5" >5 sec</string>
+    <string name="rdkeytimer_time_10" >10 sec</string>
+
+    <!-- R2NIcon Position  -->
+    <string name="r2nposition_title">Random Keypad icon Location</string>
+    <string name="r2nposition_back" >&lt; Setting</string>
+    <string name="r2nposition_script1" >Select the position of the random keypad icon to be displayed on the keypad while the screen is locked.</string>
+    <string name="r2nposition_left" >Left</string>
+    <string name="r2nposition_right" >Right</string>
+
+    <!-- Shortcut  -->
+    <string name="shortcuts_title">Shortcuts</string>
+    <string name="shortcuts_back" >&lt; Setting</string>
+    <string name="shortcuts_script1" >Select the app to run right from the screen lock keypad of the smartphone.</string>
+    <string name="shortcuts_camera" >Camera</string>
+    <string name="shortcuts_calendar" >Calendar</string>
+    <string name="shortcuts_navi" >Navigation</string>
+    <string name="shortcuts_subtitle" >Run on screen lock</string>
+
+    <!-- Background -->
+    <string name="background_title">Wallpapers</string>
+    <string name="background_back" >&lt; Setting</string>
+    <string name="background_script1" >Select the wallpapers of the screen lock.</string>
+    <string name="background_switch1" >Default (select at below)</string>
+    <string name="background_switch1_txt" >Default</string>
+    <string name="background_switch2" >Photo (select at album)</string>
+    <string name="background_switch2_txt" >Photo</string>
+
+    <!-- RandomKey Full -->
+    <string name="randomkey_title">Number keypad</string>
+    <string name="randomkey_back" >&lt; Setting</string>
+    <string name="randomkey_script1" >Select the background of the number keypad.</string>
+    <string name="randomkey_line" >Line</string>
+    <string name="randomkey_trans" >None</string>
+    <string name="randomkey_album" >Photo</string>
+
+    <!-- NullKey Full -->
+    <string name="nullkey_title">Image keypad</string>
+    <string name="nullkey_back" >&lt; Setting</string>
+    <string name="nullkey_script1" >Select the background of the image keypad.</string>
+    <string name="nullkey_line" >Line</string>
+    <string name="nullkey_trans" >None</string>
+    <string name="nullkey_album" >Photo</string>
+
+    <!-- ScreenLock Help -->
+    <string name="screenlock_title">How to use</string>
+    <string name="screenlock_back" >&lt; Setting</string>
+    <string name="screenlock_script1" >How to unlock the screen with password 0000:</string>
+    <string name="screenlock_help1" >Method (1) \nEnter password 0000 at the number keypad.</string>
+    <string name="screenlock_help2" >Method (2) \nEnter password 00 at the number keypad and password 00 at the image keypad.</string>
+    <string name="screenlock_help3" >Method (3) \nEnter password 0000 at the image keypad.</string>
+    <string name="screenlock_script2" >Please click the link below for details.</string>
+
+    <!-- Software Info -->
+    <string name="sw_info_title">About the software</string>
+    <string name="sw_info_back" >&lt; Setting</string>
+    <string name="sw_info_script1" >Date and version of last update</string>
+    <string name="sw_info_txt1" >2020.06.05</string>
+    <string name="sw_info_txt2" >Version 0.1.1</string>
+    <string name="sw_info_script2" >Contact information</string>
+    <string name="sw_info_txt_email_title" >E-mail : </string>
+    <string name="sw_info_txt_email" >onetimekeypad@gmail.com</string>
+    <string name="sw_info_txt_website_title" >Website : </string>
+    <string name="sw_info_txt_website" >www.buttonstory.com</string>
+
+
+    <!-- Popup password -->
+    <string name="popup_pw_title">Change Password</string>
+
+
+    <!-- Popup Default password -->
+    <string name="default_pw_title">Default password is 0000. Enter 0000 or new 4 digit password.</string>
+    <string name="default_pw_enter" >Enter</string>
+    <string name="default_pw_enter_hint" >Enter Password</string>
+    <string name="default_pw_confirm" >Confirm</string>
+    <string name="default_pw_confirm_hint" >Enter Password</string>
+
+    <!-- Popup New password -->
+    <string name="new_pw_title">Enter new 4 digit Password</string>
+    <string name="new_pw_enter" >Enter</string>
+    <string name="new_pw_enter_hint" >Enter Password</string>
+    <string name="new_pw_confirm" >Confirm</string>
+    <string name="new_pw_confirm_hint" >Enter Password</string>
+
+    <!-- Popup Default Backup Pin  -->
+    <string name="default_bkpin_title">Default backup PIN is 1234. Enter 1234 or new 4 digit backup PIN.</string>
+    <string name="default_bkpin_enter" >Enter</string>
+    <string name="default_bkpin_enter_hint" >Enter Backup PIN</string>
+    <string name="default_bkpin_confirm" >확인</string>
+    <string name="default_bkpin_confirm_hint" >Enter Backup PIN</string>
+
+    <!-- Popup New Backup Pin  -->
+    <string name="new_bkpin_title">Enter new Backup PIN (4 digit)</string>
+    <string name="new_bkpin_enter" >Enter</string>
+    <string name="new_bkpin_enter_hint" >Enter Backup PIN</string>
+    <string name="new_bkpin_confirm" >Confirm</string>
+    <string name="new_bkpin_confirm_hint" >Enter Backup PIN</string>
+
+    <!-- Popup Show on Screen Lock  -->
+    <string name="xiaomi_title">Show on Screen Lock</string>
+    <string name="xiaomi_text" >Autostart on> \nOther permission > Show \non Screen Lock</string>
+    <string name="xiaomi_btn_allow" >Allow</string>
+    <string name="xiaomi_btn_deny" >Deny</string>
+
+    <!-- Edit of Image -->
+    <string name="subtitle_1" >Edit of Image</string>
+
+    <!-- General -->
+    <string name="subtitle_2" >General</string>
+
 
     <string name="lock_stop_msg">If you enter password, BrainLock\nis not executed.</string>
 
