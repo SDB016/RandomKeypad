@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -61,6 +62,7 @@ import com.otk.fts.myotk.utils.Utils;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Date;
 import java.util.Timer;
@@ -74,6 +76,7 @@ import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static android.speech.tts.TextToSpeech.ERROR;
 
 
 public class beforeSettingActivity extends Activity implements View.OnTouchListener, View.OnClickListener {
@@ -191,6 +194,9 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
     private boolean sleeptime = false;
     private TimerTask tt;
 
+    private TextToSpeech tts;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,6 +206,15 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         //LayoutInflater inflate = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != ERROR){
+                    tts.setLanguage(Locale.KOREAN);
+                }
+            }
+        });
 
         if (!Utils.isServiceRunning(beforeSettingActivity.this)) {
             Utils.startService(getApplicationContext());
@@ -313,7 +328,7 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
             nulliconPath = "";
         }
 
-        // Custom 배 이미지 여부
+        // Custom 배경 이미지 여부
         boolean customBgImg = PreferenceUtil.getBooleanPref(this, PreferenceUtil.CUSTOM_BG, false);///// false - color // true - photo
 
         // Custom 버튼 이미지 경로
@@ -626,6 +641,12 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
         }
 
     }
+    private void Speech(){
+        String text = "비밀번호가 다릅니다".trim();
+        tts.setPitch((float)1.0); //톤
+        tts.setSpeechRate((float)1.0); //재생속도
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
 
     private void CheckPW() { //입력받은 패스워드를 체크하는 부분
         if (input.size() == pw.size()) { //입력받은 길이와 패스워드 길이가 같을때
@@ -635,6 +656,10 @@ public class beforeSettingActivity extends Activity implements View.OnTouchListe
             while (index < input.size()) { //인덱스가 입력받은 패스워드 길이와 같을때까지 반복
                 if (!input.get(index).equals(pw.get(index))) { //입력의 인덱스와 패스워드 인덱스가 다를때
                     vibrator.vibrate(100); //0.1초 진동
+                    Log.d("main", "not correct");
+
+                    Speech();
+
                     wrongCount += 1;
                     wrongTrigger += 1;
                     if (wrongTrigger >= inputCnt && wrongCount >= 15) { //trigger와 wrongCount가 조건에 만족할때; 엄청 틀렸을 때

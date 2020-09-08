@@ -1,3 +1,14 @@
+///////////////////////////////////////////////
+/*
+    File Name : LockScreenActivity
+    Create Date : 2020.08.24
+    Function :
+    - 화면 잠금 상태에서 비번 입력을 위한 화면
+
+ */
+///////////////////////////////////////////////
+
+
 package com.otk.fts.myotk.activity;
 
 import android.annotation.SuppressLint;
@@ -23,6 +34,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.view.Gravity;
@@ -62,34 +74,28 @@ import com.otk.fts.myotk.utils.Utils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
-import static android.app.Service.START_NOT_STICKY;
-import static android.content.Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION;
-import static android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
+import static android.speech.tts.TextToSpeech.ERROR;
 
-// Lock Screen 시
+
+// Lock Screen
 public class LockScreenActivity extends Activity implements View.OnTouchListener, View.OnClickListener {
     private static final String TAG00 = "Inhyo Test";
 
+    private TextToSpeech tts;
+
+
+
     private boolean isActive;
-    private Button mBtnButton1;
-    private Button mBtnButton2;
-    private Button mBtnButton3;
-    private Button mBtnButton4;
-    private Button mBtnButton5;
-    private Button mBtnButton6;
-    private Button mBtnButton7;
-    private Button mBtnButton8;
-    private Button mBtnButton9;
-    private Button mBtnButton10;
-    private Button mBtnButton11;
-    private Button mBtnButton12;
+
+    // button은 기본적으로 2개가 겹쳐 있음
+    // 숫자를 보여주는 button 과 이미지가 올라가서 보여주는 button이 있음
 
     private ImageView imgBtnView01;
     private ImageView imgBtnView02;
@@ -219,8 +225,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         }
     };
 
-
-
     private AlarmReceiver alarmReceiver = new AlarmReceiver(){
 
         @Override
@@ -233,26 +237,24 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
     };
 
-
-
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         QLog.d("onKeyDown");
         switch(keyCode) {
             case KeyEvent.KEYCODE_BACK:
+                // 여기에 뒤로가기 버튼을 눌렀을 때 행동 입력
                 errorPath = imgRandomPath;
                 errorNullPath = nulliconPath;
-                // 여기에 뒤로가기 버튼을 눌렀을 때 행동 입력
                 return false;
 
             case KeyEvent.KEYCODE_HOME:
                 // 여기에 홈 버튼을 눌렀을 때 행동 입력
                 QLog.d("KEYCODE_HOME");
-                shuffleKeyPad(pos);
+                shuffleKeyPad(pos); //키패드 셔플
                 btnShow();
                 btnsEnable();
                 return false;
+
             case KeyEvent.KEYCODE_MENU:
                 errorPath = imgRandomPath;
                 errorNullPath = nulliconPath;
@@ -269,14 +271,17 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
     @Override
     protected void onUserLeaveHint(){
         super.onUserLeaveHint();
-        //Toast.makeText(getApplicationContext(),"home 버튼이 눌렸어요", Toast.LENGTH_LONG).show();
-        //shuffleKeyPad(pos);
-        //btnShow();
-        //btnsEnable();
         errorPath = imgRandomPath;
         errorNullPath = nulliconPath;
         QLog.d("KEYCODE_HOME");
         return;
+    }
+
+    private void Speech(){
+        String text = "비밀번호가 다릅니다".trim();
+        tts.setPitch((float)1.0); //톤
+        tts.setSpeechRate((float)1.0); //재생속도
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     @Override
@@ -284,13 +289,21 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         super.onCreate(savedInstanceState);
 
         Log.d("Inhyo Test ", "handler = new Handler(msg -> false); - onCreate 1");
-
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         handler = new Handler(msg -> false);
 
         res = getResources();
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != ERROR){
+                    tts.setLanguage(Locale.KOREAN);
+                }
+            }
+        });
+
         getWindow().addFlags(
                 // 기본 잠금화면보다 우선출력
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
@@ -298,7 +311,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                         // 기본 잠금화면 해제시키기
                         | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        //decorView = getWindow().getDecorView();
         if (telephonyManager == null) {
             telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 
@@ -335,16 +347,11 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                             //|WindowManager.LayoutParams.FLAG_FULLSCREEN
                             |WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                             |WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON,
-                    //| WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                    //| WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
-                    //| WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     PixelFormat.TRANSLUCENT);
         }
 
         params.gravity = Gravity.CENTER;
 
-        //binding = DataBindingUtil.setContentView(this, layout);
-        //mView = inflate.inflate(layout, null);
         boolean isLeft = PreferenceUtil.getBooleanPref(this, PreferenceUtil.SHOW_LEFT, true);
         int layout = isLeft? R.layout.activity_main_lock : R.layout.activity_main_right_lock;
         ViewDataBinding binding = DataBindingUtil.inflate(inflate, layout, null, false);//DataBindingUtil.setContentView(this, layout);
@@ -608,6 +615,11 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         }
     }
 
+    /*
+         Function Name : switchRandomBtn
+         키패드 동작 시간에 따라 숫자키패드와 이미지 키패드를 보여주는 함수
+
+     */
 
     private void switchRandomBtn(){
 
@@ -620,9 +632,8 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 btnUnshow();
             }
 
-            //isNullKey = !isNullKey;
         } else {
-            if(chkTimer){
+            if (chkTimer) {
                 if (!num2ImgChange) {
                     shuffleKeyPad(pos);
                     btnShow();
@@ -643,47 +654,9 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 }
                 isNullKey = !isNullKey;
             }
-
-
         }
-        /*
-        if(f_timer == 0){
-            if (!isNullKey) {
-                shuffleKeyPad(pos);
-                btnShow();
-                btnsEnable();
-            } else {
-                btnUnshow();
-            }
-            isNullKey = !isNullKey;
-        } else {
-            if(chkTimer){
-                if (!isNullKey) {
-                    shuffleKeyPad(pos);
-                    btnShow();
-                    btnsEnable();
-                } else {
-                    btnUnshow();
-                }
-                removeMessage();
-                handler.postDelayed(this::switchRandomBtn, f_timer);    //2초 뒤에
-            } else {
-                if (!isNullKey) {
-                    shuffleKeyPad(pos);
-                    btnShow();
-                    btnsEnable();
-                } else {
-                    Log.d(TAG00, "SwitchRandomBtn-- 2-2-2");
-                    btnUnshow();
-
-                }
-            }
-
-            isNullKey = !isNullKey;
-        }*/
-
-
     }
+
 
     private void removeMessage(){
         if(handler != null){
@@ -701,6 +674,12 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
     }
 
+
+    /*
+         Function Name : btnsDisable
+         버튼들을 비활성화
+
+     */
     private void btnsDisable(){
 
         mBtn01.setEnabled(false);
@@ -719,6 +698,11 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
     }
 
+    /*
+         Function Name : btnsEnable
+         버튼들을 활성화
+
+     */
     private void btnsEnable(){
 
         mBtn01.setEnabled(true);
@@ -736,6 +720,11 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
     }
 
+    /*
+         Function Name : CheckPW
+         패스워드 확인하는 함수
+
+     */
     private void CheckPW() {
         if(input.size()==pw.size()){
             int index = 0;
@@ -743,6 +732,9 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
             while(index<input.size()){
                 if (!input.get(index).equals(pw.get(index))) {
                     vibrator.vibrate(100);
+                    Log.d("test", "incorrect");
+                    Speech();
+
                     wrongCount += 1;
                     wrongTrigger += 1;
                     if(wrongTrigger >=inputCnt &&wrongCount>=10){
@@ -771,7 +763,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                             Log.d("Inhyo Test", "hanlder - delay : wrong_lockTimer");
                         }, wrong_lockTimer);    //10초 뒤에
                     } else if(wrongTrigger >= inputCnt){
-                        // PhoneLockForSeconds();
                         btnUnshow();
                         btnsDisable();
                         wrongTrigger=0;
@@ -809,9 +800,13 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
         }
         finishAffinity();
-
     }
 
+    /*
+         Function Name : Incorrect
+         패스워드가 틀렸을때 랜덤하게 키패드 바꾸는 함수
+
+     */
     private void Incorrect(){
         if (pwSize == 1) {
             mBtnInput.setImageResource(R.drawable.img_trans);
@@ -828,10 +823,12 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         btnsEnable();
     }
 
+    /*
+             Function Name : enterInput
+             패스워드가 입력시 패스워드 길이에 따른 처리 함
 
+    */
     private void enterInput() {
-
-        //imgBtnViewInput.setImageResource(R.drawable.null_gray_3x5_btn);
 
         if(pwSize == 1){
             delbtnchk = true;
@@ -856,19 +853,15 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
             switch (input.size()) {
                 case 0:
                     delbtnchk = false;
-                    //delbtninit(false);
                     mBtnInput.setImageResource(R.drawable.btn_input_0);
                     break;
                 case 1:
-                    //delbtninit(true);
                     mBtnInput.setImageResource(R.drawable.btn_input_1);
                     break;
                 case 2:
-                    //delbtninit(true);
                     mBtnInput.setImageResource(R.drawable.btn_input_2);
                     break;
                 case 3:
-                    //delbtninit(true);
                     mBtnInput.setImageResource(R.drawable.btn_input_3);
                     break;
             }
@@ -877,23 +870,18 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
             switch (input.size()) {
                 case 0:
                     delbtnchk = false;
-                    //delbtninit(false);
                     mBtnInput.setImageResource(R.drawable.btn_input_0);
                     break;
                 case 1:
-                    //delbtninit(true);
                     mBtnInput.setImageResource(R.drawable.btn_input_1);
                     break;
                 case 2:
-                    //delbtninit(true);
                     mBtnInput.setImageResource(R.drawable.btn_input_2);
                     break;
                 case 3:
-                    //delbtninit(true);
                     mBtnInput.setImageResource(R.drawable.btn_input_3);
                     break;
                 case 4:
-                    //delbtninit(true);
                     mBtnInput.setImageResource(R.drawable.btn_input_4);
                     break;
             }
@@ -918,7 +906,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                     wm.removeViewImmediate(mView);
 
             if(handler!=null){
-                //handler.removeCallbacksAndMessages(null);
                 handler = null;
             }
 
@@ -957,8 +944,13 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         }
     };
 
+    /*
+             Function Name : getDrawableImage
+             숫자 버튼 마다 투명/라인/이미지 등을 처리하기 위한 함수
 
-    public Drawable getDrawableImage(int number) {
+    */
+
+    public Drawable getDrawableImage(int number) { //버튼 이미지 가져오기
         int imgNum = R.drawable.img_trans;
 
         if(imgRandomPath.length() == 0){
@@ -1142,33 +1134,7 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 break;
             case 13:
                 mBtnDel.setImageResource(R.drawable.btn_del);
-                /*
-                switch (numType) {
-                    case 1:
-                        if(!delbtnchk) {
-                            imgBtnViewInput.setImageResource(R.drawable.btn_del_trans);
-                        }else {
-                            imgBtnViewInput.setImageResource(R.drawable.img_trans);
-                        }
-                        return res.getDrawable(R.drawable.img_trans);
-                    case 2:
-                        if(!delbtnchk) {
-                            imgBtnViewInput.setImageResource(R.drawable.btn_del_line);
-                        } else {
-                            imgBtnViewInput.setImageResource(R.drawable.img_line_album);
-                        }
-                        return res.getDrawable(R.drawable.img_line_album);
-                    case 3:
-                        if(activityChk()) {
-                            Glide.with(this).load(imgRandomPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewInput);
-                        }
-                        if(!delbtnchk) {
-                            imgBtnViewInput.setImageResource(R.drawable.btn_del_line);
-                        } else {
-                            imgBtnViewInput.setImageResource(R.drawable.img_line_album);
-                        }
-                        return res.getDrawable(R.drawable.btn_del_line);
-                }*/
+
                 break;
             case 14:
                 switch (numType) {
@@ -1213,7 +1179,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                                 break;
                         }
                         if(activityChk()) {
-                            //  Glide.with(this).load(imgRandomPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewCamera);
                         }
                         return res.getDrawable(imgNum);
                 }
@@ -1222,13 +1187,10 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 switch (btnType) {  // 0 -- gray // 1- trans // 2 - line // 3 - album
                     case 1:
                         return res.getDrawable(R.drawable.btn_new_btn);
-                    //return res.getDrawable(R.drawable.btn_new_btn);
                     case 2:
                         return res.getDrawable(R.drawable.btn_new_btn2);
-                    //return res.getDrawable(R.drawable.btn_new_btn2);
                     case 3:
                         return res.getDrawable(R.drawable.btn_new_btn3);
-                    //return res.getDrawable(R.drawable.blank_zero);
                     case 4:
                         return res.getDrawable(R.drawable.btn_new_btn4);
 
@@ -1244,7 +1206,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                         return res.getDrawable(R.drawable.tran_3x5_r2n);
                     case 3:
                         if(activityChk()) {
-                            //  Glide.with(this).load(nulliconPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewShow);
                         }
                         return res.getDrawable(R.drawable.tran_3x5_r2n);
                 }
@@ -1322,7 +1283,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                                 break;
                         }
                         if(activityChk()) {
-                            //  Glide.with(this).load(imgRandomPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewCamera);
                         }
                         return res.getDrawable(imgNum);
                 }
@@ -1336,6 +1296,12 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         return null;
     }
 
+    /*
+         Function Name : shuffleKeyPad
+
+         숫자 버튼의 순서를 랜덤하게 바꾸는 함수
+
+     */
     public void shuffleKeyPad(ArrayList posArr) {
         int index = 0;
         Random random = new Random();
@@ -1353,7 +1319,12 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
     }
 
+    /*
+             Function Name : onClick
 
+             숫자 버튼을 클릭할때 처음 호출되는 함수
+
+    */
     public void onClick(View v) {
         v.setBackground(res.getDrawable(R.drawable.press_blank));
 
@@ -1409,7 +1380,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         }
 
         enterInput();
-
         handler.postDelayed(this::showBtn, 50);
     }
 
@@ -1423,6 +1393,10 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         }
     }
 
+    /*
+         Function Name : onTouch
+         숫자 버튼을 제외한 카메라, 브레인락 아이콘 버튼 등을 클릭할때 호출되는 함수
+     */
     @Override
     public boolean onTouch(View v, MotionEvent motionEvent) {
 
@@ -1478,16 +1452,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
 
                         break;
 
-
-
-                        /*imgBtnViewShow.setBackground(res.getDrawable(R.drawable.press_blank));
-                        chkTimer = false;
-                        Log.d(TAG00, "SwitchRandomBtn- touch");
-                        isNullKey = !isNullKey;
-
-                        shuffleKeyPad(pos);
-                        showBtn();
-                        break;*/
                     case R.id.btn_camera:
                         otherAppRun(directType);
                         if(isNullKey){
@@ -1533,11 +1497,12 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         return true;
     }
 
-
+    /*
+         Function Name : otherAppRun
+         바로가기 버튼을 카메라 / 캘린더 바꿔서 보여주는 함수
+     */
 
     private void otherAppRun(int type){
-
-        //Unlock();
 
         Log.d("Inhyo Test", "otherAppRun() -- " + type);
 
@@ -1548,13 +1513,11 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 callCamera();
                 break;
             case 1:
-                //callCamera();
                 intent = pm.getLaunchIntentForPackage("com.nhn.android.nmap");
                 break;
             case 2:
                 intent = pm.getLaunchIntentForPackage("com.samsung.android.calendar");
                 break;
-
         }
 
         if(intent != null) {
@@ -1564,10 +1527,12 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 startActivity(intent);;
             }
         }
-
-
     }
 
+    /*
+         Function Name : callCamera
+         카메라 호출 함수
+     */
     private void callCamera(){
         Log.d("Inhyo Test", "call Camera Run");
 
@@ -1576,10 +1541,8 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
         }
 
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //i.addFlags(FLAG_ACTIVITY_REORDER_TO_FRONT | FLAG_ACTIVITY_SINGLE_TOP);
         try{
             PackageManager pm = getPackageManager();
-
             final ResolveInfo mInfo = pm.resolveActivity(i,0);
             Intent intent = new Intent();
             intent.setComponent(new ComponentName(mInfo.activityInfo.packageName, mInfo.activityInfo.name));
@@ -1668,18 +1631,19 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
     public StateListDrawable getSelector(int number){
         Drawable drawable = getDrawableImage(number);
         return new StateDrawableBuilder()
-                //.setDisabledDrawable(drawable)
                 .setNormalDrawable(drawable)
-                //.setPressedDrawable(getDrawableImage(15))
-                //.setSelectedDrawable(getDrawableImage(15))
                 .build();
     }
 
+
+    /*
+             Function Name : nullpathimg
+             이미지 버튼의 이미지를 초기화 하기 위한 함수
+         */
     public void nullpathimg(){
         Log.d("Inhyo Test", "nulliconPath1 : " + nulliconPath);
         if(activityChk()) {
             if(btnType == 3) {
-
                 Glide.with(this).load(nulliconPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnView01);
                 Glide.with(this).load(nulliconPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnView02);
                 Glide.with(this).load(nulliconPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnView03);
@@ -1692,9 +1656,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 Glide.with(this).load(nulliconPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnView10);
                 Glide.with(this).load(nulliconPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnView11);
                 Glide.with(this).load(nulliconPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnView12);
-                //Glide.with(this).load(nulliconPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewShow);
-                //Glide.with(this).load(nulliconPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewInput);
-                //Glide.with(this).load(nulliconPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewCamera);
             }
         }
     }
@@ -1723,9 +1684,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 Glide.with(this).load(R.drawable.img_trans).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnView10);
                 Glide.with(this).load(R.drawable.img_trans).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnView11);
                 Glide.with(this).load(R.drawable.img_trans).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnView12);
-                //Glide.with(this).load(R.drawable.blank_zero).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewShow);
-                //Glide.with(this).load(R.drawable.img_trans).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewInput);
-                //Glide.with(this).load(R.drawable.blank_zero).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewCamera);
             }
         }
     }
@@ -1749,9 +1707,6 @@ public class LockScreenActivity extends Activity implements View.OnTouchListener
                 Glide.with(this).load(imgRandomPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnView10);
                 Glide.with(this).load(imgRandomPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnView11);
                 Glide.with(this).load(imgRandomPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnView12);
-                //Glide.with(this).load(imgRandomPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewShow);
-                //Glide.with(this).load(imgRandomPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewInput);
-                //Glide.with(this).load(imgRandomPath).override(214, 214).transform(new CropCircleTransformation()).into(imgBtnViewCamera);
             }
         }
     }
